@@ -7,8 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Hello World!</h1>
-	<a href="user/add">User</a>
-	<a href="opt/neww">OPT</a>
+	<h1>OPT_VIEW</h1>
 </body>
 </html>

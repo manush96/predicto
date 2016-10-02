@@ -4,11 +4,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.css"/> 
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Hello World!</h1>
-	<a href="user/add">User</a>
-	<a href="opt/neww">OPT</a>
+	<h1 class="text-primary">Add uSer.jsp</h1>
 </body>
 </html>
