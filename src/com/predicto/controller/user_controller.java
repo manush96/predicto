@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class user_controller {
 	
-	@RequestMapping("add")
+	@RequestMapping("add*")
 	public ModelAndView add()
 	{
 		return new ModelAndView("add_user");

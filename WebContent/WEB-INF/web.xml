@@ -22,22 +22,11 @@ version="2.5">
     <!-- highest priority of lower No for loading servlet n server evrytime. -->
   </servlet>
   
-  <servlet>
-    <servlet-name>new</servlet-name>
-    <!-- get and set all the req-respo...1HandMapping=Controller=resolver -->
-    <servlet-class>org.springframework.web.servlet.newServlet</servlet-class>
-    <load-on-startup>1</load-on-startup>
-    <!-- highest priority of lower No for loading servlet n server evrytime. -->
-  </servlet>
   <servlet-mapping>
     <servlet-name>dispatcher</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
-  <servlet-mapping>
-    <servlet-name>new</servlet-name>
-    <url-pattern>/css/*</url-pattern>
-  </servlet-mapping>
   
    <listener>
        <listener-class>
