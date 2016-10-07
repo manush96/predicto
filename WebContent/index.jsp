@@ -8,7 +8,7 @@
 </head>
 <body>
 	<h1>Hello World!</h1>
-	<a href="user/add?i=1">User</a>
+	<a href="user/dashboard">Dashboard</a>
 	<a href="opt/neww">OPT</a>
 </body>
 </html>

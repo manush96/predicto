@@ -22,7 +22,7 @@
 	
 	<!-- Configures the annotation-driven Spring MVC Controller programming model. -->
 	<mvc:annotation-driven /> 
-	<mvc:resources mapping="/resources/**" location="/resources/css/" cache-period="31556926"/>
+	<mvc:resources mapping="/resources/**" location="/resources/" cache-period="31556926"/>
 	<context:property-placeholder location="classpath:database.properties" />
 	
 	</beans>

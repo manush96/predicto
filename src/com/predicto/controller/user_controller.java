@@ -9,9 +9,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 public class user_controller {
 	
-	@RequestMapping("add*")
+	@RequestMapping("dashboard")
 	public ModelAndView add()
 	{
-		return new ModelAndView("add_user");
+		return new ModelAndView("user_dashboard");
 	}
 }
