@@ -2,7 +2,8 @@
     pageEncoding="ISO-8859-1"%>
 <%@include file="header.jsp" %>
 <%@include file="sidebar.jsp" %>
-    	
-    <a href="user/dashboard"><h1>This is main content</h1></a>
+    <div id="dropzone">
+    	<form action="user/upload_report" class="dropzone" id="my-awesome-dropzone"></form>
+    </div>
 
 <%@include file="footer.jsp" %>
