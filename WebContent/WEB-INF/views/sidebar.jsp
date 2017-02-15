@@ -25,6 +25,10 @@
 	            <li class="active">
 	                <a ref=""><i class="fa fa-check-square-o"></i><span>Sample</span></a>
 	            </li>
+	            <li class="active">
+	                <a href="user/report"><i class="fa fa-check-square-o"></i><span>Report</span></a>
+	            </li>
+	            
 	        </ul>
 	    </section>
 	</aside>
