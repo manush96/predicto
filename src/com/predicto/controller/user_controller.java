@@ -16,6 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -55,15 +56,16 @@ public class user_controller {
 		return new ModelAndView("user_login");
 	}
 	@RequestMapping("signin")
-	public String signin(@RequestParam("username")String username,@RequestParam("password")String password)
+	public String signin(@RequestParam("username")String username,@RequestParam("password")String password,HttpSession session)
 	{
 		User user=new User();
 		user.setPassword(password);
 		user.setUserName(username);
 		int i=userDao.checkLogin(user);
-		if(i==1)
+		if(i!=0)
 		{
-		return "redirect:dashboard";
+			session.setAttribute("user_id",i);
+			return "redirect:dashboard";
 		}
 		else
 		{

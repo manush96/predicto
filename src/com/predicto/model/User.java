@@ -18,7 +18,7 @@ public class User {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-	private Long Id;
+	private int Id;
 
 	public User() {
 	}
@@ -43,12 +43,12 @@ public class User {
 	@Column(name = "password", nullable = true, length=20)
 	private String password;
 
-	public Long getId() {
+	public int getId() {
 		return Id;
 	}
 
-	public void setId(Long id) {
-		Id = id;
+	public void setId(int i) {
+		Id = i;
 	}
 
 	public String getUserName() {
