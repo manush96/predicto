@@ -28,7 +28,9 @@
 	            <li class="active">
 	                <a href="user/report"><i class="fa fa-check-square-o"></i><span>Report</span></a>
 	            </li>
-	            
+	            <li class="active">
+	                <a href="user/report_view"><i class="fa fa-check-square-o"></i><span>Report View</span></a>
+	            </li>
 	        </ul>
 	    </section>
 	</aside>

@@ -49,12 +49,18 @@ public class user_controller {
 	{
 		return new ModelAndView("user_report");
 	}
+	@RequestMapping("report_view")
+	public ModelAndView report_view()
+	{
+		return new ModelAndView("user_report_view");
+	}
 	@RequestMapping(value = "upload_data", method = RequestMethod.POST)
     public String singleFileUpload(@RequestParam("report") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
+            System.out.println("vatsal");
             return "redirect:uploadStatus";
         }
 
