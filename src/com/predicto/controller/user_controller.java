@@ -38,7 +38,7 @@ import org.apache.tomcat.util.codec.binary.StringUtils;
 @RequestMapping("/user/*")
 
 public class user_controller {
-	
+	private static String UPLOADED_FOLDER = "C:\\Uploads\\";
 	@RequestMapping("dashboard")
 	public ModelAndView add()
 	{
@@ -49,14 +49,12 @@ public class user_controller {
 	{
 		return new ModelAndView("user_report");
 	}
-	private static String UPLOADED_FOLDER = "D://abcd//";
 	@RequestMapping(value = "upload_data", method = RequestMethod.POST)
     public String singleFileUpload(@RequestParam("report") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            System.out.println("vatsal");
             return "redirect:uploadStatus";
         }
 
