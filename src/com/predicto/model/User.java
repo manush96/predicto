@@ -1,69 +1,98 @@
 package com.predicto.model;
 
-
-import java.sql.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.*;
-
-@SuppressWarnings("unused")
-@Entity
-@Table(name = "user")
 public class User {
-
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
-	private int Id;
-
-	public User() {
-	}
-
-	@Column(name = "username", nullable =true, length=20)
-	private String userName;
-	@Column(name = "email", nullable =true, length=20)
+	
+	private int id;
+	private String username;
+	private String password;
 	private String email;
-
+	private int age;
+	private int height;
+	private int weight;
+	private int gender;
+	private int diabetic;
+	private int smoker;
+	private int alcoholic;
+	private String heredity;
+	private int status;
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public int getAge() {
+		return age;
 	}
-
-	@Column(name = "password", nullable = true, length=20)
-	private String password;
-
-	public int getId() {
-		return Id;
+	public void setAge(int age) {
+		this.age = age;
 	}
-
-	public void setId(int i) {
-		Id = i;
+	public int getHeight() {
+		return height;
 	}
-
-	public String getUserName() {
-		return userName;
+	public void setHeight(int height) {
+		this.height = height;
 	}
-
-	public String getPassword()
-	{
-			return password;
+	public int getWeight() {
+		return weight;
 	}
-
-	public void setPassword(String password) {
-		this.password=password;        		
+	public void setWeight(int weight) {
+		this.weight = weight;
 	}
-
-
-
+	public int getGender() {
+		return gender;
+	}
+	public void setGender(int gender) {
+		this.gender = gender;
+	}
+	public int getDiabetic() {
+		return diabetic;
+	}
+	public void setDiabetic(int diabetic) {
+		this.diabetic = diabetic;
+	}
+	public int getSmoker() {
+		return smoker;
+	}
+	public void setSmoker(int smoker) {
+		this.smoker = smoker;
+	}
+	public int getAlcoholic() {
+		return alcoholic;
+	}
+	public void setAlcoholic(int alcoholic) {
+		this.alcoholic = alcoholic;
+	}
+	public String getHeredity() {
+		return heredity;
+	}
+	public void setHeredity(String heredity) {
+		this.heredity = heredity;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
 }

@@ -43,13 +43,18 @@ import org.apache.tomcat.util.codec.binary.StringUtils;
 
 public class user_controller {
 	private static String UPLOADED_FOLDER = "C:\\Uploads\\";
-	@RequestMapping("dashboard")
-	public ModelAndView add()
-	{
-		return new ModelAndView("user_dashboard");
-	}
 	@Autowired
 	user_dao userDao;
+	@RequestMapping("dashboard")
+	public ModelAndView add(HttpSession session)
+	{
+		int id = (Integer)session.getAttribute("user_id");
+		int status = userDao.checkStatus(id);
+		if(status == 1)
+			return new ModelAndView("user_dashboard");
+		else
+			return new ModelAndView("one_time_form");
+	}
 	@RequestMapping("login")
 	public ModelAndView login()
 	{
@@ -60,7 +65,7 @@ public class user_controller {
 	{
 		User user=new User();
 		user.setPassword(password);
-		user.setUserName(username);
+		user.setUsername(username);
 		int i=userDao.checkLogin(user);
 		if(i!=0)
 		{
@@ -79,7 +84,7 @@ public class user_controller {
 		User user=new User();
 		user.setPassword(password);
 		user.setEmail(email);
-		user.setUserName(username);
+		user.setUsername(username);
 		userDao.addUser(user);
 		return "redirect:success_signup";
 	}
@@ -89,10 +94,19 @@ public class user_controller {
 	{
 		return new ModelAndView("success_signup");
 	}
-	@RequestMapping("report")
-	public ModelAndView report()
+	@RequestMapping("save_one_time_data")
+	public String save_one_time_data(@RequestParam("gender")int gender,@RequestParam("age")int age,@RequestParam("height")int height,@RequestParam("weight")int weight,@RequestParam("diabetic")int diabetic,HttpSession session)
 	{
-		return new ModelAndView("user_report");
+		User user = new User();
+		user.setAge(age);
+		user.setHeight(height);
+		user.setWeight(weight);
+		user.setGender(gender);
+		user.setDiabetic(diabetic);
+		user.setStatus(1);
+		int id = (Integer)session.getAttribute("user_id");
+		userDao.addInitialData(user,id);
+		return "redirect:dashboard";
 	}
 	@RequestMapping("report_view")
 	public ModelAndView report_view()
@@ -125,5 +139,11 @@ public class user_controller {
 
         return "upload";
     }
+	@RequestMapping("logout")
+	public String logout(HttpSession session)
+	{
+		session.removeAttribute("user_id");
+		return "redirect:login";
+	}
 	
 }

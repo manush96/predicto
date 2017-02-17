@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+	<a href="user/login"><h1>Login</h1></a>
 	<div class="login-group homepage_admin light-wrap">
       <ul class="login_tab unstyled horizontal clearfix">
           <li class="signup-toggle toggle"><a href="/signup" data-toggle="tab">Sign Up</a></li>

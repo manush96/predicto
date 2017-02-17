@@ -32,40 +32,63 @@ public class user_dao {
 	        template1 = new JdbcTemplate(datasource);
 	}
 
-public void addUser(User user)
-{
-	setDataSource();
-	String sql="insert into user(username,password,email) values('"+user.getUserName()+"','"+user.getPassword()+"','"+user.getEmail()+"')";
-	template1.update(sql);
-}
-public int checkLogin(User user)
-{
-	final User user1 = new User();
-	setDataSource();
-	String sql="select * from user where username='"+user.getUserName()+"' and password='"+user.getPassword()+"'";
-	 java.util.List<User> listContact = template1.query(sql, new RowMapper<User>() {
+	public void addUser(User user)
+	{
+		setDataSource();
+		String sql="insert into user(username,password,email) values('"+user.getUsername()+"','"+user.getPassword()+"','"+user.getEmail()+"')";
+		template1.update(sql);
+	}
+	public void addInitialData(User user, int id)
+	{
+		setDataSource();
+		String sql="UPDATE user SET age =" + user.getAge()+", height = "+user.getHeight()+", weight = "+user.getWeight()+", gender = "+user.getGender()+", diabetic = "+user.getDiabetic()+", status = "+user.getStatus() + " WHERE id=" + id;
+		template1.update(sql);
+	}
+	public int checkLogin(User user)
+	{
+		final User user1 = new User();
+		setDataSource();
+		String sql="select * from user where username='"+user.getUsername()+"' and password='"+user.getPassword()+"'";
+		 java.util.List<User> listContact = template1.query(sql, new RowMapper<User>() {
+			 
+		     @Override   
+			 public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+		            
+		            System.out.println(rs.getInt("id")+"jakob");
+		            user1.setId(rs.getInt("id"));
+		            user1.setUsername(rs.getString("username"));
+		            user1.setEmail(rs.getString("email"));
+		            
+		            return user1;
+		        }
 		 
-	     @Override   
-		 public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-	            
-	            System.out.println(rs.getInt("id")+"jakob");
-	            user1.setId(rs.getInt("id"));
-	            user1.setUserName(rs.getString("username"));
-	            user1.setEmail(rs.getString("email"));
-	            
-	            return user1;
-	        }
-	 
-	    });
-	System.out.println(user.getId()+"hakoba");
- if(listContact.size()==1)
-	{
-		return user1.getId();
+		    });
+		System.out.println(user.getId()+"hakoba");
+	 if(listContact.size()==1)
+		{
+			return user1.getId();
+		}
+		else
+		{
+			return 0;
+		}
 	}
-	else
+
+	public int checkStatus(int id)
 	{
-		return 0;
+		final User user = new User();
+		setDataSource();
+		String sql="SELECT status FROM user WHERE id="+id;
+		java.util.List<User> listContact = template1.query(sql, new RowMapper<User>() {
+			 
+		     @Override   
+			 public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+		            user.setStatus(rs.getInt("status"));
+		            return user;
+		        }
+		 
+		    });
+		return user.getStatus();
 	}
-}
 
 }
