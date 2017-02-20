@@ -91,5 +91,27 @@ public class user_dao {
 		    });
 		return user.getStatus();
 	}
+	public User get_tips(int id)
+	{
+		final User user = new User();
+		setDataSource();
+		String sql="SELECT * FROM user WHERE id="+id;
+		java.util.List<User> listContact = template1.query(sql, new RowMapper<User>() {
+			 
+		     @Override   
+			 public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+		            user.setAge(rs.getInt("age"));
+		            user.setHeight(rs.getInt("height"));
+		            user.setWeight(rs.getInt("weight"));
+		            user.setGender(rs.getInt("gender"));
+		            user.setDiabetic(rs.getInt("diabetic"));
+		            user.setSmoker(rs.getInt("smoker"));
+		            user.setAlcoholic(rs.getInt("alcoholic"));
+		            return user;
+		        }
+		 
+		    });
+		return user;
+	}
 
 }
