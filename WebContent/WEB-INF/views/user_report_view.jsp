@@ -3,8 +3,6 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<base href="${pageContext.request.contextPath}/"></base>
-    
 <%@include file="header.jsp" %>
 <%@include file="sidebar.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %><html>
@@ -40,21 +38,19 @@
 											<h1>Gallery</h1>
 											<ul class="tabs">
 												<li><a href="#" data-tag="all" class="button active">All</a></li>
-												<li><a href="#" data-tag="people" class="button">People</a></li>
+											<li><a href="#" data-tag="people" class="button">People</a></li>
 												<li><a href="#" data-tag="place" class="button">Places</a></li>
 												<li><a href="#" data-tag="thing" class="button">Things</a></li>
 											</ul>
 										</header>
 									<%	
-										List<String> imageUrlList = new ArrayList();
-										String path = "predicto\\WebContent\\resources\\img\\fulls";
-										File imageDir = new File(path);  
+										String path= System.getProperty("user.dir");
+										List<String> imageUrlList = new ArrayList();  
+										File imageDir = new File(path+"/img/fulls");  
 										for(File imageFile : imageDir.listFiles()){  
   										String imageFileName = imageFile.getName();  
- 										 // add this images name to the list we are building up  
-										System.out.println(imageFileName);
- 										 imageUrlList.add(imageFileName);  
-								
+									  	imageUrlList.add(imageFileName);  
+
 										}  
 										request.setAttribute("imageUrlList", imageUrlList);
 									 %>
