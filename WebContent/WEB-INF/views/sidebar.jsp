@@ -31,6 +31,9 @@
 	            <li class="active">
 	                <a href="user/report_view"><i class="fa fa-check-square-o"></i><span>Report View</span></a>
 	            </li>
+	            <li class="">
+	                <a href="stores/locate" id="location_link"><i class="fa fa-check-square-o"></i><span>Nearby Stores</span></a>
+	            </li>
 	        </ul>
 	    </section>
 	</aside>

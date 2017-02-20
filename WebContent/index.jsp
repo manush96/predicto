@@ -198,8 +198,8 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h3>Join us now for the Best Experience.</h3>
-                    <a href="/signup" class="btn btn-lg btn-light">Sign Up!</a>
-                    <a href="/login" class="btn btn-lg btn-dark">Sign In!</a>
+                    <a href="user/login" class="btn btn-lg btn-light">Sign Up!</a>
+                    <a href="user/login" class="btn btn-lg btn-dark">Sign In!</a>
                 </div>
             </div>
         </div>
