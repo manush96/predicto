@@ -15,6 +15,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -77,7 +78,9 @@ public class user_controller {
 			return "redirect:login";
 		}
 	}
-	
+	@Autowired
+	ServletContext context;
+    
 	@RequestMapping("register")
 	public String register(@RequestParam("username")String username,@RequestParam("password")String password,@RequestParam("email")String email)
 	{
@@ -108,6 +111,11 @@ public class user_controller {
 		userDao.addInitialData(user,id);
 		return "redirect:dashboard";
 	}
+	@RequestMapping("report")
+	public ModelAndView report()
+	{
+		return new ModelAndView("user_report");
+	}
 	@RequestMapping("report_view")
 	public ModelAndView report_view()
 	{
@@ -115,7 +123,7 @@ public class user_controller {
 	}
 	@RequestMapping(value = "upload_data", method = RequestMethod.POST)
     public String singleFileUpload(@RequestParam("report") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+                       RedirectAttributes redirectAttributes) {
 
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
@@ -124,15 +132,13 @@ public class user_controller {
         }
 
         try {
-        	
-            // Get the file and save it somewhere
-            byte[] bytes = file.getBytes();
-            Path path = Paths.get(UPLOADED_FOLDER + file.getOriginalFilename());
+        	byte[] bytes = file.getBytes();
+        	System.out.println(System.getProperty("user.dir"));
+            Path path = Paths.get(System.getProperty("user.dir")+"\\img\\fulls\\" + file.getOriginalFilename());
+            System.out.println(path);
             Files.write(path, bytes);
             
-            redirectAttributes.addFlashAttribute("message",
-                        "You successfully uploaded '" + file.getOriginalFilename() + "'");
-
+            
         } catch (IOException e) {
             e.printStackTrace();
         }

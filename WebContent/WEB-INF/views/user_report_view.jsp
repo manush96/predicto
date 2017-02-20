@@ -3,6 +3,8 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<base href="${pageContext.request.contextPath}/"></base>
+    
 <%@include file="header.jsp" %>
 <%@include file="sidebar.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %><html>
@@ -44,13 +46,15 @@
 											</ul>
 										</header>
 									<%	
-										List<String> imageUrlList = new ArrayList();  
-										File imageDir = new File("E:\\programs\\predicto\\WebContent\\resources\\img\\fulls");  
+										List<String> imageUrlList = new ArrayList();
+										String path = "predicto\\WebContent\\resources\\img\\fulls";
+										File imageDir = new File(path);  
 										for(File imageFile : imageDir.listFiles()){  
   										String imageFileName = imageFile.getName();  
  										 // add this images name to the list we are building up  
-									  	imageUrlList.add(imageFileName);  
-
+										System.out.println(imageFileName);
+ 										 imageUrlList.add(imageFileName);  
+								
 										}  
 										request.setAttribute("imageUrlList", imageUrlList);
 									 %>
