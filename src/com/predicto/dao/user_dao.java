@@ -32,11 +32,12 @@ public class user_dao {
 	        template1 = new JdbcTemplate(datasource);
 	}
 
-	public void addUser(User user)
+	public int addUser(User user)
 	{
 		setDataSource();
-		String sql="insert into user(username,password,email) values('"+user.getUsername()+"','"+user.getPassword()+"','"+user.getEmail()+"')";
+		String sql="insert into user(username,password,email,heredity) values('"+user.getUsername()+"','"+user.getPassword()+"','"+user.getEmail()+"','No data for now')";
 		template1.update(sql);
+		return template1.queryForInt("select MAX(id) from user");
 	}
 	public void addInitialData(User user, int id)
 	{

@@ -88,7 +88,9 @@ public class user_controller {
 		user.setPassword(password);
 		user.setEmail(email);
 		user.setUsername(username);
-		userDao.addUser(user);
+		int k=userDao.addUser(user);
+		String path=System.getProperty("user.dir")+"\\img\\fulls\\"+k;
+		new File(path).mkdir();
 		return "redirect:success_signup";
 	}
 	
@@ -123,7 +125,7 @@ public class user_controller {
 	}
 	@RequestMapping(value = "upload_data", method = RequestMethod.POST)
     public String singleFileUpload(@RequestParam("report") MultipartFile file,
-                       RedirectAttributes redirectAttributes) {
+                       RedirectAttributes redirectAttributes,HttpSession session) {
 
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
@@ -134,7 +136,9 @@ public class user_controller {
         try {
         	byte[] bytes = file.getBytes();
         	System.out.println(System.getProperty("user.dir"));
-            Path path = Paths.get(System.getProperty("user.dir")+"\\img\\fulls\\" + file.getOriginalFilename());
+        	String user_id=session.getAttribute("user_id").toString();
+            Path path = Paths.get(System.getProperty("user.dir")+"\\img\\fulls\\"+user_id+"\\" + file.getOriginalFilename());
+            System.out.println(System.getProperty("user.dir")+"\\img\\fulls\\"+user_id+"\\" + file.getOriginalFilename());
             System.out.println(path);
             Files.write(path, bytes);
             
