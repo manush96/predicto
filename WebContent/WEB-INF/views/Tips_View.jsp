@@ -6,48 +6,74 @@
 <%@include file="header.jsp" %>
 <%@include file="sidebar.jsp" %>
 <base href="${pageContext.request.contextPath}/"></base>
-        <script type="text/javascript" src="resources/js/jquery.js"></script>
-<style>
-#wheel-tab { display: none; }
-</style>
+<link rel="stylesheet" href="resources/css/jquery-confirm.css"/>
+<script src="resources/js/jquery-confirm.js"></script>
 <script>
-var $tabs = $('#wheel-tab li');
-
-$('#wheel-left').on('click', function () {
-    $tabs.filter('.active').prev('li').find('a[data-toggle="tab"]').tab('show');
-});
-
-$('#wheel-right').on('click', function () {
-    $tabs.filter('.active').next('li').find('a[data-toggle="tab"]').tab('show');
-});
-
+	var titles = [];
+	var tips = [];
+	var index = 0;
+	var colors = ['blue','green','red','orange','purple','dark'];
 </script>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %><html>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="stylesheet" href="resources/css/main.css" />
-<div class="page-wrap">
-		
- 								
-   										<ul id="wheel-tab" data-tabs="tabs">
-     <li class="active"><a href="#tab-1" data-toggle="tab"></a></li>
-     <li><a href="#tab-2" data-toggle="tab"></a></li>
-     <li><a href="#tab-3" data-toggle="tab"></a></li>
-     <li><a href="#tab-4" data-toggle="tab"></a></li>
-</ul>
-<div class="row">
-    <div class="row">
-        <ul class="nav nav-tabs nav-justified tab-bar">
-            <li><a href="#" id="wheel-left">PREVIOUS</a></li>
-            <li><a href="#" id="wheel-right">NEXT</a></li>
-        </ul>
-    </div>
-</div>
-										<c:forEach var="k" items="${tips}">  
-
-<div class="tab-content">
-    <div class="tab-pane active" id="tab-${k.id}">
-        <h2>${k.title}</h2>
-        <p>${k.tip}</p>
-    </div>
-</div>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<c:forEach var="k" items="${details}">  
+	<script>
+		titles.push("${k.title}");
+		tips.push("${k.tip}");
+	</script>		
 </c:forEach>
+<script>
+	$(document).ready(function()
+	{
+		show_tip();
+	});
+	function next_tip()
+	{
+		if(index == (tips.length) - 1)
+			index = 0;
+		else
+			index++;
+		show_tip();
+	}
+	function previous_tip()
+	{
+		if(index == 0)
+			index = (tips.length) - 1;
+		else
+			index--;
+		show_tip();
+	}
+	function show_tip()
+	{
+		$.confirm
+		({
+			title: '<h4><span class="fa fa-lightbulb-o"></span>&nbsp;&nbsp;&nbsp;<span style="font-weight: 600">' + titles[index] + "</span></h4>",
+			columnClass: 'col-sm-offset-2 col-sm-10',
+			backgroundDismiss: true,
+			type: get_color_type(),
+			content: tips[index],
+			theme: 'material',
+			closeIcon: true,
+			buttons:
+			{
+				previousTip: {
+					text: '<span class="fa fa-arrow-left"></span>&nbsp;Previous Tip',
+		            btnClass: 'btn-default pull-left',
+		            action: function(){ previous_tip(); }
+		        },
+		        nextTip: {
+		        	text: 'Next Tip <span class="fa fa-arrow-right"></span>',
+		            btnClass: 'btn-default pull-right',
+		            action: function(){ next_tip(); }
+		        },
+			}
+		});
+	}
+	function get_color_type()
+	{
+		var len = colors.length;
+		var random = Math.floor((Math.random() * len));
+		return colors[random];
+	}
+</script>
+<button class="btn btn-warning" onclick="show_tip()">Replay Tips</button>
+<%@include file="footer.jsp" %>

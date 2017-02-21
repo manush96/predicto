@@ -38,7 +38,7 @@ public class tips_dao {
 			 public Tips mapRow(ResultSet rs, int rowNum) throws SQLException {
 		    	 Tips tips=new Tips();
 		    	 tips.setId(Integer.parseInt(rs.getString("id")));
-		    	 tips.setTip(rs.getString("tip"));
+		    	 tips.setTip(rs.getString("tip").replace("\n", "<br/>").replace("\"", "\\\"").replace("'", "\'").replace("\r", ""));
 		    	 tips.setTitle(rs.getString("tip_title"));
 		    	 tips.setDisease(1);
 		    	 return tips;

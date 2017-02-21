@@ -22,14 +22,17 @@
 	                    <li><a ref=""><i class="fa fa-bar-chart"></i>  Submenu - 2</a></li>
 	                </ul>
 	            </li>
-	            <li class="active">
+	            <li class="">
 	                <a ref=""><i class="fa fa-check-square-o"></i><span>Sample</span></a>
 	            </li>
 	            <li class="active">
 	                <a href="user/report"><i class="fa fa-check-square-o"></i><span>Report</span></a>
 	            </li>
-	            <li class="active">
+	            <li class="">
 	                <a href="user/report_view"><i class="fa fa-check-square-o"></i><span>Report View</span></a>
+	            </li>
+	            <li class="active">
+	                <a href="tips/tips_view"><i class="fa fa-check-square-o"></i><span>Tips View</span></a>
 	            </li>
 	            <li class="">
 	                <a href="stores/locate" id="location_link"><i class="fa fa-check-square-o"></i><span>Nearby Stores</span></a>

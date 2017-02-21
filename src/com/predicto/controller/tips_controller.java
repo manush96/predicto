@@ -1,5 +1,6 @@
 package com.predicto.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -13,7 +14,7 @@ import com.predicto.dao.tips_dao;
 import com.predicto.dao.user_dao;
 import com.predicto.model.Tips;
 import com.predicto.model.User;
-
+import java.util.regex.*;
 @Controller
 @RequestMapping("/tips/*")
 public class tips_controller {
@@ -21,6 +22,24 @@ public class tips_controller {
 	user_dao userDao;
 	@Autowired
 	tips_dao tipsDao;
+	public String commafy_string(ArrayList<String> arr)
+	{
+		if (arr.size() > 0) {
+		    StringBuilder nameBuilder = new StringBuilder();
+
+		    for (String n : arr) {
+		    	n = n.replace("\n", "<br/>");	
+		        nameBuilder.append("'").append(n.replace("'", "\'")).append("',");
+		        // can also do the following
+		        // nameBuilder.append("'").append(n.replace("'", "''")).append("',");
+		    }
+		    nameBuilder.deleteCharAt(nameBuilder.length() - 1);
+		    
+		    return nameBuilder.toString();
+		} else {
+		    return "";
+		}
+	}
 	@RequestMapping("tips_view")
 	public ModelAndView tips_view(HttpSession session)
 	{
@@ -55,9 +74,15 @@ public class tips_controller {
 		}
 		
 		List<Tips> l=tipsDao.get_tips(s);
-	
-		model.addObject("tips",l);
-		
+		ArrayList<String> titles = new ArrayList<String>(), tips = new ArrayList<String>();
+		for(Tips t : l)
+		{
+			titles.add(t.getTitle());
+			tips.add(t.getTip());
+		}
+		model.addObject("details",l);
+		model.addObject("titles",commafy_string(titles));
+		model.addObject("tips",commafy_string(tips));
 		model.setViewName("Tips_View");
 		return model;
 	}

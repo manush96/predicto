@@ -65,7 +65,7 @@
 											<li>
 												<!-- start message --> <a href="#">
 													<div class="pull-left">
-														<img src="dist/img/user2-160x160.jpg" class="img-circle"
+														<img src="resources/img/favicon.png" class="img-circle"
 															alt="User Image">
 													</div>
 													<h4>
@@ -78,7 +78,7 @@
 											<!-- end message -->
 											<li><a href="#">
 													<div class="pull-left">
-														<img src="dist/img/user3-128x128.jpg" class="img-circle"
+														<img src="resources/img/favicon.png" class="img-circle"
 															alt="User Image">
 													</div>
 													<h4>
@@ -89,7 +89,7 @@
 											</a></li>
 											<li><a href="#">
 													<div class="pull-left">
-														<img src="dist/img/user4-128x128.jpg" class="img-circle"
+														<img src="resources/img/favicon.png" class="img-circle"
 															alt="User Image">
 													</div>
 													<h4>
@@ -100,7 +100,7 @@
 											</a></li>
 											<li><a href="#">
 													<div class="pull-left">
-														<img src="dist/img/user3-128x128.jpg" class="img-circle"
+														<img src="resources/img/favicon.png" class="img-circle"
 															alt="User Image">
 													</div>
 													<h4>
@@ -111,7 +111,7 @@
 											</a></li>
 											<li><a href="#">
 													<div class="pull-left">
-														<img src="dist/img/user4-128x128.jpg" class="img-circle"
+														<img src="resources/img/favicon.png" class="img-circle"
 															alt="User Image">
 													</div>
 													<h4>
