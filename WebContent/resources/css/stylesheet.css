@@ -61,6 +61,10 @@ a
 {
 	text-decoration: none !important;
 }
+.active_sidelink a
+{
+	color: white !important;	
+}
 .select2-selection__rendered, .select2-selection__arrow
 {
 	font-size: 115%;

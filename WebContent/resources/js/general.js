@@ -17,6 +17,12 @@ $(document).ready(function()
 	    	}, "jsonp");
 	    }
 	});
+	url = window.location.href;
+	tmp = url.split('/');
+	controller = $.trim(tmp[tmp.length-2]);
+	module = $.trim(tmp[tmp.length-1]);
+	$('a[href="'+controller+'/'+module+'"]').parents('.treeview').addClass("active");
+	$('a[href="'+controller+'/'+module+'"]').parent().addClass("active_sidelink");
 });
 function showPosition(position) {
 	lat = position.coords.latitude;

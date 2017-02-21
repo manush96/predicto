@@ -44,11 +44,21 @@ import org.apache.tomcat.util.codec.binary.StringUtils;
 
 public class user_controller {
 	private static String UPLOADED_FOLDER = "C:\\Uploads\\";
+	public boolean invalid(HttpSession session)
+	{
+		if(session.getAttribute("user_id") == null)
+			return true;
+		else
+			return false;
+	}
 	@Autowired
 	user_dao userDao;
 	@RequestMapping("dashboard")
 	public ModelAndView add(HttpSession session)
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
+		
 		int id = (Integer)session.getAttribute("user_id");
 		int status = userDao.checkStatus(id);
 		if(status == 1)
@@ -71,6 +81,7 @@ public class user_controller {
 		if(i!=0)
 		{
 			session.setAttribute("user_id",i);
+			session.setAttribute("username",username);
 			return "redirect:dashboard";
 		}
 		else
@@ -82,7 +93,7 @@ public class user_controller {
 	ServletContext context;
     
 	@RequestMapping("register")
-	public String register(@RequestParam("username")String username,@RequestParam("password")String password,@RequestParam("email")String email)
+	public String register(@RequestParam("username")String username,@RequestParam("password")String password,@RequestParam("email")String email,HttpSession session)
 	{
 		User user=new User();
 		user.setPassword(password);
@@ -91,7 +102,9 @@ public class user_controller {
 		int k=userDao.addUser(user);
 		String path=System.getProperty("user.dir")+"\\img\\fulls\\"+k;
 		new File(path).mkdir();
-		return "redirect:success_signup";
+		session.setAttribute("user_id",k);
+		session.setAttribute("username",username);
+		return "redirect:dashboard";
 	}
 	
 	@RequestMapping("success_signup")
@@ -102,6 +115,8 @@ public class user_controller {
 	@RequestMapping("save_one_time_data")
 	public String save_one_time_data(@RequestParam("gender")int gender,@RequestParam("age")int age,@RequestParam("height")int height,@RequestParam("weight")int weight,@RequestParam("diabetic")int diabetic,HttpSession session)
 	{
+		if(invalid(session))
+			return "redirect: login";
 		User user = new User();
 		user.setAge(age);
 		user.setHeight(height);
@@ -114,19 +129,23 @@ public class user_controller {
 		return "redirect:dashboard";
 	}
 	@RequestMapping("report")
-	public ModelAndView report()
+	public ModelAndView report(HttpSession session)
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
 		return new ModelAndView("user_report");
 	}
 	@RequestMapping("report_view")
-	public ModelAndView report_view()
+	public ModelAndView report_view(HttpSession session)
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
 		return new ModelAndView("user_report_view");
 	}
 	@RequestMapping(value = "upload_data", method = RequestMethod.POST)
     public String singleFileUpload(@RequestParam("report") MultipartFile file,
-                       RedirectAttributes redirectAttributes,HttpSession session) {
-
+                       RedirectAttributes redirectAttributes,HttpSession session)
+	{
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
             System.out.println("vatsal");

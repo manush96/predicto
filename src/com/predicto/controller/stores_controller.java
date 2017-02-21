@@ -29,6 +29,13 @@ import org.json.JSONArray;
 public class stores_controller {
 	@Autowired
 	stores_dao stores_dao;
+	public boolean invalid(HttpSession session)
+	{
+		if(session.getAttribute("user_id") == null)
+			return true;
+		else
+			return false;
+	}
 	private static String readAll(Reader rd) throws IOException {
 	    StringBuilder sb = new StringBuilder();
 	    int cp;
@@ -37,10 +44,6 @@ public class stores_controller {
 	      sb.append((char) cp);
 	    }
 	    sb.append('}');
-	    System.out.println("<<DEBUG>>");
-	    System.out.println(sb.toString());
-	    System.out.println(sb.toString().length());
-	    System.out.println("<<//DEBUG>>");
 	    return sb.toString();
 	  }
 
@@ -93,6 +96,8 @@ public class stores_controller {
 	@RequestMapping("locate")
 	public ModelAndView locate(HttpSession session)
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
 		HashMap<String,Store> hm=new HashMap<String,Store>();
 		ModelAndView model=new ModelAndView();
 		

@@ -2,9 +2,9 @@
 <html >
 <head>
 	<meta charset="UTF-8">  
-	<title>Day 001 Login Form</title>
+	<title>El' Predicto</title>
 	<base href="${pageContext.request.contextPath}/"></base>
-	
+	<link rel="shortcut icon" type="image/png" href="resources/img/favicon.png"/>
 	<link rel='stylesheet prefetch' href='http://fonts.googleapis.com/css?family=Open+Sans:600'>
 	<link rel="stylesheet" href="resources/css/style1.css">
 	<script src="resources/js/jquery.js"></script>

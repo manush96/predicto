@@ -3,7 +3,7 @@
 <%@include file="header.jsp" %>
 <%@include file="sidebar.jsp" %>
     <div id="dropzone">
-    	<form action="user/upload_report" class="dropzone" id="my-awesome-dropzone"></form>
+    	<form action="user/upload_data" class="dropzone" id="my-awesome-dropzone"></form>
     </div>
 
 <%@include file="footer.jsp" %>

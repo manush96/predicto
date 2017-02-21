@@ -22,6 +22,13 @@ public class tips_controller {
 	user_dao userDao;
 	@Autowired
 	tips_dao tipsDao;
+	public boolean invalid(HttpSession session)
+	{
+		if(session.getAttribute("user_id") == null)
+			return true;
+		else
+			return false;
+	}
 	public String commafy_string(ArrayList<String> arr)
 	{
 		if (arr.size() > 0) {
@@ -40,9 +47,11 @@ public class tips_controller {
 		    return "";
 		}
 	}
-	@RequestMapping("tips_view")
-	public ModelAndView tips_view(HttpSession session)
+	@RequestMapping("view")
+	public ModelAndView view(HttpSession session)
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
 		ModelAndView model = new ModelAndView();
 		int id = (Integer)session.getAttribute("user_id");
 		
