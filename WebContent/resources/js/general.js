@@ -1,4 +1,4 @@
-var lat, lng;
+var lat, lng, hr;
 $(document).ready(function()
 {
 	$("#location_link").click(function(e)
@@ -13,19 +13,18 @@ $(document).ready(function()
 	    	    loc = response.loc.split(",");
 	    	    lat = loc[0];
 	    	    lng = loc[1];
-	    	    return set_lat_long();
+	    	    set_lat_long();
 	    	}, "jsonp");
 	    }
-		window.location.href = hr;
 	});
 });
 function showPosition(position) {
 	lat = position.coords.latitude;
 	lng = position.coords.longitude;
-	return set_lat_long();
+	set_lat_long();
 }
 function set_lat_long()
-{
+{	
 	$.ajax
 	({
 		type: "GET",
@@ -33,7 +32,7 @@ function set_lat_long()
 		data: { lat: lat, lng: lng },
 		success: function(response)
 		{
-			return true;
+			window.location.href = hr;
 		},
 		error: function(response)
 		{

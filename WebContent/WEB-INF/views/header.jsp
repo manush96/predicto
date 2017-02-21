@@ -11,6 +11,7 @@
 		content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
 		name="viewport">
 	<base href="${pageContext.request.contextPath}/"></base>
+	<link rel="shortcut icon" type="image/png" href="resources/img/favicon.png"/>
 	<link rel="stylesheet" type="text/css" href="resources/others/bootstrap/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="resources/css/font-awesome.css">
 	<link rel="stylesheet" type="text/css" href="resources/css/ionicons.css">
@@ -262,13 +263,11 @@
 											<a href="#" class="btn btn-default btn-flat">Profile</a>
 										</div>
 										<div class="pull-right">
-											<a href="#" class="btn btn-default btn-flat">Sign out</a>
+											<a href="user/logout" class="btn btn-default btn-flat">Sign out</a>
 										</div>
 									</li>
-								</ul></li>
-							<!-- Control Sidebar Toggle Button -->
-							<li><a href="#" data-toggle="control-sidebar"><i
-									class="fa fa-gears"></i></a></li>
+								</ul>
+							</li>
 						</ul>
 					</div>
 				</nav>

@@ -10,8 +10,8 @@
     <meta name="description" content="Portal For Disease predictor and Health Suggestions">
     <meta name="author" content="Vismay-Vatsal-Harshit-Manush">
 	<base href="${pageContext.request.contextPath}/"></base>
-    <title>E-Preggestion : A place to get Accurate Tips and Information.</title>
-
+    <title>El' Predicto : A place to get Accurate Tips and Information.</title>
+	<link rel="shortcut icon" type="image/png" href="resources/img/favicon.png"/>
     <!-- Bootstrap Core CSS -->
     <link href="resources/index/css/bootstrap.css" rel="stylesheet">
 
@@ -60,7 +60,7 @@
     <!-- Header -->
     <header id="top" class="header">
         <div class="text-vertical-center">
-            <h1>Welcome To E-Preggestion</h1>
+            <h1>Welcome To El' Predicto</h1>
             <h3>Honest Details, Accurate Suggestions.</h3>
             <br>
             <a href="user/login" class="btn btn-dark btn-lg">Get Started</a>
@@ -198,8 +198,8 @@
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h3>Join us now for the Best Experience.</h3>
-                    <a href="user/login" class="btn btn-lg btn-light">Sign Up!</a>
-                    <a href="user/login" class="btn btn-lg btn-dark">Sign In!</a>
+                    <a href="user/login" class="btn btn-lg btn-light">Login</a>
+                    <a href="user/login#signup" class="btn btn-lg btn-dark">Register</a>
                 </div>
             </div>
         </div>
