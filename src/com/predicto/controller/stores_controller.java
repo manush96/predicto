@@ -194,4 +194,10 @@ public class stores_controller {
 		session.setAttribute("longitude", lng);
 		return new ModelAndView("opt_view");
 	}
+	@RequestMapping("push")
+	public ModelAndView push(HttpSession session)
+	{
+		stores_dao.pushDaily();
+		return new ModelAndView("opt_view");
+	}
 }

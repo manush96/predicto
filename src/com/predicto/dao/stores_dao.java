@@ -56,4 +56,21 @@ public class stores_dao {
 	    });
 		return listContact;
 	}
+	public void pushDaily()
+	{
+		setDataSource();
+		String sql="SELECT * FROM user";
+		
+		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
+			int id;
+			String sql;
+			@Override   
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				id = rs.getInt("id");
+				sql = "INSERT INTO notifications(user_id,type,status) VALUES('"+id+"','0','0')";
+				template1.update(sql);
+				return id;
+			}
+	    });
+	}
 }

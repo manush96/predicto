@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import org.ow2.util.base64.Base64;
+import org.quartz.SchedulerException;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -29,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.predicto.dao.scheduler_dao;
 import com.predicto.dao.user_dao;
 import com.predicto.model.User;
 
@@ -53,6 +55,9 @@ public class user_controller {
 	}
 	@Autowired
 	user_dao userDao;
+	@Autowired
+	scheduler_dao scheduler_dao;
+	
 	@RequestMapping("dashboard")
 	public ModelAndView add(HttpSession session)
 	{
@@ -72,14 +77,17 @@ public class user_controller {
 		return new ModelAndView("user_login");
 	}
 	@RequestMapping("signin")
-	public String signin(@RequestParam("username")String username,@RequestParam("password")String password,HttpSession session)
+	public String signin(@RequestParam("username")String username,@RequestParam("password")String password,HttpSession session) throws SchedulerException
 	{
+		
 		User user=new User();
 		user.setPassword(password);
 		user.setUsername(username);
 		int i=userDao.checkLogin(user);
+	
 		if(i!=0)
 		{
+			scheduler_dao.scheduler1();
 			session.setAttribute("user_id",i);
 			session.setAttribute("username",username);
 			return "redirect:dashboard";
@@ -173,6 +181,12 @@ public class user_controller {
 	{
 		session.removeAttribute("user_id");
 		return "redirect:login";
+	}
+	@RequestMapping("daily_data")
+	public ModelAndView daily_data_collect()
+	{
+		return new ModelAndView("daily_exercise");
+		
 	}
 	
 }
