@@ -59,7 +59,11 @@ public class stores_dao {
 	public void pushDaily()
 	{
 		setDataSource();
-		String sql="SELECT * FROM user";
+		
+		String sql = "DELETE FROM notifications WHERE type = '0' AND status = '0'";
+		template1.update(sql);
+		
+		sql="SELECT * FROM user";
 		
 		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
 			int id;
@@ -68,6 +72,27 @@ public class stores_dao {
 			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
 				id = rs.getInt("id");
 				sql = "INSERT INTO notifications(user_id,type,status) VALUES('"+id+"','0','0')";
+				template1.update(sql);
+				return id;
+			}
+	    });
+	}
+	public void pushWeekly()
+	{
+		setDataSource();
+		
+		String sql = "DELETE FROM notifications WHERE type = '1' AND status = '0'";
+		template1.update(sql);
+		
+		sql="SELECT * FROM user";
+		
+		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
+			int id;
+			String sql;
+			@Override   
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				id = rs.getInt("id");
+				sql = "INSERT INTO notifications(user_id,type,status) VALUES('"+id+"','1','0')";
 				template1.update(sql);
 				return id;
 			}

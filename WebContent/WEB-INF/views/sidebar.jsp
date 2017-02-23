@@ -32,6 +32,8 @@
 	                <a ref=""><i class="fa fa-hospital-o"></i><span> Medical Stores</span> <i class="fa fa-angle-left pull-right"></i></a>
 	                <ul class="treeview-menu">
 	                    <li><a href="stores/locate"><i class="fa fa-street-view"></i> Locate Nearby </a></li>
+	                    <li><a href="stores/push"><i class="fa fa-street-view"></i> Push Daily </a></li>
+	                    <li><a href="stores/push_weekly"><i class="fa fa-street-view"></i> Push Weekly </a></li>
 	                </ul>
 	            </li>
 	            <li class="treeview">

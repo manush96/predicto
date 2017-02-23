@@ -200,4 +200,10 @@ public class stores_controller {
 		stores_dao.pushDaily();
 		return new ModelAndView("opt_view");
 	}
+	@RequestMapping("push_weekly")
+	public ModelAndView push_weekly(HttpSession session)
+	{
+		stores_dao.pushWeekly();
+		return new ModelAndView("opt_view");
+	}
 }

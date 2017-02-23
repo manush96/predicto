@@ -20,6 +20,7 @@ import java.util.regex.*;
 public class tips_controller {
 	@Autowired
 	user_dao userDao;
+	static user_dao user_d = new user_dao();
 	@Autowired
 	tips_dao tipsDao;
 	public boolean invalid(HttpSession session)
@@ -53,9 +54,26 @@ public class tips_controller {
 		if(invalid(session))
 			return new ModelAndView("goto_login");
 		ModelAndView model = new ModelAndView();
+		
+		
+		List<Tips> l=tipsDao.get_tips(get_tips(session));
+		ArrayList<String> titles = new ArrayList<String>(), tips = new ArrayList<String>();
+		for(Tips t : l)
+		{
+			titles.add(t.getTitle());
+			tips.add(t.getTip());
+		}
+		model.addObject("details",l);
+		model.addObject("titles",commafy_string(titles));
+		model.addObject("tips",commafy_string(tips));
+		model.setViewName("Tips_View");
+		return model;
+	}
+	public static String get_tips(HttpSession session)
+	{
 		int id = (Integer)session.getAttribute("user_id");
 		
-		User user= userDao.get_tips(id);
+		User user = user_d.get_user_details(id);
 		int gender=user.getGender();
 		int age=user.getAge();
 		int smoker=user.getSmoker();
@@ -81,18 +99,6 @@ public class tips_controller {
 		{
 			s=s+",6";
 		}
-		
-		List<Tips> l=tipsDao.get_tips(s);
-		ArrayList<String> titles = new ArrayList<String>(), tips = new ArrayList<String>();
-		for(Tips t : l)
-		{
-			titles.add(t.getTitle());
-			tips.add(t.getTip());
-		}
-		model.addObject("details",l);
-		model.addObject("titles",commafy_string(titles));
-		model.addObject("tips",commafy_string(tips));
-		model.setViewName("Tips_View");
-		return model;
+		return s;
 	}
 }

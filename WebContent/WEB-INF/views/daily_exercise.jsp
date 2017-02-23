@@ -31,7 +31,7 @@
 	<div class="container demo-1">
 		<!-- Top Navigation -->
 		<div class="main clearfix">
-			<form id="nl-form" class="nl-form" action="user/save_one_time_data">
+			<form id="nl-form" class="nl-form" action="user/save_daily_data">
 				<p>Today I ran for  
 				<input type="number" name="running" value="" placeholder="1" id="running"/>
 					<select>
@@ -54,10 +54,9 @@
 					Kms. or for
 					 <input type="number" name="hiking_time" id="hiking_time" value="" placeholder="1"/> minutes.
 																	
-						
-										
+					<input type="hidden" name="notif_id" value="${notif_id }"/>
 					<div class="nl-submit-wrap">
-					<button class="nl-submit" type="submit">Continue to Predicto</button>
+					<button class="nl-submit" type="submit">Update Details</button>
 				</div>
 				<div class="nl-overlay"></div>
 			</form>

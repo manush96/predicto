@@ -91,7 +91,7 @@ public class user_dao {
 		    });
 		return user.getStatus();
 	}
-	public User get_tips(int id)
+	public User get_user_details(int id)
 	{
 		final User user = new User();
 		setDataSource();
@@ -112,6 +112,19 @@ public class user_dao {
 		 
 		    });
 		return user;
+	}
+	
+	public void set_notif_read(int id)
+	{
+		setDataSource();
+		String sql="UPDATE notifications SET status = 1 WHERE user_id="+id;
+		template1.update(sql);
+	}
+	public void delete_notif(int id)
+	{
+		setDataSource();
+		String sql="DELETE FROM notifications WHERE id="+id;
+		template1.update(sql);
 	}
 
 }

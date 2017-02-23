@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*,com.predicto.controller.*"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +36,22 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.dropdown-toggle').dropdown();
+			$("#tips_btn").click(function(){ $(this).find(".label").fadeOut("slow");	});
+			$("#notif_btn").click(function(){ set_notif_read();$(this).find(".label").fadeOut("slow");	});
 		});
+		function set_notif_read()
+		{
+			$.ajax
+			({
+				type: "POST",
+				url: "user/set_notif_read",
+				data: {},
+				success: function(response)
+				{
+					
+				}
+			});
+		}
 	</script>
 	<script type="text/javascript" src="resources/js/select2.js"></script>
 	<script type="text/javascript" src="resources/js/general.js"></script>
@@ -40,6 +59,24 @@
 	<script type="text/javascript" src="resources/others/dist/js/app.min.js"></script>
 </head>
 <% String name = (String) session.getAttribute("username"); %>
+<c:set var="tips_s" scope="application" value="<%= tips_controller.get_tips(session) %>"/>
+<sql:setDataSource var="dataSource" driver="com.mysql.jdbc.Driver"
+     url="jdbc:mysql://localhost/predicto"
+     user="root"  password=""/>
+<sql:query dataSource="${dataSource}" var="tips">
+	SELECT * FROM tips WHERE id IN (${tips_s});
+</sql:query>
+<c:set var="tips_cnt" scope="application" value="${tips.rowCount}"/>
+<sql:query dataSource="${dataSource}" var="daily">
+	SELECT * FROM notifications WHERE user_id = ${sessionScope.user_id} AND type = 0 ORDER BY status;
+</sql:query>
+<sql:query dataSource="${dataSource}" var="weekly">
+	SELECT * FROM notifications WHERE user_id = ${sessionScope.user_id} AND type = 1 ORDER BY status;
+</sql:query>
+<sql:query dataSource="${dataSource}" var="notifs">
+	SELECT COUNT(*) AS cnt FROM notifications WHERE user_id = ${sessionScope.user_id} AND status = 0;
+</sql:query>
+<c:set var="notif_cnt" scope="application" value="${notifs.rowsByIndex[0][0]}"/>
 <body class="skin-blue sidebar-mini">
 	<div id="wrapper">
 		<header class="main-header"  style="position: fixed; width: 100%">
@@ -53,107 +90,71 @@
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
 						<!-- Messages: style can be found in dropdown.less-->
-						<li class="dropdown messages-menu"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown"> <i
-								class="fa fa-lightbulb-o"></i> <span class="label label-success">4</span>
-						</a>
+						
+						<li class="dropdown messages-menu">
+								<a href="#" id="tips_btn"
+									class="dropdown-toggle" data-toggle="dropdown"> <i
+										class="fa fa-lightbulb-o"></i>
+										<c:if test="${tips_cnt > 0}">
+											<span class="label label-success">${tips_cnt}</span>
+										</c:if>
+								</a>
 							<ul class="dropdown-menu">
-								<li class="header">You have 4 new tips</li>
+								<c:if test="${tips_cnt > 0}">
+								   <li class="header">You have ${tips_cnt} new tips</li>
+								</c:if>
 								<li>
 									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
+										<c:forEach var="row" items="${tips.rows}">
 										<li>
 											<!-- start message --> <a href="#">
 												<div class="pull-left">
-													<img src="resources/img/favicon.png" class="img-circle"
-														alt="User Image">
+													<i class="fa fa-lightbulb-o"></i>
 												</div>
 												<h4>
-													Support Team <small><i class="fa fa-clock-o"></i>
-														5 mins</small>
+													${row.tip_title}
 												</h4>
-												<p>Why not buy a new awesome theme?</p>
 										</a>
 										</li>
+										</c:forEach>
 										<!-- end message -->
-										<li><a href="#">
-												<div class="pull-left">
-													<img src="resources/img/favicon.png" class="img-circle"
-														alt="User Image">
-												</div>
-												<h4>
-													AdminLTE Design Team <small><i
-														class="fa fa-clock-o"></i> 2 hours</small>
-												</h4>
-												<p>Why not buy a new awesome theme?</p>
-										</a></li>
-										<li><a href="#">
-												<div class="pull-left">
-													<img src="resources/img/favicon.png" class="img-circle"
-														alt="User Image">
-												</div>
-												<h4>
-													Developers <small><i class="fa fa-clock-o"></i>
-														Today</small>
-												</h4>
-												<p>Why not buy a new awesome theme?</p>
-										</a></li>
-										<li><a href="#">
-												<div class="pull-left">
-													<img src="resources/img/favicon.png" class="img-circle"
-														alt="User Image">
-												</div>
-												<h4>
-													Sales Department <small><i class="fa fa-clock-o"></i>
-														Yesterday</small>
-												</h4>
-												<p>Why not buy a new awesome theme?</p>
-										</a></li>
-										<li><a href="#">
-												<div class="pull-left">
-													<img src="resources/img/favicon.png" class="img-circle"
-														alt="User Image">
-												</div>
-												<h4>
-													Reviewers <small><i class="fa fa-clock-o"></i> 2
-														days</small>
-												</h4>
-												<p>Why not buy a new awesome theme?</p>
-										</a></li>
 									</ul>
 								</li>
 								<li class="footer"><a href="tips/view">See All tips.</a></li>
 							</ul></li>
 						<!-- Notifications: style can be found in dropdown.less -->
-						<li class="dropdown notifications-menu"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown"> <i
-								class="fa fa-bell-o"></i> <span class="label label-warning">10</span>
-						</a>
+						<li class="dropdown notifications-menu">
+								<a href="#" id="notif_btn"
+									class="dropdown-toggle" data-toggle="dropdown"> <i
+										class="fa fa-bell-o"></i>
+										<c:if test="${notif_cnt > 0}">
+											<span class="label label-warning">${notif_cnt}</span>
+										</c:if>
+								</a>
 							<ul class="dropdown-menu">
-								<li class="header">You have 10 notifications</li>
+								<c:if test="${notif_cnt > 0}">
+									<li class="header">You have ${notif_cnt} new notification(s).</li>
+								</c:if>
 								<li>
 									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
-										<li><a href="#"> <i class="fa fa-users text-aqua"></i>
-												5 new members joined today
-										</a></li>
-										<li><a href="#"> <i
-												class="fa fa-warning text-yellow"></i> Very long
-												description here that may not fit into the page and may
-												cause design problems
-										</a></li>
-										<li><a href="#"> <i class="fa fa-users text-red"></i>
-												5 new members joined
-										</a></li>
-										<li><a href="#"> <i
-												class="fa fa-shopping-cart text-green"></i> 25 sales made
-										</a></li>
-										<li><a href="#"> <i class="fa fa-user text-red"></i>
-												You changed your username
-										</a></li>
+										<c:forEach var="row" items="${daily.rows}">
+											<li>
+												<a href="user/daily_data?id=${row.id}"> <i class="fa fa-users text-aqua"></i>
+													Update your daily progress!
+												</a>
+											</li>
+										</c:forEach>
+										<c:forEach var="row" items="${weekly.rows}">
+											<li>
+												<a href="user/weekly_data?id=${row.id}"> <i class="fa fa-users text-aqua"></i>
+													Add your weekly progress!
+												</a>
+											</li>
+										</c:forEach>
 									</ul>
 								</li>
-								<li class="footer"><a href="#">View all</a></li>
 							</ul></li>
 						<!-- Tasks: style can be found in dropdown.less -->
 						<li class="dropdown tasks-menu"><a href="#"

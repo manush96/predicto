@@ -156,7 +156,6 @@ public class user_controller {
 	{
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-            System.out.println("vatsal");
             return "redirect:uploadStatus";
         }
 
@@ -183,10 +182,37 @@ public class user_controller {
 		return "redirect:login";
 	}
 	@RequestMapping("daily_data")
-	public ModelAndView daily_data_collect()
+	public ModelAndView daily_data_collect(@RequestParam(value = "id", required=false) Integer id)
+	{
+		ModelAndView model = new ModelAndView();
+		model.addObject("notif_id",id);
+		model.setViewName("daily_exercise");
+		return model;
+	}
+	@RequestMapping("save_daily_data")
+	public String save_daily_data(@RequestParam("notif_id")int notif_id, HttpSession session)
+	{
+		if(invalid(session))
+			return "redirect: login";
+		userDao.delete_notif(notif_id);
+		return "redirect:dashboard";
+	}
+	@RequestMapping("weekly_data")
+	public ModelAndView weekly_data_collect(@RequestParam(value = "id", required=false) Integer id)
 	{
 		return new ModelAndView("daily_exercise");
 		
+	}
+	@RequestMapping("set_notif_read")
+	public ModelAndView set_notif_read(HttpSession session)
+	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
+		
+		int id = (Integer)session.getAttribute("user_id");
+		userDao.set_notif_read(id);
+		
+		return new ModelAndView("opt_view");
 	}
 	
 }
