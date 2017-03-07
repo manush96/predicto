@@ -190,11 +190,57 @@ public class user_controller {
 		return model;
 	}
 	@RequestMapping("save_daily_data")
-	public String save_daily_data(@RequestParam("notif_id")int notif_id, HttpSession session)
+	public String save_daily_data(@RequestParam("notif_id")int notif_id,@RequestParam("working")String working,@RequestParam("running")String run,@RequestParam("walking")String walk,@RequestParam("cycling")String cycle,@RequestParam("running-unit")String run_unit,@RequestParam("walking-unit")String walk_unit,@RequestParam("cycling-unit")String cycle_unit, HttpSession session)
 	{
+		System.out.println(run_unit+walk_unit+cycle_unit+run+walk+cycle+working);
+		if(run_unit.equals("2"))
+		{
+			float f=Float.parseFloat(run);
+			f=(float) (f*1.60934);
+			run=String.valueOf(f);
+		}
+		else if(run_unit.equals("3"))
+		{
+			float f=Float.parseFloat(run);
+			f=(float) (f*(12.5/60));
+			f=(float) (f*1.60934);
+			run=String.valueOf(f);
+		}
+		if(walk_unit.equals("2"))
+		{
+			float f=Float.parseFloat(walk);
+			f=(float) (f*1.60934);
+			walk=String.valueOf(f);
+		}
+		else if(walk_unit.equals("3"))
+		{
+			float f=Float.parseFloat(walk);
+			f=(float) (f*(3.1/60));
+			f=(float) (f*1.60934);
+			walk=String.valueOf(f);
+		}
+		
+		if(cycle_unit.equals("2"))
+		{
+			float f=Float.parseFloat(cycle);
+			f=(float) (f*1.60934);
+			cycle=String.valueOf(f);
+			
+		}
+		else if(cycle_unit.equals("3"))
+		{
+			float f=Float.parseFloat(cycle);
+			f=(float) (f*(9.6/60));
+			f=(float) (f*1.60934);
+			cycle=String.valueOf(f);
+		}
+
+		System.out.println(run+walk+cycle+working+"aka");
+	
 		if(invalid(session))
 			return "redirect: login";
 		userDao.delete_notif(notif_id);
+		userDao.save_daily_exercise(run,walk,cycle,working,session.getAttribute("user_id").toString());
 		return "redirect:dashboard";
 	}
 	@RequestMapping("weekly_data")
@@ -211,7 +257,6 @@ public class user_controller {
 		
 		int id = (Integer)session.getAttribute("user_id");
 		userDao.set_notif_read(id);
-		
 		return new ModelAndView("opt_view");
 	}
 	

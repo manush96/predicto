@@ -33,27 +33,30 @@
 		<div class="main clearfix">
 			<form id="nl-form" class="nl-form" action="user/save_daily_data">
 				<p>Today I ran for  
-				<input type="number" name="running" value="" placeholder="1" id="running"/>
-					<select>
-						<option value="1">Kilometer(s)</option>
+				<input type="number" name="running" value="1" placeholder="1" id="running"/>
+					<select name="running-unit">
+						<option value="1" selected>Kilometer(s)</option>
 						<option value="2">Mile(s)</option>
 						<option value="3">Minute(s)</option>
-					</select> or for
-					 <p>Today I cycled for  
-					<input type="number" name="cycling" id="cycling" value="" placeholder="1"/>
-					Kms. or for
-					 <input type="number" name="cycling_time" id="cycling_time" value="" placeholder="1"/> minutes.
-						<br>
-							<p>Today I walked for  
-				<input type="number" name="walking" id="walking" value="" placeholder="1"/>
-					Kms. or for
-					 <input type="number" name="walking_time" id="walking_time" value="" placeholder="1"/> minutes.
-					<br>
-						<p>Today I hiked for  
-				<input type="number" name="hiking" id="hiking" value="" placeholder="1"/>
-					Kms. or for
-					 <input type="number" name="hiking_time" id="hiking_time" value="" placeholder="1"/> minutes.
-																	
+					</select>.
+				<p>Today I walked for  
+				<input type="number" name="walking" value="1" placeholder="1" id="running"/>
+					<select name="walking-unit">
+						<option value="1" selected>Kilometer(s)</option>
+						<option value="2">Mile(s)</option>
+						<option value="3">Minute(s)</option>
+					</select>&nbsp;&nbsp;.
+				<p>Today I cycled for  
+				<input type="number" name="cycling" value="1" placeholder="1"/>
+					<select name="cycling-unit">
+						<option value="1" selected>Kilometer(s)</option>
+						<option value="2">Mile(s)</option>
+						<option value="3">Minute(s)</option>
+					</select>.
+				<p>Today I worked out for  
+				<input type="number" name="working" value="1" placeholder="1"/>
+				Minute(s).
+				
 					<input type="hidden" name="notif_id" value="${notif_id }"/>
 					<div class="nl-submit-wrap">
 					<button class="nl-submit" type="submit">Update Details</button>

@@ -126,5 +126,10 @@ public class user_dao {
 		String sql="DELETE FROM notifications WHERE id="+id;
 		template1.update(sql);
 	}
-
+	public void save_daily_exercise(String run,String walk,String cycle,String working,String id)
+	{
+		setDataSource();
+		String sql="INSERT INTO daily_exercise (user_id,run,walk,cycle,working) values ('"+id+"','"+run+"','"+walk+"','"+cycle+"','"+working+"')";
+		template1.update(sql);
+	}
 }
