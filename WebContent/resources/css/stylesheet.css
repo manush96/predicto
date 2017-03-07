@@ -52,6 +52,10 @@ input[type=date], input[type=month]
 {
 	color: white !important;
 }
+.round
+{
+	border-radius: 90%;
+}
 label.error
 {
 	color: #ff0000;

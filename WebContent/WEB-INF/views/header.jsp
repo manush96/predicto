@@ -77,6 +77,13 @@
 	SELECT COUNT(*) AS cnt FROM notifications WHERE user_id = ${sessionScope.user_id} AND status = 0;
 </sql:query>
 <c:set var="notif_cnt" scope="application" value="${notifs.rowsByIndex[0][0]}"/>
+<sql:query dataSource="${dataSource}" var="friend_requests">
+	SELECT username, user_id
+		FROM friends 
+		LEFT JOIN user on user.id = friends.user_id
+		WHERE friends.status = '0'  
+		AND friend_id='${sessionScope.user_id}';
+</sql:query>
 <body class="skin-blue sidebar-mini">
 	<div id="wrapper">
 		<header class="main-header"  style="position: fixed; width: 100%">
@@ -90,7 +97,6 @@
 				<div class="navbar-custom-menu">
 					<ul class="nav navbar-nav">
 						<!-- Messages: style can be found in dropdown.less-->
-						
 						<li class="dropdown messages-menu">
 								<a href="#" id="tips_btn"
 									class="dropdown-toggle" data-toggle="dropdown"> <i
@@ -149,7 +155,7 @@
 										<c:forEach var="row" items="${weekly.rows}">
 											<li>
 												<a href="user/weekly_data?id=${row.id}"> <i class="fa fa-users text-aqua"></i>
-													Add your weekly progress!
+													<%=new java.util.Date()%>
 												</a>
 											</li>
 										</c:forEach>
@@ -159,58 +165,25 @@
 						<!-- Tasks: style can be found in dropdown.less -->
 						<li class="dropdown tasks-menu"><a href="#"
 							class="dropdown-toggle" data-toggle="dropdown"> <i
-								class="fa fa-flag-o"></i> <span class="label label-danger">9</span>
+								class="fa fa-user-plus"></i> <span class="label label-danger">9</span>
 						</a>
 							<ul class="dropdown-menu">
-								<li class="header">You have 9 tasks</li>
+								<li class="header">You have new friend requests.</li>
 								<li>
 									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
-										<li>
-											<!-- Task item --> <a href="#">
-												<h3>
-													Design some buttons <small class="pull-right">20%</small>
-												</h3>
-												<div class="progress xs">
-													<div class="progress-bar progress-bar-aqua"
-														style="width: 20%" role="progressbar" aria-valuenow="20"
-														aria-valuemin="0" aria-valuemax="100">
-														<span class="sr-only">20% Complete</span>
-													</div>
-												</div>
-										</a>
-										</li>
-										<!-- end task item -->
-										<li>
-											<!-- Task item --> <a href="#">
-												<h3>
-													Create a nice theme <small class="pull-right">40%</small>
-												</h3>
-												<div class="progress xs">
-													<div class="progress-bar progress-bar-green"
-														style="width: 40%" role="progressbar" aria-valuenow="20"
-														aria-valuemin="0" aria-valuemax="100">
-														<span class="sr-only">40% Complete</span>
-													</div>
-												</div>
-										</a>
-										</li>
-										<!-- end task item -->
-										<li>
-											<!-- Task item --> <a href="#">
-												<h3>
-													Some task I need to do <small class="pull-right">60%</small>
-												</h3>
-												<div class="progress xs">
-													<div class="progress-bar progress-bar-red"
-														style="width: 60%" role="progressbar" aria-valuenow="20"
-														aria-valuemin="0" aria-valuemax="100">
-														<span class="sr-only">60% Complete</span>
-													</div>
-												</div>
-										</a>
-										</li>
-										<!-- end task item -->
+										<c:forEach var="row" items="${friend_requests.rows}">
+											<li>
+												<a>	
+													<button class="btn btn-info round confirm_friend" rel="${row.user_id}">
+														<i class="fa fa-plus"></i>
+													</button> ${row.username}
+													<span class="text-primary">
+														
+													</span>
+												</a>													
+											</li>
+										</c:forEach>
 										<li>
 											<!-- Task item --> <a href="#">
 												<h3>

@@ -23,6 +23,27 @@ $(document).ready(function()
 	module = $.trim(tmp[tmp.length-1]);
 	$('a[href="'+controller+'/'+module+'"]').parents('.treeview').addClass("active");
 	$('a[href="'+controller+'/'+module+'"]').parent().addClass("active_sidelink");
+	
+	$(document).on("click",".confirm_friend", function()
+	{
+		var rel = $(this).attr('rel');
+		var par = $(this).parents("a");
+		var tr = $(this).parent().parent();
+		$.ajax
+		({
+			type: "POST",
+			url: "friend/confirm_friend",
+			data: { id:rel },
+			success: function(response)
+			{
+				par.html('<h4>Confirmed Friend <span class="glyphicon glyphicon-ok"></span></h4>');
+				setTimeout(function()
+				{
+					tr.fadeOut("slow");
+				},2000);
+			}
+		});
+	});
 });
 function showPosition(position) {
 	lat = position.coords.latitude;

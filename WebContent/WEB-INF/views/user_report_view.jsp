@@ -5,7 +5,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@include file="header.jsp" %>
 <%@include file="sidebar.jsp" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %><html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link href="resources/css/main.css" rel="stylesheet"/>
 <div class="gallery">
 
