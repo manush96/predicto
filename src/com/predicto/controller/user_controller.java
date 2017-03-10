@@ -33,6 +33,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.predicto.dao.scheduler_dao;
 import com.predicto.dao.user_dao;
 import com.predicto.model.User;
+import com.predicto.services.conversion;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -236,11 +237,16 @@ public class user_controller {
 		}
 
 		System.out.println(run+walk+cycle+working+"aka");
-	
+		String ans1=conversion.convert_calories_cycle(cycle);
+		String ans2=conversion.convert_calories_run(run);
+		String ans3=conversion.convert_calories_walk(walk);
+		String ans4=conversion.convert_calories_work(working);
+		float a=Float.parseFloat(ans1)+Float.parseFloat(ans2)+Float.parseFloat(ans3)+Float.parseFloat(ans4);
+		String cal=String.valueOf(a);
 		if(invalid(session))
 			return "redirect: login";
 		userDao.delete_notif(notif_id);
-		userDao.save_daily_exercise(run,walk,cycle,working,session.getAttribute("user_id").toString());
+		userDao.save_daily_exercise(run,walk,cycle,working,session.getAttribute("user_id").toString(),cal);
 		return "redirect:dashboard";
 	}
 	@RequestMapping("weekly_data")
