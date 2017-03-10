@@ -2,6 +2,7 @@ package com.predicto.dao;
 import java.awt.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Map;
 
@@ -131,5 +132,26 @@ public class user_dao {
 		setDataSource();
 		String sql="INSERT INTO daily_exercise (user_id,run,walk,cycle,working,calories) values ('"+id+"','"+run+"','"+walk+"','"+cycle+"','"+working+"','"+cal+"')";
 		template1.update(sql);
+	}
+	public java.util.List<Daily_data> get_daily_data(String s)
+	{
+		setDataSource();
+		String sql="SELECT * FROM daily_exercise where user_id="+s+" AND  DATE_ADD(date,INTERVAL 7 DAY)";
+		java.util.List<Daily_data> daily_Data = template1.query(sql, new RowMapper<Daily_data>() {
+			 
+		     @Override   
+			 public Daily_data mapRow(ResultSet rs, int rowNum) throws SQLException {
+		         Daily_data daily=new Daily_data();
+		         daily.setRun(rs.getString("run"));
+		         daily.setCycle(rs.getString("cycle"));
+		         daily.setWalk(rs.getString("walk"));
+		         daily.setCalories(rs.getString("calories"));
+		         daily.setDate(rs.getString("date"));
+		    	 return daily;
+		        }
+		 
+		    });
+		return daily_Data;
+		
 	}
 }

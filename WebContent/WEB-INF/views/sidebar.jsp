@@ -26,6 +26,7 @@
 	                <ul class="treeview-menu">
 	                    <li><a href="user/report"><i class="fa fa-upload"></i> Upload </a></li>
 	                    <li><a href="user/report_view"><i class="fa fa-eye"></i>  View </a></li>
+	                     <li><a href="user/daily_report_view"><i class="fa fa-eye"></i> Daily analysis View </a></li>
 	                </ul>
 	            </li>
 	            <li class="treeview">

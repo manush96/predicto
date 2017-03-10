@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.ParseException;
 import java.util.*;
 import org.ow2.util.base64.Base64;
 import org.quartz.SchedulerException;
@@ -30,8 +31,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.ibm.icu.text.SimpleDateFormat;
 import com.predicto.dao.scheduler_dao;
 import com.predicto.dao.user_dao;
+import com.predicto.model.Daily_data;
 import com.predicto.model.User;
 import com.predicto.services.conversion;
 
@@ -254,6 +257,71 @@ public class user_controller {
 	{
 		return new ModelAndView("daily_exercise");
 		
+	}
+	@RequestMapping("daily_report_view")
+	public ModelAndView daily_report_view(HttpSession session) throws ParseException
+	{
+		int user_id=(Integer) session.getAttribute("user_id");
+		String s1=Integer.toString(user_id);
+		List<Daily_data> l=userDao.get_daily_data(s1);
+		
+		ModelAndView model=new ModelAndView();
+		String run="";
+		String walk="";
+		String cycle="";
+		String work="";
+		String ss="";
+
+		String calories="";
+		for(int i=0;i<l.size();i++)
+		{
+			Daily_data d=new Daily_data();
+			d=l.get(i);
+			if(i==0)
+			{
+				String te=d.getDate();
+				te=te.substring(0,10);
+				Date date=new SimpleDateFormat("yyyy-mm-dd").parse(te);
+				Calendar c = Calendar.getInstance();
+				c.setTime(date);
+				String[] days={"","sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
+				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+				ss="'"+days[dayOfWeek]+ss+te+"'";
+				run=run+d.getRun();
+				walk=walk+d.getWalk();
+				cycle=cycle+d.getCycle();
+				work=work+d.getWorking();
+				calories=calories+d.getCalories();
+				
+			}
+			else
+			{ 
+				String te=d.getDate();
+				te=te.substring(0, 10);
+				Date date=new SimpleDateFormat("yyyy-mm-dd").parse(te);
+				Calendar c = Calendar.getInstance();
+				c.setTime(date);
+				String[] days={"","sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
+				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+				ss=ss+","+"'"+days[dayOfWeek]+te+"'";
+				
+				run=run+","+d.getRun();
+				walk=walk+","+d.getWalk();
+				cycle=cycle+","+d.getCycle();
+				work=work+","+d.getWorking();
+				calories=calories+","+d.getCalories();
+			}
+		}
+		System.out.println(run);
+		model.addObject("run",run);
+		model.addObject("walk",walk);
+		model.addObject("cycle",cycle);
+		model.addObject("work",work);
+		model.addObject("x",ss);
+		model.addObject("calories",calories);
+		
+		model.setViewName("daily_charts");
+		return model;
 	}
 	@RequestMapping("set_notif_read")
 	public ModelAndView set_notif_read(HttpSession session)
