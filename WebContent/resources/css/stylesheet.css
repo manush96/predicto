@@ -118,6 +118,28 @@ hr
 	font-size: 250%;
 	margin-right: 8%;
 }
+.confirm_friend_li
+{
+	cursor: pointer;
+	padding: 10px 10px;
+	transition: all 0.3s ease;
+	font-size: 18px;
+	overflow: auto;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+}
+.confirm_friend_li:hover
+{
+	background: #eee;
+}
+.confirm_friend_li:first-child
+{
+	border-top: 2px solid #ccc;
+}
+.confirm_friend_li:last-child
+{
+	border-bottom: 2px solid #ccc;
+}
 #logout_link
 {
 	margin-right: 2%;

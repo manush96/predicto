@@ -24,11 +24,11 @@ $(document).ready(function()
 	$('a[href="'+controller+'/'+module+'"]').parents('.treeview').addClass("active");
 	$('a[href="'+controller+'/'+module+'"]').parent().addClass("active_sidelink");
 	
-	$(document).on("click",".confirm_friend", function()
+	$(document).on("click",".confirm_friend", function(e)
 	{
+		e.stopPropagation();
 		var rel = $(this).attr('rel');
-		var par = $(this).parents("a");
-		var tr = $(this).parent().parent();
+		var par = $(this).parents(".confirm_friend_li");
 		$.ajax
 		({
 			type: "POST",
@@ -36,11 +36,23 @@ $(document).ready(function()
 			data: { id:rel },
 			success: function(response)
 			{
-				par.html('<h4>Confirmed Friend <span class="glyphicon glyphicon-ok"></span></h4>');
-				setTimeout(function()
-				{
-					tr.fadeOut("slow");
-				},2000);
+				par.html('<h4 class="text-center text-success">Confirmed Friend <span class="glyphicon glyphicon-ok"></span></h4>');
+			}
+		});
+	});
+	$(document).on("click",".decline_friend", function(e)
+	{
+		e.stopPropagation();
+		var rel = $(this).attr('rel');
+		var par = $(this).parents(".confirm_friend_li");
+		$.ajax
+		({
+			type: "POST",
+			url: "friend/decline_friend",
+			data: { id:rel },
+			success: function(response)
+			{
+				par.html('<h4 class="text-center text-danger">Declined Friend <span class="glyphicon glyphicon-remove"></span></h4>');
 			}
 		});
 	});

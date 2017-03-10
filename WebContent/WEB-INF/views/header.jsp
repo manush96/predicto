@@ -36,8 +36,9 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.dropdown-toggle').dropdown();
-			$("#tips_btn").click(function(){ $(this).find(".label").fadeOut("slow");	});
+			$("#tips_btn").click(function(){ $(this).find(".label").fadeOut("slow");});
 			$("#notif_btn").click(function(){ set_notif_read();$(this).find(".label").fadeOut("slow");	});
+			$("#friend_req_btn").click(function(){ $(this).find(".label").fadeOut("slow");	});
 		});
 		function set_notif_read()
 		{
@@ -84,6 +85,14 @@
 		WHERE friends.status = '0'  
 		AND friend_id='${sessionScope.user_id}';
 </sql:query>
+<sql:query dataSource="${dataSource}" var="f_r_cnt">
+	SELECT COUNT(username) as cnt
+		FROM friends 
+		LEFT JOIN user on user.id = friends.user_id
+		WHERE friends.status = '0'  
+		AND friend_id='${sessionScope.user_id}';
+</sql:query>
+<c:set var="friend_req_cnt" scope="application" value="${f_r_cnt.rowsByIndex[0][0]}"/>
 <body class="skin-blue sidebar-mini">
 	<div id="wrapper">
 		<header class="main-header"  style="position: fixed; width: 100%">
@@ -163,45 +172,42 @@
 								</li>
 							</ul></li>
 						<!-- Tasks: style can be found in dropdown.less -->
-						<li class="dropdown tasks-menu"><a href="#"
+						<li class="dropdown tasks-menu"><a href="#" id="friend_req_btn"
 							class="dropdown-toggle" data-toggle="dropdown"> <i
-								class="fa fa-user-plus"></i> <span class="label label-danger">9</span>
+								class="fa fa-user-plus"></i> 
+								<c:if test="${friend_req_cnt > 0}">
+									<span class="label label-danger">${friend_req_cnt}</span>
+								</c:if>
 						</a>
 							<ul class="dropdown-menu">
-								<li class="header">You have new friend requests.</li>
+								<c:if test="${friend_req_cnt > 0}">
+									<li class="header">You have ${friend_req_cnt} new friend request(s).</li>
+								</c:if>
 								<li>
 									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
 										<c:forEach var="row" items="${friend_requests.rows}">
-											<li>
-												<a>	
-													<button class="btn btn-info round confirm_friend" rel="${row.user_id}">
-														<i class="fa fa-plus"></i>
-													</button> ${row.username}
-													<span class="text-primary">
-														
-													</span>
-												</a>													
-											</li>
-										</c:forEach>
-										<li>
-											<!-- Task item --> <a href="#">
-												<h3>
-													Make beautiful transitions <small class="pull-right">80%</small>
-												</h3>
-												<div class="progress xs">
-													<div class="progress-bar progress-bar-yellow"
-														style="width: 80%" role="progressbar" aria-valuenow="20"
-														aria-valuemin="0" aria-valuemax="100">
-														<span class="sr-only">80% Complete</span>
+											<div class="confirm_friend_li">
+												<div class="col-sm-12">
+													<p><strong>${row.username}</strong> sent you a friend request.</p>
+												</div>
+												<div class="col-sm-12">
+													<div class="col-sm-5">
+														<button class="btn btn-primary confirm_friend" rel="${row.user_id}">
+															<i class="fa fa-check"></i> Accept
+														</button>
+													</div>
+													<div class="col-sm-2"></div>
+													<div class="col-sm-5">
+														<button class="btn btn-danger decline_friend" rel="${row.user_id}">
+															<i class="fa fa-times"></i> Reject
+														</button>
 													</div>
 												</div>
-										</a>
-										</li>
-										<!-- end task item -->
+											</div>
+										</c:forEach>
 									</ul>
 								</li>
-								<li class="footer"><a href="#">View all tasks</a></li>
 							</ul></li>
 						<!-- User Account: style can be found in dropdown.less -->
 						<li class="dropdown user user-menu"><a href="#"

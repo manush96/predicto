@@ -2,26 +2,60 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<style>
+	
+	#friends_div_head
+	{
+		background: #3164b7;
+		color: #fff;
+		font-size: 24px;
+		padding: 10px 10px 2px 10px;
+	}
+	#friends_div_body
+	{
+		background: #fff;
+		font-size: 20px;
+		cursor: pointer;
+	}
+	.friend_row
+	{
+		padding: 10px;
+		border-bottom: 1px solid #ccc;
+		transition: all 0.2s ease;
+	}
+	.friend_row:hover
+	{
+		background: #ccc;
+	}
+</style>
 <div style="background: #fff;">
-	<table class="table table-bordered table-hover table-responsive table-striped">
-		<thead>
-			<tr>
-				<th>#</th>
-				<th>Name</th>
-				<th>Add Friend</th>
-			<tr>
-		</thead>
-		<c:forEach items="${friends}" var="row" varStatus="loop">
-			<tr>
-				<td>${loop.index + 1}</td>
-				<td>${row.username}</td>
-				<td>
-					<button class="btn btn-info add_friend" rel="${row.id}">
-						<span class="glyphicon glyphicon-plus"></span>
-						 Add Friend
-					</button>
-				</td>
-			</tr>
-		</c:forEach>
-	</table>
+	<div class="col-sm-12">
+		<div class="col-sm-12 lr0pad" id="friends_div_head">
+			<div class="col-sm-1">
+				<p>#</p>
+			</div>
+			<div class="col-sm-4">
+				<p>Name</p>
+			</div>
+			
+		</div>
+		<div class="col-sm-12" id="friends_div_body">
+			<c:forEach items="${friends}" var="row" varStatus="loop">
+				<div class="row friend_row">
+					<div class="col-sm-1">
+						<p>${loop.index + 1}</p>
+					</div>
+					<div class="col-sm-4">
+						<p>${row.username}</p>
+					</div>
+					<div class="col-sm-2">
+						<button class="btn btn-primary add_friend" rel="${row.id}">
+							<span class="glyphicon glyphicon-plus"></span>
+							 Add Friend
+						</button>
+					</div>
+				</div>
+			</c:forEach>
+		</div>
+	</div>
 </div>

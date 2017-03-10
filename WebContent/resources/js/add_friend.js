@@ -17,8 +17,7 @@ $(document).ready(function()
 	$(document).on("click",".add_friend",function()
 	{
 		var rel = $(this).attr('rel');
-		var par = $(this).parents("td");
-		var tr = $(this).parents("tr");
+		var par = $(this).parent();
 		$.ajax
 		({
 			type: "POST",
@@ -26,11 +25,7 @@ $(document).ready(function()
 			data: { id:rel },
 			success: function(response)
 			{
-				par.html('<h4>Request Sent <span class="glyphicon glyphicon-ok"></span></h4>');
-				setTimeout(function()
-				{
-					tr.fadeOut("slow");
-				},2000);
+				par.html('<h5>Request Sent <span class="glyphicon glyphicon-ok"></span></h5>');
 			}
 		});
 	});

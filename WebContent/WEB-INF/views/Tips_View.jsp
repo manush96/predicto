@@ -6,6 +6,24 @@
 <%@include file="header.jsp" %>
 <%@include file="sidebar.jsp" %>
 <base href="${pageContext.request.contextPath}/"></base>
+<style>
+	#my_div {
+    width: 100px;
+    height: 100px;
+    
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    margin: auto auto auto 50%;
+	}
+	#my_div i
+	{
+		font-size: 50px !important;
+	}
+</style>
 <link rel="stylesheet" href="resources/css/jquery-confirm.css"/>
 <script src="resources/js/jquery-confirm.js"></script>
 <script>
@@ -28,45 +46,44 @@
 	});
 	function next_tip()
 	{
-		if(index == (tips.length) - 1)
-			index = 0;
-		else
-			index++;
+		index++;
 		show_tip();
 	}
 	function previous_tip()
 	{
-		if(index == 0)
-			index = (tips.length) - 1;
-		else
-			index--;
+		index--;
 		show_tip();
 	}
 	function show_tip()
 	{
-		$.confirm
-		({
-			title: '<h4><span class="fa fa-lightbulb-o"></span>&nbsp;&nbsp;&nbsp;<span style="font-weight: 600">' + titles[index] + "</span></h4>",
-			columnClass: 'col-sm-offset-2 col-sm-10',
-			backgroundDismiss: true,
-			type: get_color_type(),
-			content: tips[index],
-			theme: 'material',
-			closeIcon: true,
-			buttons:
-			{
-				previousTip: {
-					text: '<span class="fa fa-arrow-left"></span>&nbsp;Previous Tip',
-		            btnClass: 'btn-default pull-left',
-		            action: function(){ previous_tip(); }
-		        },
-		        nextTip: {
-		        	text: 'Next Tip <span class="fa fa-arrow-right"></span>',
-		            btnClass: 'btn-default pull-right',
-		            action: function(){ next_tip(); }
-		        },
+		var data = {
+				title: '<h4><span class="fa fa-lightbulb-o"></span>&nbsp;&nbsp;&nbsp;<span style="font-weight: 600">' + titles[index] + "</span></h4>",
+				columnClass: 'col-sm-offset-2 col-sm-10',
+				backgroundDismiss: true,
+				type: get_color_type(),
+				content: tips[index],
+				theme: 'material',
+				closeIcon: true,
+				buttons:
+				{
+					previousTip: {
+						text: '<span class="fa fa-arrow-left"></span>&nbsp;Previous Tip',
+			            btnClass: 'btn-default pull-left',
+			            action: function(){ previous_tip(); }
+			        },
+			        nextTip: {
+			        	text: 'Next Tip <span class="fa fa-arrow-right"></span>',
+			            btnClass: 'btn-default pull-right',
+			            action: function(){ next_tip(); }
+			        },
+				}
 			}
-		});
+		if(index == (tips.length) - 1)
+			delete data.buttons.nextTip;
+		if(index == 0)
+			delete data.buttons.previousTip;
+		$.confirm
+		(data);
 	}
 	function get_color_type()
 	{
@@ -75,5 +92,10 @@
 		return colors[random];
 	}
 </script>
-<button class="btn btn-warning" onclick="show_tip()">Replay Tips</button>
+<div id="my_div">
+	<button class="btn btn-info" onclick="show_tip()">
+		<i class="fa fa-lightbulb-o"></i>
+	</button>
+</div>
+
 <%@include file="footer.jsp" %>

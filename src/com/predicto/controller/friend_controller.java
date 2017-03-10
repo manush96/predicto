@@ -110,7 +110,8 @@ public class friend_controller {
 		if(invalid(session))
 			return new ModelAndView("goto_login");
 		
-		List<User> f = friend_dao.get_suggestions(q);
+		int id = (Integer) session.getAttribute("user_id");
+		List<User> f = friend_dao.get_suggestions(q,id);
 		
 		ModelAndView model=new ModelAndView();
 		model.addObject("friends",f);
@@ -140,5 +141,28 @@ public class friend_controller {
 		friend_dao.confirm_friend(u_id,id);
 		
 		return new ModelAndView("opt_view");
+	}
+	@RequestMapping("decline_friend")
+	public ModelAndView decline_friend(@RequestParam("id")String id,HttpSession session)
+	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
+		
+		int u_id = (Integer) session.getAttribute("user_id");
+		friend_dao.decline_friend(u_id,id);
+		
+		return new ModelAndView("opt_view");
+	}
+	@RequestMapping("compare")
+	public ModelAndView compare(HttpSession session)
+	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
+		
+		List<User> friends = friend_dao.get_friends((Integer) session.getAttribute("user_id"));
+		
+		ModelAndView model=new ModelAndView();
+		model.addObject("friends",friends);
+		return model;
 	}
 }
