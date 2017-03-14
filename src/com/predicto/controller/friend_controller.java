@@ -1,5 +1,6 @@
 package com.predicto.controller;
 
+import com.predicto.model.Friend;
 import com.predicto.model.User;
 
 import com.predicto.dao.friend_dao;
@@ -163,6 +164,21 @@ public class friend_controller {
 		
 		ModelAndView model=new ModelAndView();
 		model.addObject("friends",friends);
+		model.setViewName("compare_friends");
+		return model;
+	}
+	
+	@RequestMapping("get_comparison")
+	public ModelAndView get_comparison(@RequestParam("ids")String ids,HttpSession session)
+	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
+		
+		List<Friend> friends = friend_dao.get_comparison((Integer) session.getAttribute("user_id"),ids);
+		
+		ModelAndView model=new ModelAndView();
+		model.addObject("friends",friends);
+		model.setViewName("get_comparison");
 		return model;
 	}
 }

@@ -93,6 +93,42 @@ a
 	border-radius: 3px;
 	font-size: 20px;
 }
+.progress_tip
+{
+	background: #cfe3e8;
+	cursor: pointer;
+}
+.tooltip
+{
+	background: white;
+	font-weight: 400;
+}
+.round
+{
+	border-radius: 100%;
+}
+.tip_danger + .tooltip > .tooltip-inner{background-color: #d9534f;}
+.tip_danger + .tooltip > .tooltip-arrow { border-bottom-color:#d9534f; }
+
+.tip_warning + .tooltip > .tooltip-inner{background-color: #f0ad4e;}
+.tip_warning + .tooltip > .tooltip-arrow { border-bottom-color:#f0ad4e; }
+
+.tip_info + .tooltip > .tooltip-inner{background-color: #5bc0de;}
+.tip_info + .tooltip > .tooltip-arrow { border-bottom-color:#5bc0de; }
+
+.tip_primary + .tooltip > .tooltip-inner{background-color: #337ab7;}
+.tip_primary + .tooltip > .tooltip-arrow { border-bottom-color:#337ab7; }
+
+.tip_success + .tooltip > .tooltip-inner{background-color: #5cb85c;}
+.tip_success + .tooltip > .tooltip-arrow { border-bottom-color:#5cb85c; }
+
+.tip_danger_lg + .tooltip { width: 100%;}
+.tip_danger_lg + .tooltip > .tooltip-inner{background-color: red; font-size: 130%;}
+.tip_danger_lg + .tooltip > .tooltip-arrow { border-right-color:red; }
+
+.tip_info_lg + .tooltip { width: 100%;}
+.tip_info_lg + .tooltip > .tooltip-inner{background-color: #0da3e2; font-size: 150%;}
+.tip_info_lg + .tooltip > .tooltip-arrow { border-right-color:#0da3e2; }
 input[type=text]
 {
 	height: 42px;

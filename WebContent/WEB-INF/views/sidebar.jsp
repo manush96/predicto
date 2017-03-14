@@ -47,7 +47,7 @@
 	                <a ref=""><i class="fa fa-user"></i><span> Friends</span> <i class="fa fa-angle-left pull-right"></i></a>
 	                <ul class="treeview-menu">
 	                    <li><a href="friend/add"><i class="fa fa-plus"></i> Add Friends </a></li>
-	                    <li><a href="friend/add"><i class="fa fa-quote-right"></i> Compare Friends </a></li>
+	                    <li><a href="friend/compare"><i class="fa fa-balance-scale"></i> Compare Friends </a></li>
 	                    
 	                </ul>
 	            </li>

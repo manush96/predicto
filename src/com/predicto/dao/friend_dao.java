@@ -71,7 +71,7 @@ public class friend_dao {
 	public List<User> get_friends(int id)
 	{
 		setDataSource();
-		String sql = "SELECT * FROM user WHERE id != "+id+" AND id IN (SELECT friend_id FROM friends WHERE user_id = "+id+") OR id IN (SELECT user_id FROM friends WHERE friend_id = "+id+")";
+		String sql = "SELECT * FROM user WHERE id != "+id+" AND id IN (SELECT friend_id FROM friends WHERE user_id = "+id+" AND status=1) OR id IN (SELECT user_id FROM friends WHERE friend_id = "+id+" AND status=1)";
 		
 		java.util.List<User> listContact = template1.query(sql, new RowMapper<User>() {
 			 
@@ -85,5 +85,33 @@ public class friend_dao {
 	 
 	    });
 		return listContact;
+	}
+	public List<Friend> get_comparison(int id, String ids)
+	{
+		setDataSource();
+		String sql = "SELECT * FROM user WHERE id="+id+" OR id IN ("+ids+") ORDER BY CASE WHEN (id = "+id+") THEN 0 ELSE 1 END LIMIT 5";
+		
+		java.util.List<Friend> listContact = template1.query(sql, new RowMapper<Friend>() {
+			 
+			@Override   
+			public Friend mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Friend f = new Friend();
+				f.setId(rs.getInt("id"));
+				f.setUsername(rs.getString("username"));
+				int w = rs.getInt("weight");
+				int h = rs.getInt("height");
+				f.setBmi(round(w*10000/(h*h),1));
+				f.setAge(rs.getInt("age"));
+				f.setHeight(rs.getInt("height"));
+				f.setWeight(rs.getInt("weight"));
+				return f;
+			}
+	 
+	    });
+		return listContact;
+	}
+	private static double round (double value, int precision) {
+	    int scale = (int) Math.pow(10, precision);
+	    return (double) Math.round(value * scale) / scale;
 	}
 }
