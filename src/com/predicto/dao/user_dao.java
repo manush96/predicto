@@ -145,6 +145,8 @@ public class user_dao {
 		         daily.setRun(rs.getString("run"));
 		         daily.setCycle(rs.getString("cycle"));
 		         daily.setWalk(rs.getString("walk"));
+		         
+		         daily.setWorking(rs.getString("working"));
 		         daily.setCalories(rs.getString("calories"));
 		         daily.setDate(rs.getString("date"));
 		    	 return daily;

@@ -312,7 +312,7 @@ public class user_controller {
 				calories=calories+","+d.getCalories();
 			}
 		}
-		System.out.println(run);
+		System.out.println(work+"ebol");
 		model.addObject("run",run);
 		model.addObject("walk",walk);
 		model.addObject("cycle",cycle);
