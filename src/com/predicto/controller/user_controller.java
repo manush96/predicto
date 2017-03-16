@@ -323,6 +323,14 @@ public class user_controller {
 		model.setViewName("daily_charts");
 		return model;
 	}
+	@RequestMapping("daily_food_details")
+	public ModelAndView daily_food_details(@RequestParam(value = "id", required=false) Integer id)
+	{
+		ModelAndView model = new ModelAndView();
+		
+		model.setViewName("daily_food_details");
+		return model;
+	}
 	@RequestMapping("set_notif_read")
 	public ModelAndView set_notif_read(HttpSession session)
 	{

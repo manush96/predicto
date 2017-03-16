@@ -123,7 +123,7 @@
 									<ul class="menu">
 										<c:forEach var="row" items="${tips.rows}">
 										<li>
-											<!-- start message --> <a href="#">
+											<!-- start message --> <a>
 												<div class="pull-left">
 													<i class="fa fa-lightbulb-o"></i>
 												</div>
