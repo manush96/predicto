@@ -19,6 +19,7 @@
 	                <a ref=""><i class="fa fa-book"></i><span> Dashboard</span> <i class="fa fa-angle-left pull-right"></i></a>
 	                <ul class="treeview-menu">
 	                    <li><a href="user/dashboard"><i class="fa fa-home"></i> Home </a></li>
+	                    <li><a href="user/daily_food_details"><i class="fa fa-cutlery"></i> Food </a></li>
 	                </ul>
 	            </li>
 	            <li class="treeview">
@@ -35,6 +36,7 @@
 	                    <li><a href="stores/locate"><i class="fa fa-street-view"></i> Locate Nearby </a></li>
 	                    <li><a href="stores/push"><i class="fa fa-street-view"></i> Push Daily </a></li>
 	                    <li><a href="stores/push_weekly"><i class="fa fa-street-view"></i> Push Weekly </a></li>
+	                    <li><a href="user/push_food"><i class="fa fa-street-view"></i> Push Food Details </a></li>
 	                </ul>
 	            </li>
 	            <li class="treeview">

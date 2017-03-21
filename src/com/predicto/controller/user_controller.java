@@ -158,6 +158,8 @@ public class user_controller {
     public String singleFileUpload(@RequestParam("report") MultipartFile file,
                        RedirectAttributes redirectAttributes,HttpSession session)
 	{
+		if(invalid(session))
+			return "redirect: login";
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
             return "redirect:uploadStatus";
@@ -186,8 +188,10 @@ public class user_controller {
 		return "redirect:login";
 	}
 	@RequestMapping("daily_data")
-	public ModelAndView daily_data_collect(@RequestParam(value = "id", required=false) Integer id)
+	public ModelAndView daily_data_collect(@RequestParam(value = "id", required=false) Integer id,HttpSession session)
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
 		ModelAndView model = new ModelAndView();
 		model.addObject("notif_id",id);
 		model.setViewName("daily_exercise");
@@ -196,6 +200,9 @@ public class user_controller {
 	@RequestMapping("save_daily_data")
 	public String save_daily_data(@RequestParam("notif_id")int notif_id,@RequestParam("working")String working,@RequestParam("running")String run,@RequestParam("walking")String walk,@RequestParam("cycling")String cycle,@RequestParam("running-unit")String run_unit,@RequestParam("walking-unit")String walk_unit,@RequestParam("cycling-unit")String cycle_unit, HttpSession session)
 	{
+		if(invalid(session))
+			return "redirect:login";
+
 		System.out.println(run_unit+walk_unit+cycle_unit+run+walk+cycle+working);
 		if(run_unit.equals("2"))
 		{
@@ -246,21 +253,23 @@ public class user_controller {
 		String ans4=conversion.convert_calories_work(working);
 		float a=Float.parseFloat(ans1)+Float.parseFloat(ans2)+Float.parseFloat(ans3)+Float.parseFloat(ans4);
 		String cal=String.valueOf(a);
-		if(invalid(session))
-			return "redirect: login";
 		userDao.delete_notif(notif_id);
 		userDao.save_daily_exercise(run,walk,cycle,working,session.getAttribute("user_id").toString(),cal);
 		return "redirect:dashboard";
 	}
 	@RequestMapping("weekly_data")
-	public ModelAndView weekly_data_collect(@RequestParam(value = "id", required=false) Integer id)
+	public ModelAndView weekly_data_collect(@RequestParam(value = "id", required=false) Integer id,HttpSession session)
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
 		return new ModelAndView("daily_exercise");
-		
 	}
 	@RequestMapping("daily_report_view")
 	public ModelAndView daily_report_view(HttpSession session) throws ParseException
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
+		
 		int user_id=(Integer) session.getAttribute("user_id");
 		String s1=Integer.toString(user_id);
 		List<Daily_data> l=userDao.get_daily_data(s1);
@@ -322,6 +331,44 @@ public class user_controller {
 		
 		model.setViewName("daily_charts");
 		return model;
+	}
+	@RequestMapping("daily_food_details")
+	public ModelAndView daily_food_details(@RequestParam(value = "id", required=false) Integer id,HttpSession session)
+	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
+		
+		ModelAndView model = new ModelAndView();
+		model.setViewName("daily_food_details");
+		return model;
+	}
+	@RequestMapping("save_daily_food")
+	public String save_daily_food(@RequestParam("items") String item_str,HttpSession session)
+	{
+		if(invalid(session))
+			return "redirect:login";
+		
+		int id,cnt;
+		double total_cal = 0;
+		String[] items = item_str.split(",");
+		for(String i : items)
+		{
+			String[] vals = i.split(":");
+			id = Integer.parseInt(vals[0]);
+			cnt = Integer.parseInt(vals[1]);
+			//id - of food item, cnt - number of items consumed
+			//System.out.println("ID: " + id + ", Count: " + cnt);
+			total_cal += userDao.findCal(id, cnt);
+		}
+		userDao.updateCal((Integer)session.getAttribute("user_id"), total_cal, item_str);
+		return "redirect:daily_food_details";
+		
+	}
+	@RequestMapping("push_food")
+	public ModelAndView push(HttpSession session)
+	{
+		userDao.pushFood();
+		return new ModelAndView("opt_view");
 	}
 	@RequestMapping("set_notif_read")
 	public ModelAndView set_notif_read(HttpSession session)

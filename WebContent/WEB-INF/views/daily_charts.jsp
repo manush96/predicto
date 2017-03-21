@@ -82,11 +82,11 @@ $(function () {
 	          datasets: [
 	            {
 	              label: "Electronics",
-	              fillColor: "#00ffff",
+	              fillColor: "#4286f4",
 	              strokeColor: "rgba(210, 214, 222, 1)",
 	              pointColor: "rgba(210, 214, 222, 1)",
 	              pointStrokeColor: "#c1c7d1",
-	              pointHighlightFill: "#00ffff",
+	              pointHighlightFill: "#4286f4",
 	              pointHighlightStroke: "rgba(220,220,220,1)",
 	              data: arr
 	            }
@@ -114,13 +114,12 @@ $(function () {
          //Number - Pixel width of the bar stroke
          barStrokeWidth: 1,
          //Number - Spacing between each of the X value sets
-         barValueSpacing: 5,
+         barValueSpacing: 50,
          //Number - Spacing between data sets within X values
-         barDatasetSpacing: 4,
+         barDatasetSpacing: 50,
          //String - A legend template
          legendTemplate: "",
          //Boolean - whether to make the chart responsive
-         responsive: true,
          maintainAspectRatio: false
        };
 
@@ -137,49 +136,48 @@ $(function () {
 	var areaChartData = {
 	          labels: [${x}],
 	          datasets: [
-	            {
-	              label: "Electronics",
-	              fillColor: "#00ffff",
-	              strokeColor: "rgba(210, 214, 222, 1)",
-	              pointColor: "rgba(210, 214, 222, 1)",
-	              pointStrokeColor: "#c1c7d1",
-	              pointHighlightFill: "#00ffff",
-	              pointHighlightStroke: "rgba(220,220,220,1)",
-	              data: arr
-	            }
-	           ]
-	        };
+	     	            {
+	     	              label: "Electronics",
+	     	              fillColor: "#4286f4",
+	     	              strokeColor: "rgba(210, 214, 222, 1)",
+	     	              pointColor: "rgba(210, 214, 222, 1)",
+	     	              pointStrokeColor: "#c1c7d1",
+	     	              pointHighlightFill: "#4286f4",
+	     	              pointHighlightStroke: "rgba(220,220,220,1)",
+	     	              data: arr
+	     	            }
+	     	           ]
+	     	        };
 
-	   var barChartCanvas = $("#barChart1").get(0).getContext("2d");
-       var barChart = new Chart(barChartCanvas);
-       var barChartData = areaChartData;
-       var barChartOptions = {
-         //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-         scaleBeginAtZero: true,
-         //Boolean - Whether grid lines are shown across the chart
-         scaleShowGridLines: true,
-         //String - Colour of the grid lines
-         scaleGridLineColor: "rgba(0,0,0,.05)",
-         //Number - Width of the grid lines
-         scaleGridLineWidth: 1,
-         //Boolean - Whether to show horizontal lines (except X axis)
-         scaleShowHorizontalLines: true,
-         //Boolean - Whether to show vertical lines (except Y axis)
-         scaleShowVerticalLines: true,
-         //Boolean - If there is a stroke on each bar
-         barShowStroke: true,
-         //Number - Pixel width of the bar stroke
-         barStrokeWidth: 1,
-         //Number - Spacing between each of the X value sets
-         barValueSpacing: 5,
-         //Number - Spacing between data sets within X values
-         barDatasetSpacing: 4,
-         //String - A legend template
-         legendTemplate: "",
-         //Boolean - whether to make the chart responsive
-         responsive: true,
-         maintainAspectRatio: true
-       };
+	     	   var barChartCanvas = $("#barChart1").get(0).getContext("2d");
+	            var barChart = new Chart(barChartCanvas);
+	            var barChartData = areaChartData;
+	            var barChartOptions = {
+	              //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+	              scaleBeginAtZero: true,
+	              //Boolean - Whether grid lines are shown across the chart
+	              scaleShowGridLines: true,
+	              //String - Colour of the grid lines
+	              scaleGridLineColor: "rgba(0,0,0,.05)",
+	              //Number - Width of the grid lines
+	              scaleGridLineWidth: 1,
+	              //Boolean - Whether to show horizontal lines (except X axis)
+	              scaleShowHorizontalLines: true,
+	              //Boolean - Whether to show vertical lines (except Y axis)
+	              scaleShowVerticalLines: true,
+	              //Boolean - If there is a stroke on each bar
+	              barShowStroke: true,
+	              //Number - Pixel width of the bar stroke
+	              barStrokeWidth: 1,
+	              //Number - Spacing between each of the X value sets
+	              barValueSpacing: 50,
+	              //Number - Spacing between data sets within X values
+	              barDatasetSpacing: 50,
+	              //String - A legend template
+	              legendTemplate: "",
+	              //Boolean - whether to make the chart responsive
+	              maintainAspectRatio: false
+	            };
 
        barChartOptions.datasetFill = false;
        barChart.Bar(barChartData, barChartOptions);
@@ -194,49 +192,48 @@ $(function () {
 	var areaChartData = {
 	          labels: [${x}],
 	          datasets: [
-	            {
-	              label: "Electronics",
-	              fillColor: "#00ffff",
-	              strokeColor: "rgba(210, 214, 222, 1)",
-	              pointColor: "rgba(210, 214, 222, 1)",
-	              pointStrokeColor: "#c1c7d1",
-	              pointHighlightFill: "#00ffff",
-	              pointHighlightStroke: "rgba(220,220,220,1)",
-	              data: arr
-	            }
-	           ]
-	        };
+	     	            {
+	     	              label: "Electronics",
+	     	              fillColor: "#4286f4",
+	     	              strokeColor: "rgba(210, 214, 222, 1)",
+	     	              pointColor: "rgba(210, 214, 222, 1)",
+	     	              pointStrokeColor: "#c1c7d1",
+	     	              pointHighlightFill: "#4286f4",
+	     	              pointHighlightStroke: "rgba(220,220,220,1)",
+	     	              data: arr
+	     	            }
+	     	           ]
+	     	        };
 
-	   var barChartCanvas = $("#barChart2").get(0).getContext("2d");
-       var barChart = new Chart(barChartCanvas);
-       var barChartData = areaChartData;
-       var barChartOptions = {
-         //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-         scaleBeginAtZero: true,
-         //Boolean - Whether grid lines are shown across the chart
-         scaleShowGridLines: true,
-         //String - Colour of the grid lines
-         scaleGridLineColor: "rgba(0,0,0,.05)",
-         //Number - Width of the grid lines
-         scaleGridLineWidth: 1,
-         //Boolean - Whether to show horizontal lines (except X axis)
-         scaleShowHorizontalLines: true,
-         //Boolean - Whether to show vertical lines (except Y axis)
-         scaleShowVerticalLines: true,
-         //Boolean - If there is a stroke on each bar
-         barShowStroke: true,
-         //Number - Pixel width of the bar stroke
-         barStrokeWidth: 1,
-         //Number - Spacing between each of the X value sets
-         barValueSpacing: 5,
-         //Number - Spacing between data sets within X values
-         barDatasetSpacing: 4,
-         //String - A legend template
-         legendTemplate: "",
-         //Boolean - whether to make the chart responsive
-         responsive: true,
-         maintainAspectRatio: true
-       };
+	     	   var barChartCanvas = $("#barChart2").get(0).getContext("2d");
+	            var barChart = new Chart(barChartCanvas);
+	            var barChartData = areaChartData;
+	            var barChartOptions = {
+	              //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+	              scaleBeginAtZero: true,
+	              //Boolean - Whether grid lines are shown across the chart
+	              scaleShowGridLines: true,
+	              //String - Colour of the grid lines
+	              scaleGridLineColor: "rgba(0,0,0,.05)",
+	              //Number - Width of the grid lines
+	              scaleGridLineWidth: 1,
+	              //Boolean - Whether to show horizontal lines (except X axis)
+	              scaleShowHorizontalLines: true,
+	              //Boolean - Whether to show vertical lines (except Y axis)
+	              scaleShowVerticalLines: true,
+	              //Boolean - If there is a stroke on each bar
+	              barShowStroke: true,
+	              //Number - Pixel width of the bar stroke
+	              barStrokeWidth: 1,
+	              //Number - Spacing between each of the X value sets
+	              barValueSpacing: 50,
+	              //Number - Spacing between data sets within X values
+	              barDatasetSpacing: 50,
+	              //String - A legend template
+	              legendTemplate: "",
+	              //Boolean - whether to make the chart responsive
+	              maintainAspectRatio: false
+	            };
 
        barChartOptions.datasetFill = false;
        barChart.Bar(barChartData, barChartOptions);
@@ -251,48 +248,48 @@ $(function () {
 	var areaChartData = {
 	          labels: [${x}],
 	          datasets: [
-	            {
-	              label: "Work out",
-	              fillColor: "#00ffff",
-	              strokeColor: "rgba(210, 214, 222, 1)",
-	              pointColor: "rgba(210, 214, 222, 1)",
-	              pointStrokeColor: "#c1c7d1",
-	              pointHighlightFill: "#00ffff",
-	              pointHighlightStroke: "rgba(220,220,220,1)",
-	              data: arr
-	            }
-	           ]
-	        };
-	   var barChartCanvas = $("#barChart3").get(0).getContext("2d");
-       var barChart = new Chart(barChartCanvas);
-       var barChartData = areaChartData;
-       var barChartOptions = {
-         //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-         scaleBeginAtZero: true,
-         //Boolean - Whether grid lines are shown across the chart
-         scaleShowGridLines: true,
-         //String - Colour of the grid lines
-         scaleGridLineColor: "rgba(0,0,0,.05)",
-         //Number - Width of the grid lines
-         scaleGridLineWidth: 1,
-         //Boolean - Whether to show horizontal lines (except X axis)
-         scaleShowHorizontalLines: true,
-         //Boolean - Whether to show vertical lines (except Y axis)
-         scaleShowVerticalLines: true,
-         //Boolean - If there is a stroke on each bar
-         barShowStroke: true,
-         //Number - Pixel width of the bar stroke
-         barStrokeWidth: 1,
-         //Number - Spacing between each of the X value sets
-         barValueSpacing: 5,
-         //Number - Spacing between data sets within X values
-         barDatasetSpacing: 4,
-         //String - A legend template
-         legendTemplate: "",
-         //Boolean - whether to make the chart responsive
-         responsive: true,
-         maintainAspectRatio: true
-       };
+	     	            {
+	     	              label: "Electronics",
+	     	              fillColor: "#4286f4",
+	     	              strokeColor: "rgba(210, 214, 222, 1)",
+	     	              pointColor: "rgba(210, 214, 222, 1)",
+	     	              pointStrokeColor: "#c1c7d1",
+	     	              pointHighlightFill: "#4286f4",
+	     	              pointHighlightStroke: "rgba(220,220,220,1)",
+	     	              data: arr
+	     	            }
+	     	           ]
+	     	        };
+
+	     	   var barChartCanvas = $("#barChart3").get(0).getContext("2d");
+	            var barChart = new Chart(barChartCanvas);
+	            var barChartData = areaChartData;
+	            var barChartOptions = {
+	              //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+	              scaleBeginAtZero: true,
+	              //Boolean - Whether grid lines are shown across the chart
+	              scaleShowGridLines: true,
+	              //String - Colour of the grid lines
+	              scaleGridLineColor: "rgba(0,0,0,.05)",
+	              //Number - Width of the grid lines
+	              scaleGridLineWidth: 1,
+	              //Boolean - Whether to show horizontal lines (except X axis)
+	              scaleShowHorizontalLines: true,
+	              //Boolean - Whether to show vertical lines (except Y axis)
+	              scaleShowVerticalLines: true,
+	              //Boolean - If there is a stroke on each bar
+	              barShowStroke: true,
+	              //Number - Pixel width of the bar stroke
+	              barStrokeWidth: 1,
+	              //Number - Spacing between each of the X value sets
+	              barValueSpacing: 50,
+	              //Number - Spacing between data sets within X values
+	              barDatasetSpacing: 50,
+	              //String - A legend template
+	              legendTemplate: "",
+	              //Boolean - whether to make the chart responsive
+	              maintainAspectRatio: false
+	            };
 
        barChartOptions.datasetFill = false;
        barChart.Bar(barChartData, barChartOptions);
@@ -307,48 +304,48 @@ $(function () {
 	var areaChartData = {
 	          labels: [${x}],
 	          datasets: [
-	            {
-	              label: "Work out",
-	              fillColor: "#00ffff",
-	              strokeColor: "rgba(210, 214, 222, 1)",
-	              pointColor: "rgba(210, 214, 222, 1)",
-	              pointStrokeColor: "#c1c7d1",
-	              pointHighlightFill: "#00ffff",
-	              pointHighlightStroke: "rgba(220,220,220,1)",
-	              data: arr
-	            }
-	           ]
-	        };
-	   var barChartCanvas = $("#barChart4").get(0).getContext("2d");
-       var barChart = new Chart(barChartCanvas);
-       var barChartData = areaChartData;
-       var barChartOptions = {
-         //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
-         scaleBeginAtZero: true,
-         //Boolean - Whether grid lines are shown across the chart
-         scaleShowGridLines: true,
-         //String - Colour of the grid lines
-         scaleGridLineColor: "rgba(0,0,0,.05)",
-         //Number - Width of the grid lines
-         scaleGridLineWidth: 1,
-         //Boolean - Whether to show horizontal lines (except X axis)
-         scaleShowHorizontalLines: true,
-         //Boolean - Whether to show vertical lines (except Y axis)
-         scaleShowVerticalLines: true,
-         //Boolean - If there is a stroke on each bar
-         barShowStroke: true,
-         //Number - Pixel width of the bar stroke
-         barStrokeWidth: 1,
-         //Number - Spacing between each of the X value sets
-         barValueSpacing: 5,
-         //Number - Spacing between data sets within X values
-         barDatasetSpacing: 4,
-         //String - A legend template
-         legendTemplate: "",
-         //Boolean - whether to make the chart responsive
-         responsive: true,
-         maintainAspectRatio: true
-       };
+	     	            {
+	     	              label: "Electronics",
+	     	              fillColor: "#4286f4",
+	     	              strokeColor: "rgba(210, 214, 222, 1)",
+	     	              pointColor: "rgba(210, 214, 222, 1)",
+	     	              pointStrokeColor: "#c1c7d1",
+	     	              pointHighlightFill: "#4286f4",
+	     	              pointHighlightStroke: "rgba(220,220,220,1)",
+	     	              data: arr
+	     	            }
+	     	           ]
+	     	        };
+
+	     	   var barChartCanvas = $("#barChart4").get(0).getContext("2d");
+	            var barChart = new Chart(barChartCanvas);
+	            var barChartData = areaChartData;
+	            var barChartOptions = {
+	              //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
+	              scaleBeginAtZero: true,
+	              //Boolean - Whether grid lines are shown across the chart
+	              scaleShowGridLines: true,
+	              //String - Colour of the grid lines
+	              scaleGridLineColor: "rgba(0,0,0,.05)",
+	              //Number - Width of the grid lines
+	              scaleGridLineWidth: 1,
+	              //Boolean - Whether to show horizontal lines (except X axis)
+	              scaleShowHorizontalLines: true,
+	              //Boolean - Whether to show vertical lines (except Y axis)
+	              scaleShowVerticalLines: true,
+	              //Boolean - If there is a stroke on each bar
+	              barShowStroke: true,
+	              //Number - Pixel width of the bar stroke
+	              barStrokeWidth: 1,
+	              //Number - Spacing between each of the X value sets
+	              barValueSpacing: 50,
+	              //Number - Spacing between data sets within X values
+	              barDatasetSpacing: 50,
+	              //String - A legend template
+	              legendTemplate: "",
+	              //Boolean - whether to make the chart responsive
+	              maintainAspectRatio: false
+	            };
 
        barChartOptions.datasetFill = false;
        barChart.Bar(barChartData, barChartOptions);
