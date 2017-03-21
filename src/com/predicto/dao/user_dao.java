@@ -13,8 +13,14 @@ import javax.servlet.http.HttpSessionContext;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import com.predicto.model.*;
 @Repository("user_dao")
 public class user_dao {
@@ -153,7 +159,46 @@ public class user_dao {
 		        }
 		 
 		    });
-		return daily_Data;
+		return daily_Data;	
+	}
+	public void pushFood()
+	{
+		setDataSource();
 		
+		String sql="SELECT * FROM user";
+		
+		final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		final Date date = new Date();
+		
+		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
+			int id;
+			String sql;
+			@Override   
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				id = rs.getInt("id");
+				sql = "INSERT INTO daily_food_details(user_id,intake_date,calories,food_intake) VALUES('"+id+"','"+dateFormat.format(date)+"','0','')";
+				template1.update(sql);
+				return id;
+			}
+	    });
+	}
+
+	public double findCal(int food_id, int cnt) {
+		// TODO Auto-generated method stub
+		setDataSource();
+		String sql="SELECT calories FROM food_details where id="+food_id+"";
+		SqlRowSet srs= template1.queryForRowSet(sql);
+		srs.next();
+		return srs.getDouble("calories")*cnt;
+	}
+	
+	public void updateCal(int id, double total_cal, String item_str) {
+		setDataSource();
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		
+		String sql="UPDATE daily_food_details SET calories = calories + "+total_cal+", food_intake = CONCAT(food_intake,',"+item_str+"') WHERE user_id = "+id+" AND intake_date ='" + dateFormat.format(date)+"'";
+		template1.update(sql);
 	}
 }

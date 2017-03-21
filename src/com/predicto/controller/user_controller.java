@@ -348,18 +348,27 @@ public class user_controller {
 		if(invalid(session))
 			return "redirect:login";
 		
-		String id,cnt;
+		int id,cnt;
+		double total_cal = 0;
 		String[] items = item_str.split(",");
 		for(String i : items)
 		{
 			String[] vals = i.split(":");
-			id = vals[0];
-			cnt = vals[1];
+			id = Integer.parseInt(vals[0]);
+			cnt = Integer.parseInt(vals[1]);
 			//id - of food item, cnt - number of items consumed
-			System.out.println("ID: " + id + ", Count: " + cnt);
+			//System.out.println("ID: " + id + ", Count: " + cnt);
+			total_cal += userDao.findCal(id, cnt);
 		}
+		userDao.updateCal((Integer)session.getAttribute("user_id"), total_cal, item_str);
 		return "redirect:daily_food_details";
 		
+	}
+	@RequestMapping("push_food")
+	public ModelAndView push(HttpSession session)
+	{
+		userDao.pushFood();
+		return new ModelAndView("opt_view");
 	}
 	@RequestMapping("set_notif_read")
 	public ModelAndView set_notif_read(HttpSession session)

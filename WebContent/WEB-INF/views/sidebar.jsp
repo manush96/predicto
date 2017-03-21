@@ -36,6 +36,7 @@
 	                    <li><a href="stores/locate"><i class="fa fa-street-view"></i> Locate Nearby </a></li>
 	                    <li><a href="stores/push"><i class="fa fa-street-view"></i> Push Daily </a></li>
 	                    <li><a href="stores/push_weekly"><i class="fa fa-street-view"></i> Push Weekly </a></li>
+	                    <li><a href="user/push_food"><i class="fa fa-street-view"></i> Push Food Details </a></li>
 	                </ul>
 	            </li>
 	            <li class="treeview">
