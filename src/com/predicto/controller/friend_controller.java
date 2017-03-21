@@ -1,9 +1,12 @@
 package com.predicto.controller;
 
+import com.predicto.model.Daily_data;
 import com.predicto.model.Friend;
 import com.predicto.model.User;
-
+import com.ibm.icu.text.SimpleDateFormat;
 import com.predicto.dao.friend_dao;
+import com.predicto.dao.user_dao;
+
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
@@ -20,6 +23,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.ParseException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -169,7 +173,7 @@ public class friend_controller {
 	}
 	
 	@RequestMapping("get_comparison")
-	public ModelAndView get_comparison(@RequestParam("ids")String ids,HttpSession session)
+	public ModelAndView get_comparison(@RequestParam("ids")String ids,HttpSession session) throws Exception
 	{
 		if(invalid(session))
 			return new ModelAndView("goto_login");
@@ -177,8 +181,81 @@ public class friend_controller {
 		List<Friend> friends = friend_dao.get_comparison((Integer) session.getAttribute("user_id"),ids);
 		
 		ModelAndView model=new ModelAndView();
+		
 		model.addObject("friends",friends);
+		ArrayList<String> run1=new ArrayList<String>();
+		ArrayList<String> walk1=new ArrayList<String>();
+		ArrayList<String> cycle1=new ArrayList<String>();
+		ArrayList<String> work1=new ArrayList<String>();
+		for(Friend f:friends)
+		{
+			List<Daily_data> l1=get_Daily(String.valueOf(f.getId()));
+			String run="";
+			String walk="";
+			String cycle="";
+			String work="";
+			String ss="";
+
+			String calories="";
+			for(int i=0;i<l1.size();i++)
+			{
+				Daily_data d=new Daily_data();
+				d=l1.get(i);
+				if(i==0)
+				{
+					String te=d.getDate();
+					te=te.substring(0,10);
+					Date date=new SimpleDateFormat("yyyy-mm-dd").parse(te);
+					Calendar c = Calendar.getInstance();
+					c.setTime(date);
+					String[] days={"","sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
+					int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+					ss="'"+days[dayOfWeek]+ss+te+"'";
+					run=run+d.getRun();
+					walk=walk+d.getWalk();
+					cycle=cycle+d.getCycle();
+					work=work+d.getWorking();
+					calories=calories+d.getCalories();
+					
+				}
+				else
+				{ 
+					String te=d.getDate();
+					te=te.substring(0, 10);
+					Date date=new SimpleDateFormat("yyyy-mm-dd").parse(te);
+					Calendar c = Calendar.getInstance();
+					c.setTime(date);
+					String[] days={"","sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
+					int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+					ss=ss+","+"'"+days[dayOfWeek]+te+"'";
+					
+					run=run+","+d.getRun();
+					walk=walk+","+d.getWalk();
+					cycle=cycle+","+d.getCycle();
+					work=work+","+d.getWorking();
+					calories=calories+","+d.getCalories();
+				}
+			}
+			System.out.println(work+"ebol");
+			run1.add(run);
+			walk1.add(walk);
+			cycle1.add(cycle);
+			work1.add(work);
+		}
+		model.addObject("run",run1);
+		model.addObject("walk",walk1);
+		model.addObject("cycle",cycle1);
+		model.addObject("work",work1);
 		model.setViewName("get_comparison");
 		return model;
 	}
+	user_dao userDao=new user_dao();
+	public List<Daily_data> get_Daily(String s1) throws ParseException
+	{
+		System.out.println("it is here");
+		List<Daily_data> l=userDao.get_daily_data(s1);
+
+		return l;
+	}
+
 }

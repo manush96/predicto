@@ -136,6 +136,7 @@ public class user_dao {
 	public java.util.List<Daily_data> get_daily_data(String s)
 	{
 		setDataSource();
+		System.out.println("user_Dao ma");
 		String sql="SELECT * FROM daily_exercise where user_id="+s+" AND  DATE_ADD(date,INTERVAL 7 DAY)";
 		java.util.List<Daily_data> daily_Data = template1.query(sql, new RowMapper<Daily_data>() {
 			 
@@ -145,7 +146,7 @@ public class user_dao {
 		         daily.setRun(rs.getString("run"));
 		         daily.setCycle(rs.getString("cycle"));
 		         daily.setWalk(rs.getString("walk"));
-		         
+		        
 		         daily.setWorking(rs.getString("working"));
 		         daily.setCalories(rs.getString("calories"));
 		         daily.setDate(rs.getString("date"));

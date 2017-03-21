@@ -1,5 +1,7 @@
 package com.predicto.model;
 
+import com.predicto.dao.friend_dao;
+
 public class Friend {
 	
 	private int id;
@@ -8,7 +10,7 @@ public class Friend {
 	private int height;
 	private int weight;
 	private double bmi;
-	
+
 	public int getId() {
 		return id;
 	}

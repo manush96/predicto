@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.predicto.model.Daily_data;
 import com.predicto.model.Friend;
 import com.predicto.model.User;
 
@@ -97,6 +98,7 @@ public class friend_dao {
 			public Friend mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Friend f = new Friend();
 				f.setId(rs.getInt("id"));
+				
 				f.setUsername(rs.getString("username"));
 				int w = rs.getInt("weight");
 				int h = rs.getInt("height");

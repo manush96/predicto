@@ -30,7 +30,12 @@ public class stores_dao {
 		datasource.setUrl(url);
         template1 = new JdbcTemplate(datasource);
 	}
-	
+	public void save_weekly_data(String id,String alco,String bp_1,String bp_2,String ch_1,String ch_2,String cigs,String sugar)
+	{
+		setDataSource();
+		String sql="INSERT INTO `weekly_data`(user_id,alcohol_intake,blood_pressure_sys,blood_pressure_dia,blood_sugar, smokes,cholesterol_ldl, cholesterol_hdl) VALUES ('"+id+"','"+alco+"','"+bp_1+"','"+bp_2+"','"+sugar+"','"+cigs+"','"+ch_1+"','"+ch_2+"')";
+		template1.update(sql);
+	}
 	public int addStore(Store store)
 	{
 		setDataSource();

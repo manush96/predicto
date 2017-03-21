@@ -4,6 +4,8 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <link href="resources/css/comparison.css" rel="stylesheet" type="text/css"/>
+<%@ page import = "java.util.Map" %>
+
 <c:set var="len" value="${fn:length(friends)}"></c:set>
 <c:if test="${fn:length(friends) gt 0}">
 	<div class="col-md-12">
@@ -127,6 +129,26 @@
 		</c:forEach> --%>
 	</div>
 </c:if>
+<div class="box-header with-border">
+		<h3 class="box-title">Running</h3>
+		<div class="box-tools pull-right">
+			<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+		</div>
+	</div>
+	<div class="box-body">
+		<canvas id="barChart" style="height:250px"></canvas>
+	</div><!-- /.box-body -->
+</div>
+
+<c:forEach items="${run}" var="fr" varStatus="loop">
+${fr }<br/>
+</c:forEach>
+${run}<%-- 
+${walk}
+${cycle}
+${work} --%>
 <c:if test="${fn:length(friends) eq 0}">
 	<h2 class="text-center">Invalid Comparison! <a href="friend/compare">Retry?</a></h2>
 </c:if>
+

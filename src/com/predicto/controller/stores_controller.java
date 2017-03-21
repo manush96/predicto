@@ -206,4 +206,23 @@ public class stores_controller {
 		stores_dao.pushWeekly();
 		return new ModelAndView("opt_view");
 	}
+	@RequestMapping("weekly_form")
+	public ModelAndView weekly_form()
+	{
+		return new ModelAndView("weekly_form");
+	}
+	@RequestMapping("save_weekly_data")
+	public String save_weekly_data(HttpSession session,@RequestParam("alcohol")String alco,@RequestParam("bp_1")String bp_1,@RequestParam("bp_2")String bp_2,@RequestParam("ch_1")String ch_1,@RequestParam("ch_2")String ch_2,@RequestParam("cigs")String cigs,@RequestParam("sugar")String sugar)
+	{
+		
+		int i=(Integer)session.getAttribute("user_id");
+		String id=String.valueOf(i);
+		stores_dao.save_weekly_data(id,alco,bp_1,bp_2,ch_1,ch_2,cigs,sugar);
+		
+		
+		return "redirect:d";
+	
+	}
+
+
 }
