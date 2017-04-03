@@ -4,6 +4,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.*;
 import org.ow2.util.base64.Base64;
@@ -167,14 +168,16 @@ public class user_controller {
 
         try {
         	byte[] bytes = file.getBytes();
+        	DateFormat dateFormat = new java.text.SimpleDateFormat("dd_MM_ss");
+        	Date date = new Date();
         	System.out.println(System.getProperty("user.dir"));
         	String user_id=session.getAttribute("user_id").toString();
-            Path path = Paths.get(System.getProperty("user.dir")+"\\img\\fulls\\"+user_id+"\\" + file.getOriginalFilename());
-            System.out.println(System.getProperty("user.dir")+"\\img\\fulls\\"+user_id+"\\" + file.getOriginalFilename());
+        	System.out.println(dateFormat.format(date)+"budh-");
+        	String name=dateFormat.format(date)+".jpg";
+            Path path = Paths.get(System.getProperty("user.dir")+"\\img\\fulls\\"+user_id+"\\" +name);
+            System.out.println(System.getProperty("user.dir")+"\\img\\fulls\\"+user_id+"\\" +name);
             System.out.println(path);
             Files.write(path, bytes);
-            
-            
         } catch (IOException e) {
             e.printStackTrace();
         }

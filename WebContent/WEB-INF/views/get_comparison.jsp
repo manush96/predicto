@@ -152,3 +152,4 @@ ${work} --%>
 	<h2 class="text-center">Invalid Comparison! <a href="friend/compare">Retry?</a></h2>
 </c:if>
 
+	
