@@ -257,13 +257,6 @@ public class user_controller {
 		userDao.save_daily_exercise(run,walk,cycle,working,session.getAttribute("user_id").toString(),cal);
 		return "redirect:dashboard";
 	}
-	@RequestMapping("weekly_data")
-	public ModelAndView weekly_data_collect(@RequestParam(value = "id", required=false) Integer id,HttpSession session)
-	{
-		if(invalid(session))
-			return new ModelAndView("goto_login");
-		return new ModelAndView("weekly_form");
-	}
 	@RequestMapping("daily_report_view")
 	public ModelAndView daily_report_view(HttpSession session) throws ParseException
 	{
@@ -332,6 +325,28 @@ public class user_controller {
 		model.setViewName("daily_charts");
 		return model;
 	}
+	@RequestMapping("weekly_data")
+	public ModelAndView weekly_data_collect(@RequestParam(value = "id", required=false) Integer id,HttpSession session)
+	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
+		ModelAndView model = new ModelAndView();
+		model.addObject("notif_id",id);
+		model.setViewName("weekly_form");
+		return model;
+	}
+	@RequestMapping("save_weekly_data")
+	public String save_weekly_data(HttpSession session,@RequestParam("alcohol")String alco,@RequestParam("bp_sys") String bp_1,@RequestParam("bp_2")String bp_2,@RequestParam("ch_1")String ch_1,@RequestParam("ch_2")String ch_2,@RequestParam("cigs")String cigs,@RequestParam("sugar")String sugar,@RequestParam("notif_id")int notif_id)
+	{
+		
+		int i=(Integer)session.getAttribute("user_id");
+		String id=String.valueOf(i);
+		System.out.println("---------"+bp_1);
+		userDao.delete_notif(notif_id);
+		userDao.save_weekly_data(id,alco,bp_1,bp_2,ch_1,ch_2,cigs,sugar);	
+		return "redirect:dashboard";
+	
+	}
 	@RequestMapping("daily_food_details")
 	public ModelAndView daily_food_details(@RequestParam(value = "id", required=false) Integer id,HttpSession session)
 	{
@@ -364,12 +379,6 @@ public class user_controller {
 		return "redirect:daily_food_details";
 		
 	}
-	@RequestMapping("push_food")
-	public ModelAndView push_food(HttpSession session)
-	{
-		userDao.pushFood();
-		return new ModelAndView("opt_view");
-	}
 	@RequestMapping("set_notif_read")
 	public ModelAndView set_notif_read(HttpSession session)
 	{
@@ -380,34 +389,22 @@ public class user_controller {
 		userDao.set_notif_read(id);
 		return new ModelAndView("opt_view");
 	}
-	@RequestMapping("push_weekly")
-	public ModelAndView push_weekly(HttpSession session)
-	{
-		userDao.pushWeekly();
-		return new ModelAndView("opt_view");
-	}
-	@RequestMapping("weekly_form")
-	public ModelAndView weekly_form()
-	{
-		return new ModelAndView("weekly_form");
-	}
-	@RequestMapping("save_weekly_data")
-	public String save_weekly_data(HttpSession session,@RequestParam("alcohol")String alco,@RequestParam("bp_1")String bp_1,@RequestParam("bp_2")String bp_2,@RequestParam("ch_1")String ch_1,@RequestParam("ch_2")String ch_2,@RequestParam("cigs")String cigs,@RequestParam("sugar")String sugar)
-	{
-		
-		int i=(Integer)session.getAttribute("user_id");
-		String id=String.valueOf(i);
-		userDao.save_weekly_data(id,alco,bp_1,bp_2,ch_1,ch_2,cigs,sugar);
-		
-		
-		return "redirect:d";
-	
-	}
 	@RequestMapping("push_daily")
 	public ModelAndView push_daily(HttpSession session)
 	{
 		userDao.pushDaily();
 		return new ModelAndView("opt_view");
 	}
-	
+	@RequestMapping("push_weekly")
+	public ModelAndView push_weekly(HttpSession session)
+	{
+		userDao.pushWeekly();
+		return new ModelAndView("opt_view");
+	}
+	@RequestMapping("push_food")
+	public ModelAndView push_food(HttpSession session)
+	{
+		userDao.pushFood();
+		return new ModelAndView("opt_view");
+	}
 }

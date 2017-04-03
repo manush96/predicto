@@ -40,12 +40,6 @@
 	                </ul>
 	            </li>
 	            <li class="treeview">
-	                <a ref=""><i class="fa fa-lightbulb-o"></i><span> Tips</span> <i class="fa fa-angle-left pull-right"></i></a>
-	                <ul class="treeview-menu">
-	                    <li><a href="tips/view"><i class="fa fa-quote-right"></i> View Tips </a></li>
-	                </ul>
-	            </li>
-	            <li class="treeview">
 	                <a ref=""><i class="fa fa-user"></i><span> Friends</span> <i class="fa fa-angle-left pull-right"></i></a>
 	                <ul class="treeview-menu">
 	                    <li><a href="friend/add"><i class="fa fa-plus"></i> Add Friends </a></li>
