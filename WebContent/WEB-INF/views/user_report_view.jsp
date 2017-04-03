@@ -21,10 +21,11 @@
 		}  
 		request.setAttribute("imageUrlList", imageUrlList);
 	 %>
+	
 <div class="gallery">
-	<div class="content">
+	<div class="content" style="margin-left:50px">
 			<c:forEach var="img" items="${imageUrlList}">  
-				<div class="media all people">
+				<div class="media all people" style="margin-right:50px;margin-bottom:30x">
 					<a href="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}"><img src="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}" alt="" title="This right here is a caption." /> </a>
 				</div> 
 			</c:forEach>
