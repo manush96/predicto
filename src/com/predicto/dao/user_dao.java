@@ -80,7 +80,27 @@ public class user_dao {
 			}
 	    });
 	}
-
+	public Daily_data get_dashboard_action(int id)
+	{
+		String sql="select sum(run),sum(walk),sum(cycle),sum(working),sum(calories) from daily_exercise where user_id='"+id+"'";
+		setDataSource();
+		java.util.List<Daily_data> daily_Data = template1.query(sql, new RowMapper<Daily_data>() {
+			 
+		     @Override   
+			 public Daily_data mapRow(ResultSet rs, int rowNum) throws SQLException {
+		         Daily_data daily=new Daily_data();
+		         daily.setRun(rs.getString("sum(run)"));
+		         daily.setCycle(rs.getString("sum(cycle)"));
+		         daily.setWalk(rs.getString("sum(walk)"));
+		        
+		         daily.setWorking(rs.getString("sum(working)"));
+		         daily.setCalories(rs.getString("sum(calories)"));
+		    	 return daily;
+		        }
+		 
+		    });
+		return daily_Data.get(0);
+	}
 	public int addUser(User user)
 	{
 		setDataSource();
