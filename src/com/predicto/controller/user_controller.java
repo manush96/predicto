@@ -279,42 +279,21 @@ public class user_controller {
 		{
 			Daily_data d=new Daily_data();
 			d=l.get(i);
-			if(i==0)
-			{
-				String te=d.getDate();
-				te=te.substring(0,10);
-				Date date=new SimpleDateFormat("yyyy-mm-dd").parse(te);
-				Calendar c = Calendar.getInstance();
-				c.setTime(date);
-				String[] days={"","sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
-				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-				ss="'"+days[dayOfWeek]+ss+te+"'";
-				run=run+d.getRun();
-				walk=walk+d.getWalk();
-				cycle=cycle+d.getCycle();
-				work=work+d.getWorking();
-				calories=calories+d.getCalories();
-				
-			}
-			else
-			{ 
-				String te=d.getDate();
-				te=te.substring(0, 10);
-				Date date=new SimpleDateFormat("yyyy-mm-dd").parse(te);
-				Calendar c = Calendar.getInstance();
-				c.setTime(date);
-				String[] days={"","sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
-				int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-				ss=ss+","+"'"+days[dayOfWeek]+te+"'";
-				
-				run=run+","+d.getRun();
-				walk=walk+","+d.getWalk();
-				cycle=cycle+","+d.getCycle();
-				work=work+","+d.getWorking();
-				calories=calories+","+d.getCalories();
-			}
+			
+			String date = d.getDate();
+			date = date.substring(0, 10);
+			run += "{ year: '"+ date +"', value: "+d.getRun()+" },";
+			walk += "{ year: '"+ date +"', value: "+d.getWalk()+" },";
+			cycle += "{ year: '"+ date +"', value: "+d.getCycle()+" },";
+			work += "{ year: '"+ date +"', value: "+d.getWorking()+" },";
+			calories += "{ year: '"+ date +"', value: "+d.getCalories()+" },";
 		}
-		System.out.println(work+"ebol");
+		run = run.substring(0,run.length()-1);
+		walk = walk.substring(0,walk.length()-1);
+		cycle = cycle.substring(0,cycle.length()-1);
+		work = work.substring(0,work.length()-1);
+		calories = calories.substring(0,calories.length()-1);
+		
 		model.addObject("run",run);
 		model.addObject("walk",walk);
 		model.addObject("cycle",cycle);
@@ -341,7 +320,6 @@ public class user_controller {
 		
 		int i=(Integer)session.getAttribute("user_id");
 		String id=String.valueOf(i);
-		System.out.println("---------"+bp_1);
 		userDao.delete_notif(notif_id);
 		userDao.save_weekly_data(id,alco,bp_1,bp_2,ch_1,ch_2,cigs,sugar);	
 		return "redirect:dashboard";
