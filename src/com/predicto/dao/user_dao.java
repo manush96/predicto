@@ -38,6 +38,48 @@ public class user_dao {
 			datasource.setUrl(url);
 	        template1 = new JdbcTemplate(datasource);
 	}
+	public void pushDaily()
+	{
+		setDataSource();
+		
+		String sql = "DELETE FROM notifications WHERE type = '0' AND status = '0'";
+		template1.update(sql);
+		
+		sql="SELECT * FROM user";
+		
+		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
+			int id;
+			String sql;
+			@Override   
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				id = rs.getInt("id");
+				sql = "INSERT INTO notifications(user_id,type,status) VALUES('"+id+"','0','0')";
+				template1.update(sql);
+				return id;
+			}
+	    });
+	}
+	public void pushWeekly()
+	{
+		setDataSource();
+		
+		String sql = "DELETE FROM notifications WHERE type = '1' AND status = '0'";
+		template1.update(sql);
+		
+		sql="SELECT * FROM user";
+		
+		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
+			int id;
+			String sql;
+			@Override   
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				id = rs.getInt("id");
+				sql = "INSERT INTO notifications(user_id,type,status) VALUES('"+id+"','1','0')";
+				template1.update(sql);
+				return id;
+			}
+	    });
+	}
 
 	public int addUser(User user)
 	{
@@ -45,6 +87,12 @@ public class user_dao {
 		String sql="insert into user(username,password,email,heredity) values('"+user.getUsername()+"','"+user.getPassword()+"','"+user.getEmail()+"','No data for now')";
 		template1.update(sql);
 		return template1.queryForInt("select MAX(id) from user");
+	}
+	public void save_weekly_data(String id,String alco,String bp_1,String bp_2,String ch_1,String ch_2,String cigs,String sugar)
+	{
+		setDataSource();
+		String sql="INSERT INTO `weekly_data`(user_id,alcohol_intake,blood_pressure_sys,blood_pressure_dia,blood_sugar, smokes,cholesterol_ldl, cholesterol_hdl) VALUES ('"+id+"','"+alco+"','"+bp_1+"','"+bp_2+"','"+sugar+"','"+cigs+"','"+ch_1+"','"+ch_2+"')";
+		template1.update(sql);
 	}
 	public void addInitialData(User user, int id)
 	{

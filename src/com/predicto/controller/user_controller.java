@@ -262,7 +262,7 @@ public class user_controller {
 	{
 		if(invalid(session))
 			return new ModelAndView("goto_login");
-		return new ModelAndView("daily_exercise");
+		return new ModelAndView("weekly_form");
 	}
 	@RequestMapping("daily_report_view")
 	public ModelAndView daily_report_view(HttpSession session) throws ParseException
@@ -357,7 +357,7 @@ public class user_controller {
 			id = Integer.parseInt(vals[0]);
 			cnt = Integer.parseInt(vals[1]);
 			//id - of food item, cnt - number of items consumed
-			//System.out.println("ID: " + id + ", Count: " + cnt);
+			System.out.println("ID: " + id + ", Count: " + cnt);
 			total_cal += userDao.findCal(id, cnt);
 		}
 		userDao.updateCal((Integer)session.getAttribute("user_id"), total_cal, item_str);
@@ -365,7 +365,7 @@ public class user_controller {
 		
 	}
 	@RequestMapping("push_food")
-	public ModelAndView push(HttpSession session)
+	public ModelAndView push_food(HttpSession session)
 	{
 		userDao.pushFood();
 		return new ModelAndView("opt_view");
@@ -378,6 +378,35 @@ public class user_controller {
 		
 		int id = (Integer)session.getAttribute("user_id");
 		userDao.set_notif_read(id);
+		return new ModelAndView("opt_view");
+	}
+	@RequestMapping("push_weekly")
+	public ModelAndView push_weekly(HttpSession session)
+	{
+		userDao.pushWeekly();
+		return new ModelAndView("opt_view");
+	}
+	@RequestMapping("weekly_form")
+	public ModelAndView weekly_form()
+	{
+		return new ModelAndView("weekly_form");
+	}
+	@RequestMapping("save_weekly_data")
+	public String save_weekly_data(HttpSession session,@RequestParam("alcohol")String alco,@RequestParam("bp_1")String bp_1,@RequestParam("bp_2")String bp_2,@RequestParam("ch_1")String ch_1,@RequestParam("ch_2")String ch_2,@RequestParam("cigs")String cigs,@RequestParam("sugar")String sugar)
+	{
+		
+		int i=(Integer)session.getAttribute("user_id");
+		String id=String.valueOf(i);
+		userDao.save_weekly_data(id,alco,bp_1,bp_2,ch_1,ch_2,cigs,sugar);
+		
+		
+		return "redirect:d";
+	
+	}
+	@RequestMapping("push_daily")
+	public ModelAndView push_daily(HttpSession session)
+	{
+		userDao.pushDaily();
 		return new ModelAndView("opt_view");
 	}
 	

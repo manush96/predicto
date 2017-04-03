@@ -24,6 +24,8 @@
 	    border-top: 1px solid #ccc;
 	    border-right: 1px solid #ccc;
 	    transition: all 0.2s ease;
+	    background-size: 100% !important;
+	    
 	}
 	.category_icon:hover
 	{
@@ -197,7 +199,7 @@
 <div class="col-md-8 col-md-offset-2" id="select_categories">
 	<c:forEach var="row" items="${categories.rows}">
 		<div class="col-md-4">
-			<div class="col-md-12 category_icon" rel="${row.id}">
+			<div class="col-md-12 category_icon"  style="background: url(resources/img/${row.image})" rel="${row.id}">
 				<h1>${row.name}</h1>
 			</div>
 		</div>
@@ -214,7 +216,7 @@
 	</select>
 	<div class="clearfix"></div><br/><br/>
 	<div class="col-md-12 lr0pad text-center">
-		<button class="btn btn-success" style="float: none" onclick="add_food_item()">
+		<button class="btn btn-success" style="float: none; no-repeat;" backonclick="add_food_item()">
 			<span class="glyphicon glyphicon-plus"></span>
 			Add
 		</button>

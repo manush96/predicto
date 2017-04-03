@@ -31,7 +31,7 @@
 	<div class="container demo-1">
 		<!-- Top Navigation -->
 		<div class="main clearfix">
-			<form id="nl-form" class="nl-form" action="stores/save_weekly_data">
+			<form id="nl-form" class="nl-form" action="user/save_weekly_data">
 				<p>This week's alcohol intake was  
 				<input type="number" name="alcohol" value="1" placeholder="1" id="running"/>
 						ML.
