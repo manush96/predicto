@@ -112,11 +112,11 @@ $(function () {
          //Boolean - If there is a stroke on each bar
          barShowStroke: true,
          //Number - Pixel width of the bar stroke
-         barStrokeWidth: 1,
+         barStrokeWidth: 2,
          //Number - Spacing between each of the X value sets
-         barValueSpacing: 50,
+         barValueSpacing: 3,
          //Number - Spacing between data sets within X values
-         barDatasetSpacing: 50,
+         barDatasetSpacing: 1,
          //String - A legend template
          legendTemplate: "",
          //Boolean - whether to make the chart responsive
@@ -168,11 +168,11 @@ $(function () {
 	              //Boolean - If there is a stroke on each bar
 	              barShowStroke: true,
 	              //Number - Pixel width of the bar stroke
-	              barStrokeWidth: 1,
+	              barStrokeWidth: 2,
 	              //Number - Spacing between each of the X value sets
-	              barValueSpacing: 50,
+	              barValueSpacing: 3,
 	              //Number - Spacing between data sets within X values
-	              barDatasetSpacing: 50,
+	              barDatasetSpacing: 1,
 	              //String - A legend template
 	              legendTemplate: "",
 	              //Boolean - whether to make the chart responsive
@@ -280,11 +280,11 @@ $(function () {
 	              //Boolean - If there is a stroke on each bar
 	              barShowStroke: true,
 	              //Number - Pixel width of the bar stroke
-	              barStrokeWidth: 1,
+	              barStrokeWidth: 2,
 	              //Number - Spacing between each of the X value sets
-	              barValueSpacing: 50,
+	              barValueSpacing: 3,
 	              //Number - Spacing between data sets within X values
-	              barDatasetSpacing: 50,
+	              barDatasetSpacing: 1,
 	              //String - A legend template
 	              legendTemplate: "",
 	              //Boolean - whether to make the chart responsive
@@ -336,11 +336,11 @@ $(function () {
 	              //Boolean - If there is a stroke on each bar
 	              barShowStroke: true,
 	              //Number - Pixel width of the bar stroke
-	              barStrokeWidth: 1,
+	              barStrokeWidth: 2,
 	              //Number - Spacing between each of the X value sets
-	              barValueSpacing: 50,
+	              barValueSpacing: 3,
 	              //Number - Spacing between data sets within X values
-	              barDatasetSpacing: 50,
+	              barDatasetSpacing: 1,
 	              //String - A legend template
 	              legendTemplate: "",
 	              //Boolean - whether to make the chart responsive

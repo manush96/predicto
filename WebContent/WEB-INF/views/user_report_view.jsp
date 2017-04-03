@@ -7,12 +7,13 @@
 <%@include file="sidebar.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link href="resources/css/main.css" rel="stylesheet"/>
-<div class="gallery">
 
-	<%	
+<%	
+		int user_id= (Integer)session.getAttribute("user_id");
+		
 		String path= System.getProperty("user.dir");
 		List<String> imageUrlList = new ArrayList();  
-		File imageDir = new File(path+"/img/fulls");  
+		File imageDir = new File(path+"/img/fulls/"+user_id);  
 		for(File imageFile : imageDir.listFiles()){  
 				String imageFileName = imageFile.getName();  
 	  	imageUrlList.add(imageFileName);  
@@ -20,10 +21,11 @@
 		}  
 		request.setAttribute("imageUrlList", imageUrlList);
 	 %>
-		<div class="content">
+<div class="gallery">
+	<div class="content">
 			<c:forEach var="img" items="${imageUrlList}">  
 				<div class="media all people">
-					<a href="resources/img/fulls/${img}"><img src="resources/img/fulls/${img}" alt="" title="This right here is a caption." /> </a>
+					<a href="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}"><img src="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}" alt="" title="This right here is a caption." /> </a>
 				</div> 
 			</c:forEach>
 		</div>
