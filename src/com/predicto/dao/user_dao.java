@@ -80,7 +80,7 @@ public class user_dao {
 			}
 	    });
 	}
-
+	
 	public int addUser(User user)
 	{
 		setDataSource();
