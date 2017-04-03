@@ -36,7 +36,7 @@
 				<input type="number" name="alcohol" value="1" placeholder="1" id="running"/>
 						ML.
 				<p>This week's average systolic blood pressure(Higher limit) was  
-				<input type="number" name="bp_1" value="120" placeholder="120" id="running"/>mmHg.
+				<input type="number" name="bp_sys" value="120" placeholder="120" id="running"/>mmHg.
 				<p>This week's average diastolic blood pressure(lower limit) was  
 				<input type="number" name="bp_2" value="80" placeholder="80" id="running"/>mmHg.		
 				<p>This week's average Low density cholesterol level(Bad cholesterol) was  

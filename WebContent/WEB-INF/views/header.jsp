@@ -39,6 +39,12 @@
 			$("#tips_btn").click(function(){ $(this).find(".label").fadeOut("slow");});
 			$("#notif_btn").click(function(){ set_notif_read();$(this).find(".label").fadeOut("slow");	});
 			$("#friend_req_btn").click(function(){ $(this).find(".label").fadeOut("slow");	});
+			setTimeout(function()
+				{
+					$(".menu").css("height","auto");
+					$(".menu").parent().css("height","auto");
+				},100);
+			
 		});
 		function set_notif_read()
 		{
@@ -69,10 +75,10 @@
 </sql:query>
 <c:set var="tips_cnt" scope="application" value="${tips.rowCount}"/>
 <sql:query dataSource="${dataSource}" var="daily">
-	SELECT * FROM notifications WHERE user_id = ${sessionScope.user_id} AND type = 0 ORDER BY status;
+	SELECT * FROM notifications WHERE user_id = ${sessionScope.user_id} AND type = 0 AND DATE(pushed_when) = CURDATE() ORDER BY status;
 </sql:query>
 <sql:query dataSource="${dataSource}" var="weekly">
-	SELECT * FROM notifications WHERE user_id = ${sessionScope.user_id} AND type = 1 ORDER BY status;
+	SELECT * FROM notifications WHERE user_id = ${sessionScope.user_id} AND type = 1 AND DATE(pushed_when) = CURDATE() ORDER BY status;
 </sql:query>
 <sql:query dataSource="${dataSource}" var="notifs">
 	SELECT COUNT(*) AS cnt FROM notifications WHERE user_id = ${sessionScope.user_id} AND status = 0;
@@ -93,6 +99,12 @@
 		AND friend_id='${sessionScope.user_id}';
 </sql:query>
 <c:set var="friend_req_cnt" scope="application" value="${f_r_cnt.rowsByIndex[0][0]}"/>
+<script>
+	var titles = [];
+	var tips = [];
+	var index = 0;
+	var colors = ['blue','green','red','orange','purple','dark'];
+</script>
 <body class="skin-blue sidebar-mini">
 	<div id="wrapper">
 		<header class="main-header"  style="position: fixed; width: 100%">
@@ -121,9 +133,22 @@
 								<li>
 									<!-- inner menu: contains the actual data -->
 									<ul class="menu">
+										<%
+											int lp = -1;
+										%>
 										<c:forEach var="row" items="${tips.rows}">
+											<c:set var="temp" value="${row.tip}"/>
+											<%
+												lp++;
+												String tip = (String)pageContext.getAttribute("temp");
+												tip = tip.replace("\n", "<br/>").replace("\"", "\\\"").replace("'", "\'").replace("\r", "");
+											%>
+										<script>
+											titles.push("${row.tip_title}");
+											tips.push("<%=tip%>");
+										</script>	
 										<li>
-											<!-- start message --> <a>
+											<!-- start message --> <a href="javascript:show_tip(<%=lp%>)">
 												<div class="pull-left">
 													<i class="fa fa-lightbulb-o"></i>
 												</div>
@@ -136,7 +161,7 @@
 										<!-- end message -->
 									</ul>
 								</li>
-								<li class="footer"><a href="tips/view">See All tips.</a></li>
+								<li class="footer"><a href="javascript:show_tip()">See All tips.</a></li>
 							</ul></li>
 						<!-- Notifications: style can be found in dropdown.less -->
 						<li class="dropdown notifications-menu">
@@ -157,14 +182,14 @@
 										<c:forEach var="row" items="${daily.rows}">
 											<li>
 												<a href="user/daily_data?id=${row.id}"> <i class="fa fa-users text-aqua"></i>
-													Update your daily progress!
+													Update your <b>daily</b> progress!
 												</a>
 											</li>
 										</c:forEach>
 										<c:forEach var="row" items="${weekly.rows}">
 											<li>
 												<a href="user/weekly_data?id=${row.id}"> <i class="fa fa-users text-aqua"></i>
-													<%=new java.util.Date()%>
+													Update your <b>weekly</b> progress!
 												</a>
 											</li>
 										</c:forEach>
@@ -240,3 +265,54 @@
 				</div>
 			</nav>
 		</header>
+		<script type="text/javascript">
+			function next_tip()
+			{
+				index++;
+				show_tip();
+			}
+			function previous_tip()
+			{
+				index--;
+				show_tip();
+			}
+			function show_tip(ind=9999)
+			{
+				if(ind != 9999)
+					index = ind;
+				var data = {
+						title: '<h4><span class="fa fa-lightbulb-o"></span>&nbsp;&nbsp;&nbsp;<span style="font-weight: 600">' + titles[index] + "</span></h4>",
+						columnClass: 'col-sm-offset-2 col-sm-10',
+						backgroundDismiss: true,
+						type: get_color_type(),
+						content: tips[index],
+						theme: 'material',
+						closeIcon: true,
+						buttons:
+						{
+							previousTip: {
+								text: '<span class="fa fa-arrow-left"></span>&nbsp;Previous Tip',
+					            btnClass: 'btn-default pull-left',
+					            action: function(){ previous_tip(); }
+					        },
+					        nextTip: {
+					        	text: 'Next Tip <span class="fa fa-arrow-right"></span>',
+					            btnClass: 'btn-default pull-right',
+					            action: function(){ next_tip(); }
+					        },
+						}
+					}
+				if(index == (tips.length) - 1)
+					delete data.buttons.nextTip;
+				if(index == 0)
+					delete data.buttons.previousTip;
+				$.confirm
+				(data);
+			}
+			function get_color_type()
+			{
+				var len = colors.length;
+				var random = Math.floor((Math.random() * len));
+				return colors[random];
+			}
+		</script>
