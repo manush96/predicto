@@ -72,7 +72,17 @@ public class user_controller {
 		int id = (Integer)session.getAttribute("user_id");
 		int status = userDao.checkStatus(id);
 		if(status == 1)
+		{
+			ModelAndView model=new ModelAndView();
+			Daily_data d1=userDao.get_dashboard_action(id);
+			model.addObject("run",d1.getRun());
+			model.addObject("walk",d1.getWalk());
+			model.addObject("cycle",d1.getCycle());
+			model.addObject("workin",d1.getWorking());
+			model.addObject("calories",d1.getWorking());
+						
 			return new ModelAndView("user_dashboard");
+		}
 		else
 			return new ModelAndView("one_time_form");
 	}
