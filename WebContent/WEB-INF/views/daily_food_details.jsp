@@ -30,11 +30,16 @@
 	.category_icon:hover
 	{
 		background: #eee;
+		opacity: 0.6;
 	}
 	.category_icon:active
 	{
 		box-shadow: -2px 2px 2px gray;
 		margin-right: 3px;
+	}
+	.category_icon h1
+	{
+		text-shadow: 2px 0 0 #fff, -2px 0 0 #fff, 0 2px 0 #fff, 0 -2px 0 #fff, 1px 1px #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff;
 	}
 	#selected_items
 	{
@@ -216,7 +221,7 @@
 	</select>
 	<div class="clearfix"></div><br/><br/>
 	<div class="col-md-12 lr0pad text-center">
-		<button class="btn btn-success" style="float: none; no-repeat;" backonclick="add_food_item()">
+		<button class="btn btn-success" style="float: none; no-repeat;" onclick="add_food_item()">
 			<span class="glyphicon glyphicon-plus"></span>
 			Add
 		</button>
