@@ -75,13 +75,17 @@ public class user_controller {
 		{
 			ModelAndView model=new ModelAndView();
 			Daily_data d1=userDao.get_dashboard_action(id);
+			String[] chart = userDao.get_calories_comparison(id);
+			int[] growth = userDao.get_growth(id);
 			model.addObject("run",d1.getRun());
 			model.addObject("walk",d1.getWalk());
 			model.addObject("cycle",d1.getCycle());
-			model.addObject("workin",d1.getWorking());
-			model.addObject("calories",d1.getWorking());
-						
-			return new ModelAndView("user_dashboard");
+			model.addObject("working",d1.getWorking());
+			model.addObject("calories",d1.getCalories());
+			model.addObject("chart",chart);
+			model.addObject("growth",growth);
+			model.setViewName("user_dashboard");
+			return model;
 		}
 		else
 			return new ModelAndView("one_time_form");

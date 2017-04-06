@@ -115,10 +115,10 @@ public class stores_controller {
 			String lng = (String)session.getAttribute("longitude");
 			if(lat == null || lng == null)
 			{
-				lat = "23.0225";
-				lng = "72.5714";
+				lat = "17.4650059";
+				lng = "78.45099370000003";
 			}
-			String url = "http://www.medplusmart.com/GetStores.mart?latLong=("+lat+",%20"+lng+")";
+			String url = "https://www.medplusmart.com/GetStores.mart?latLong=("+lat+",%20"+lng+")";
 			
 			JSONObject json = readJsonFromUrl(url);
 			JSONArray data = (JSONArray)json.get("data");

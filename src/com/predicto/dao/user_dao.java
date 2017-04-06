@@ -92,7 +92,6 @@ public class user_dao {
 		         daily.setRun(rs.getString("sum(run)"));
 		         daily.setCycle(rs.getString("sum(cycle)"));
 		         daily.setWalk(rs.getString("sum(walk)"));
-		        
 		         daily.setWorking(rs.getString("sum(working)"));
 		         daily.setCalories(rs.getString("sum(calories)"));
 		    	 return daily;
@@ -100,6 +99,48 @@ public class user_dao {
 		 
 		    });
 		return daily_Data.get(0);
+	}
+	public String[] get_calories_comparison(int id)
+	{
+		setDataSource();
+		String sql = "SELECT daily_exercise.calories AS c_burn, daily_food_details.calories AS c_intake, date FROM `daily_exercise` JOIN daily_food_details ON daily_exercise.date = daily_food_details.intake_date WHERE daily_exercise.user_id = "+id+" AND date >DATE_SUB(CURDATE(), INTERVAL 7 DAY) ORDER BY daily_food_details.intake_date ";
+		SqlRowSet srs =template1.queryForRowSet(sql);
+		String c_burn="",c_intake="",date="";
+		
+		while(srs.next())
+		{
+			c_burn += (int) Double.parseDouble(srs.getString("c_burn"))+",";
+			c_intake += (int) Double.parseDouble(srs.getString("c_intake"))+",";
+			date += "'"+srs.getString("date")+"',";
+		}
+		c_burn = c_burn.substring(0,c_burn.length()-1);
+		c_intake = c_intake.substring(0,c_intake.length()-1);
+		date = date.substring(0,date.length()-1);
+		
+		String a[] = {date,c_burn,c_intake};
+		return a;
+	}
+	public int[] get_growth(int id)
+	{
+		setDataSource();
+		String sql = "SELECT SUM(run) AS run, SUM(walk) AS walk, SUM(working) AS working, SUM(cycle) AS cycle FROM `daily_exercise` WHERE user_id = "+id+" AND date > DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND date <= DATE_SUB(CURDATE(), INTERVAL 7 DAY) UNION SELECT SUM(run) AS run, SUM(walk) AS walk, SUM(working) AS working, SUM(cycle) AS cycle FROM `daily_exercise` WHERE user_id = "+id+" AND date > DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+		SqlRowSet srs =template1.queryForRowSet(sql);
+		int p_run,p_walk,p_cycle,p_working,c_run,c_walk,c_cycle,c_working;
+		
+		srs.next();
+		p_run = (int) Double.parseDouble(srs.getString("run"));
+		p_walk = (int) Double.parseDouble(srs.getString("walk"));
+		p_cycle = (int) Double.parseDouble(srs.getString("cycle"));
+		p_working = (int) Double.parseDouble(srs.getString("working"));
+			
+		srs.next();
+		c_run = (int) Double.parseDouble(srs.getString("run")) ;
+		c_walk = (int) Double.parseDouble(srs.getString("walk"));
+		c_cycle = (int) Double.parseDouble(srs.getString("cycle"));
+		c_working = (int) Double.parseDouble(srs.getString("working"));
+		
+		int a[] = {c_run,(c_run - p_run)*100/p_run,c_walk,(c_walk - p_walk)*100/p_walk,c_cycle,(c_cycle - p_cycle)*100/p_cycle,c_working,(c_working - p_working)*100/p_working};
+		return a;
 	}
 	public int addUser(User user)
 	{
@@ -111,7 +152,10 @@ public class user_dao {
 	public void save_weekly_data(String id,String alco,String bp_1,String bp_2,String ch_1,String ch_2,String cigs,String sugar)
 	{
 		setDataSource();
-		String sql="INSERT INTO `weekly_data`(user_id,alcohol_intake,blood_pressure_sys,blood_pressure_dia,blood_sugar, smokes,cholesterol_ldl, cholesterol_hdl) VALUES ('"+id+"','"+alco+"','"+bp_1+"','"+bp_2+"','"+sugar+"','"+cigs+"','"+ch_1+"','"+ch_2+"')";
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		
+		String sql="INSERT INTO `weekly_data`(user_id,alcohol_intake,blood_pressure_sys,blood_pressure_dia,blood_sugar, smokes,cholesterol_ldl, cholesterol_hdl,week) VALUES ('"+id+"','"+alco+"','"+bp_1+"','"+bp_2+"','"+sugar+"','"+cigs+"','"+ch_1+"','"+ch_2+"','"+dateFormat.format(date)+"')";
 		template1.update(sql);
 	}
 	public void addInitialData(User user, int id)
@@ -204,7 +248,11 @@ public class user_dao {
 	public void save_daily_exercise(String run,String walk,String cycle,String working,String id,String cal)
 	{
 		setDataSource();
-		String sql="INSERT INTO daily_exercise (user_id,run,walk,cycle,working,calories) values ('"+id+"','"+run+"','"+walk+"','"+cycle+"','"+working+"','"+cal+"')";
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		
+		String sql="INSERT INTO daily_exercise (user_id,run,walk,cycle,working,date,calories) values ('"+id+"','"+run+"','"+walk+"','"+cycle+"','"+working+"','"+dateFormat.format(date)+"','"+cal+"')";
 		template1.update(sql);
 	}
 	public java.util.List<Daily_data> get_daily_data(String s)
