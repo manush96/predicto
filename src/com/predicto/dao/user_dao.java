@@ -82,18 +82,18 @@ public class user_dao {
 	}
 	public Daily_data get_dashboard_action(int id)
 	{
-		String sql="select sum(run),sum(walk),sum(cycle),sum(working),sum(calories) from daily_exercise where user_id='"+id+"'";
+		String sql="SELECT COALESCE(SUM(run),0) AS run, COALESCE(SUM(walk),0) AS walk, COALESCE(SUM(cycle),0) AS cycle, COALESCE(SUM(working),0) AS working, COALESCE(SUM(calories),0) AS calories from daily_exercise where user_id='"+id+"'";
 		setDataSource();
 		java.util.List<Daily_data> daily_Data = template1.query(sql, new RowMapper<Daily_data>() {
 			 
 		     @Override   
 			 public Daily_data mapRow(ResultSet rs, int rowNum) throws SQLException {
 		         Daily_data daily=new Daily_data();
-		         daily.setRun(rs.getString("sum(run)"));
-		         daily.setCycle(rs.getString("sum(cycle)"));
-		         daily.setWalk(rs.getString("sum(walk)"));
-		         daily.setWorking(rs.getString("sum(working)"));
-		         daily.setCalories(rs.getString("sum(calories)"));
+		         daily.setRun(rs.getString("run"));
+		         daily.setCycle(rs.getString("cycle"));
+		         daily.setWalk(rs.getString("walk"));
+		         daily.setWorking(rs.getString("working"));
+		         daily.setCalories(rs.getString("calories"));
 		    	 return daily;
 		        }
 		 
@@ -106,40 +106,52 @@ public class user_dao {
 		String sql = "SELECT daily_exercise.calories AS c_burn, daily_food_details.calories AS c_intake, date FROM `daily_exercise` JOIN daily_food_details ON daily_exercise.date = daily_food_details.intake_date WHERE daily_exercise.user_id = "+id+" AND date >DATE_SUB(CURDATE(), INTERVAL 7 DAY) ORDER BY daily_food_details.intake_date ";
 		SqlRowSet srs =template1.queryForRowSet(sql);
 		String c_burn="",c_intake="",date="";
-		
+		int count = 0;
 		while(srs.next())
 		{
+			count++;
 			c_burn += (int) Double.parseDouble(srs.getString("c_burn"))+",";
 			c_intake += (int) Double.parseDouble(srs.getString("c_intake"))+",";
 			date += "'"+srs.getString("date")+"',";
 		}
-		c_burn = c_burn.substring(0,c_burn.length()-1);
-		c_intake = c_intake.substring(0,c_intake.length()-1);
-		date = date.substring(0,date.length()-1);
+		if(count > 0)
+		{
+			c_burn = c_burn.substring(0,c_burn.length()-1);
+			c_intake = c_intake.substring(0,c_intake.length()-1);
+			date = date.substring(0,date.length()-1);
+		}
 		
 		String a[] = {date,c_burn,c_intake};
 		return a;
-	}
+	}	
 	public int[] get_growth(int id)
 	{
 		setDataSource();
-		String sql = "SELECT SUM(run) AS run, SUM(walk) AS walk, SUM(working) AS working, SUM(cycle) AS cycle FROM `daily_exercise` WHERE user_id = "+id+" AND date > DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND date <= DATE_SUB(CURDATE(), INTERVAL 7 DAY) UNION SELECT SUM(run) AS run, SUM(walk) AS walk, SUM(working) AS working, SUM(cycle) AS cycle FROM `daily_exercise` WHERE user_id = "+id+" AND date > DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+		String sql = "SELECT COALESCE(SUM(run),0) AS run, COALESCE(SUM(walk),0) AS walk, COALESCE(SUM(working),0) AS working, COALESCE(SUM(cycle),0) AS cycle FROM `daily_exercise` WHERE user_id = "+id+" AND date > DATE_SUB(CURDATE(), INTERVAL 14 DAY) AND date <= DATE_SUB(CURDATE(), INTERVAL 7 DAY) UNION SELECT COALESCE(SUM(run),0) AS run, COALESCE(SUM(walk),0) AS walk, COALESCE(SUM(working),0) AS working, COALESCE(SUM(cycle),0) AS cycle FROM `daily_exercise` WHERE user_id = "+id+" AND date > DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
 		SqlRowSet srs =template1.queryForRowSet(sql);
-		int p_run,p_walk,p_cycle,p_working,c_run,c_walk,c_cycle,c_working;
+		int p_run = 0,p_walk = 0,p_cycle = 0,p_working = 0,c_run = 0,c_walk = 0,c_cycle = 0,c_working = 0,d_run,d_walk,d_cycle,d_working;
 		
-		srs.next();
-		p_run = (int) Double.parseDouble(srs.getString("run"));
-		p_walk = (int) Double.parseDouble(srs.getString("walk"));
-		p_cycle = (int) Double.parseDouble(srs.getString("cycle"));
-		p_working = (int) Double.parseDouble(srs.getString("working"));
+		if(srs.next())
+		{
+			p_run = (int) Double.parseDouble(srs.getString("run"));
+			p_walk = (int) Double.parseDouble(srs.getString("walk"));
+			p_cycle = (int) Double.parseDouble(srs.getString("cycle"));
+			p_working = (int) Double.parseDouble(srs.getString("working"));
+		}
 			
-		srs.next();
-		c_run = (int) Double.parseDouble(srs.getString("run")) ;
-		c_walk = (int) Double.parseDouble(srs.getString("walk"));
-		c_cycle = (int) Double.parseDouble(srs.getString("cycle"));
-		c_working = (int) Double.parseDouble(srs.getString("working"));
+		if(srs.next())
+		{
+			c_run = (int) Double.parseDouble(srs.getString("run")) ;
+			c_walk = (int) Double.parseDouble(srs.getString("walk"));
+			c_cycle = (int) Double.parseDouble(srs.getString("cycle"));
+			c_working = (int) Double.parseDouble(srs.getString("working"));
+		}
+		d_run = (p_run == 0 ? (c_run == 0 ? 0 : 100) : (c_run - p_run)*100/p_run);
+		d_walk = (p_walk == 0 ? (c_walk == 0 ? 0 : 100) : (c_walk - p_walk)*100/p_walk);
+		d_cycle = (p_cycle == 0 ? (c_cycle == 0 ? 0 : 100) : (c_cycle - p_cycle)*100/p_cycle);
+		d_working = (p_working == 0 ? (c_working == 0 ? 0 : 100) : (c_working - p_working)*100/p_working);
 		
-		int a[] = {c_run,(c_run - p_run)*100/p_run,c_walk,(c_walk - p_walk)*100/p_walk,c_cycle,(c_cycle - p_cycle)*100/p_cycle,c_working,(c_working - p_working)*100/p_working};
+		int a[] = {c_run,d_run,c_walk,d_walk,c_cycle,d_cycle,c_working,d_working};
 		return a;
 	}
 	public int addUser(User user)
