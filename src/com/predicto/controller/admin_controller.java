@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.predicto.dao.user_dao;
+import com.predicto.services.lin_algo;
 import com.predicto.services.lin_weka;
+import com.predicto.services.neural_net;
 
 @Controller
 @RequestMapping("/admin/*")
@@ -31,6 +33,27 @@ public class admin_controller {
 		lin_weka.train();
 		return new ModelAndView("admin_response").addObject("linear_weka","Algortihm successfully trained");
 	}
+	@RequestMapping("train_linear_algo")
+	public ModelAndView train_linear_algo() throws Exception
+	{
+		lin_algo.train();
+		return new ModelAndView("admin_response").addObject("linear_weka","Algortihm successfully trained");
+	}
+	@RequestMapping("train_neural")
+	public ModelAndView train_neural() throws Exception
+	{
+		neural_net.train();
+		return new ModelAndView("admin_response").addObject("linear_weka","Algortihm successfully trained");
+	}
+	@RequestMapping("test_neural")
+	public ModelAndView test_neural() throws Exception
+	{
+		double d=neural_net.test();
+		double d1=Double.parseDouble(String.format("%.3f", d));
+		int dl = Integer.parseInt(String.format("%.0f", d));
+		
+		return new ModelAndView("admin_response_1").addObject("test_linear_weka",dl).addObject("per",d1);
+	}
 	@RequestMapping("test_linear_weka")
 	public ModelAndView test_linear_weka() throws Exception
 	{
@@ -40,6 +63,16 @@ public class admin_controller {
 		
 		return new ModelAndView("admin_response_1").addObject("test_linear_weka",dl).addObject("per",d1);
 	}
+	@RequestMapping("test_linear_algo")
+	public ModelAndView test_linear_algo() throws Exception
+	{
+		double d=lin_algo.test();
+		double d1=Double.parseDouble(String.format("%.3f", d));
+		int dl = Integer.parseInt(String.format("%.0f", d));
+		
+		return new ModelAndView("admin_response_1").addObject("test_linear_weka",dl).addObject("per",d1);
+	}
+	
 	@RequestMapping("push_weekly")
 	public ModelAndView push_weekly(HttpSession session)
 	{
