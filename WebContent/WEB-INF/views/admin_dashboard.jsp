@@ -16,7 +16,12 @@
 
   <div id="Fade" class="w3-container city w3-animate-opacity" style="display:none">
     <h2>Linear regression</h2>
-    <p><a href="">Click here to train algorithm</a></p>
+    <p><a href="javascript:foo('train')">Click here to train algorithm</a></p>
+    <br>
+    <p><a href="javascript:foo('test')">Click here to test algorithm</a></p>
+   <br>
+  
+    <div class="dis"></div>
     </div>
     
   <div id="Fade1" class="w3-container city w3-animate-opacity" style="display:none">
@@ -35,6 +40,35 @@
     
 </div>
 <script>
+function foo(t)
+{
+	if(t=='train')
+	{
+		$.ajax
+		({
+			type: "POST",
+			url: "admin/train_linear_weka",
+			success: function(response)
+			{
+				$(".dis").append(response);
+			}
+		});
+	}
+	else if(t=='test')
+		{
+			$.ajax
+			({
+				type: "POST",
+				url: "admin/test_linear_weka",
+				success: function(response)
+				{
+					$(".dis").append(response);
+				}
+			});
+		}
+
+}
+
 function openLink(evt, animName) {
   var i, x, tablinks;
   x = document.getElementsByClassName("city");
@@ -105,6 +139,7 @@ $(document).ready(function(){
 		});
 	});
 });
+
 </script>
 
 </body>
