@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -58,6 +59,97 @@ public class user_dao {
 				return id;
 			}
 	    });
+	}
+	public void set_goals(String burn,String intake,int id)
+	{
+		setDataSource();
+		String sql="update user set burn_goal='"+burn+"',intake_goal='"+intake+"' where id='"+id+"'";
+		template1.update(sql);
+	}
+	public int[] get_goals(int id)
+	{
+		setDataSource();
+		String sql="Select burn_goal,intake_goal from user where id = '"+id+"'";
+		java.util.List<User> listContact = template1.query(sql, new RowMapper<User>() {
+			 
+			@Override   
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+	            
+	            User user1=new User();
+	            user1.setBurn_goal(rs.getInt("burn_goal"));
+	            user1.setIntake_goal(rs.getInt("intake_goal"));
+	            
+	            return user1;
+	        }
+	 
+	    });
+		int[] i=new int[2];
+		i[0]=listContact.get(0).getBurn_goal();
+		i[1]=listContact.get(0).getIntake_goal();
+		return i;
+	}
+	public double get_dash_goal(int id,String a)
+	{
+
+		setDataSource();
+		if(a.equals("a"))
+		{
+		String sql="SELECT calories FROM daily_food_details where user_id="+id+" AND  intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+		
+		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
+			int sum=0;
+			@Override   
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int i=rs.getInt("calories");
+				sum=sum+i;
+				return sum;
+			}
+	    });	
+		System.out.println(listContact);
+		return listContact.get(listContact.size()-1)/7;
+		}
+		else
+		{
+			String sql="SELECT calories FROM daily_exercise where user_id="+id+" AND  date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+			
+			java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
+				int sum=0;
+				@Override   
+				public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+					int i=rs.getInt("calories");
+					sum=sum+i;
+					return sum;
+				}
+		    });	
+			System.out.println(listContact);
+			return listContact.get(listContact.size()-1)/7;
+		}
+	}
+	
+	public double getBmi(int id,String a)
+	{
+		setDataSource();
+		
+			String sql="select height,weight from user where id='"+id+"'";
+			java.util.List<User> listContact = template1.query(sql, new RowMapper<User>() {
+			 
+				@Override   
+				public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+		            
+		            User user1=new User();
+		            user1.setHeight(rs.getInt("height"));
+		            user1.setWeight(rs.getInt("weight"));
+		            
+		            return user1;
+		        }
+		 
+		    });
+			double weight=listContact.get(0).getWeight();
+			double height=listContact.get(0).getHeight();
+			height=height/100;
+			double bmi=(weight/(height*height));
+			return bmi;
+			
 	}
 	public void pushWeekly()
 	{
@@ -320,14 +412,31 @@ public class user_dao {
 		srs.next();
 		return srs.getDouble("calories")*cnt;
 	}
-	
-	public void updateCal(int id, double total_cal, String item_str) {
+	public int weekly_water_average(int id)
+	{
+		setDataSource();
+		String sql="SELECT * FROM daily_food_details where user_id="+id+" AND  intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+		
+		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
+			int sum=0;
+			@Override   
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int i=rs.getInt("water");
+				sum=sum+i;
+				return sum;
+			}
+	    });	
+		System.out.println(listContact);
+		return (int)(listContact.get(listContact.size()-1)/7);
+		
+	}
+	public void updateCal(int id, double total_cal, String item_str,String water) {
 		setDataSource();
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		
-		String sql="UPDATE daily_food_details SET calories = calories + "+total_cal+", food_intake = CONCAT(food_intake,',"+item_str+"') WHERE user_id = "+id+" AND intake_date ='" + dateFormat.format(date)+"'";
+		String sql="UPDATE daily_food_details SET calories = calories + "+total_cal+", food_intake = CONCAT(food_intake,',"+item_str+"'),water='"+water+"' WHERE user_id = "+id+" AND intake_date ='" + dateFormat.format(date)+"'";
 		template1.update(sql);
 	}
 }

@@ -68,14 +68,21 @@ public class user_controller {
 	{
 		if(invalid(session))
 			return new ModelAndView("goto_login");
-		
 		int id = (Integer)session.getAttribute("user_id");
 		int status = userDao.checkStatus(id);
+
+		System.out.println(userDao.weekly_water_average(id));
 		if(status == 1)
 		{
 			ModelAndView model=new ModelAndView();
 			Daily_data d1=userDao.get_dashboard_action(id);
 			String[] chart = userDao.get_calories_comparison(id);
+			double bmi=userDao.getBmi(id,"a");
+			model.addObject("burn_goal",userDao.get_goals(id)[0]);
+			model.addObject("intake_goal",userDao.get_goals(id)[1]);
+			model.addObject("user_bmi",bmi);
+			model.addObject("user_burn",userDao.get_dash_goal(id, "b"));
+			model.addObject("user_intake",userDao.get_dash_goal(id, "a"));
 			int[] growth = userDao.get_growth(id);
 			model.addObject("run",d1.getRun());
 			model.addObject("walk",d1.getWalk());
@@ -83,6 +90,7 @@ public class user_controller {
 			model.addObject("working",d1.getWorking());
 			model.addObject("calories",d1.getCalories());
 			model.addObject("chart",chart);
+			model.addObject("water_goal",userDao.weekly_water_average(id));
 			model.addObject("growth",growth);
 			model.setViewName("user_dashboard");
 			return model;
@@ -154,6 +162,23 @@ public class user_controller {
 		int id = (Integer)session.getAttribute("user_id");
 		userDao.addInitialData(user,id);
 		return "redirect:dashboard";
+	}
+	@RequestMapping("set_goal_save")
+	public String goal_save(@RequestParam("burn")String burn,@RequestParam("intake")String intake,HttpSession session)
+	{
+		int id=(int) session.getAttribute("user_id");
+		userDao.set_goals(burn,intake,id);
+		return "redirect:dashboard";
+	}
+	@RequestMapping("set_goals")
+	public ModelAndView set_goals(HttpSession session)
+	{
+		int id=(int) session.getAttribute("user_id");
+		ModelAndView model=new ModelAndView();
+		model.addObject("burn_goal",userDao.get_goals(id)[0]);
+		model.addObject("intake_goal",userDao.get_goals(id)[1]);
+		model.setViewName ("set_goals");
+		return model;
 	}
 	@RequestMapping("report")
 	public ModelAndView report(HttpSession session)
@@ -353,7 +378,7 @@ public class user_controller {
 		return model;
 	}
 	@RequestMapping("save_daily_food")
-	public String save_daily_food(@RequestParam("items") String item_str,HttpSession session)
+	public String save_daily_food(@RequestParam("items") String item_str,@RequestParam("water")String water,HttpSession session)
 	{
 		if(invalid(session))
 			return "redirect:login";
@@ -370,7 +395,7 @@ public class user_controller {
 			System.out.println("ID: " + id + ", Count: " + cnt);
 			total_cal += userDao.findCal(id, cnt);
 		}
-		userDao.updateCal((Integer)session.getAttribute("user_id"), total_cal, item_str);
+		userDao.updateCal((Integer)session.getAttribute("user_id"), total_cal, item_str,water);
 		return "redirect:daily_food_details";
 		
 	}
@@ -384,22 +409,5 @@ public class user_controller {
 		userDao.set_notif_read(id);
 		return new ModelAndView("opt_view");
 	}
-	@RequestMapping("push_daily")
-	public ModelAndView push_daily(HttpSession session)
-	{
-		userDao.pushDaily();
-		return new ModelAndView("opt_view");
-	}
-	@RequestMapping("push_weekly")
-	public ModelAndView push_weekly(HttpSession session)
-	{
-		userDao.pushWeekly();
-		return new ModelAndView("opt_view");
-	}
-	@RequestMapping("push_food")
-	public ModelAndView push_food(HttpSession session)
-	{
-		userDao.pushFood();
-		return new ModelAndView("opt_view");
-	}
+	
 }

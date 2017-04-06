@@ -235,7 +235,7 @@
 	</select>
 	<div class="clearfix"></div><br/><br/>
 	<div class="col-md-12 lr0pad text-center">
-		<button class="btn btn-success" style="float: none; no-repeat;" onclick="add_food_item()">
+		<button type="button" class="btn btn-success" style="float: none; no-repeat;" onclick="add_food_item()">
 			<span class="glyphicon glyphicon-plus"></span>
 			Add
 		</button>

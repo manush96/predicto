@@ -15,8 +15,21 @@ public class User {
 	private int alcoholic;
 	private String heredity;
 	private int status;
+	private int burn_goal;
+	private int intake_goal;
 	
-	
+	public int getBurn_goal() {
+		return burn_goal;
+	}
+	public void setBurn_goal(int burn_goal) {
+		this.burn_goal = burn_goal;
+	}
+	public int getIntake_goal() {
+		return intake_goal;
+	}
+	public void setIntake_goal(int intake_goal) {
+		this.intake_goal = intake_goal;
+	}
 	public int getId() {
 		return id;
 	}
