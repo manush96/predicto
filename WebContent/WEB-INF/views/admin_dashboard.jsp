@@ -5,6 +5,9 @@
 <div class="w3-sidebar w3-bar-block w3-black w3-card-2" style="width:130px">
   <h5 class="w3-bar-item">Menu</h5>
   <button class="w3-bar-item  w3-button tablink" onclick="openLink(event, 'Fade')">Linear regression</button>
+  <button class="w3-bar-item  w3-button tablink" onclick="openLink(event, 'Fade12')">Linear regression(Algo)</button>
+  <button class="w3-bar-item  w3-button tablink" onclick="openLink(event, 'Fade13')">Neural network</button>
+
   <button class="w3-bar-item  w3-button tablink" onclick="openLink(event, 'Fade1')">Push Daily notifications</button>
   <button class="w3-bar-item  w3-button tablink" onclick="openLink(event, 'Fade2')">Push weekly notifications</button>
   <button class="w3-bar-item  w3-button tablink" onclick="openLink(event, 'Fade3')">Push food notifs</button>
@@ -16,9 +19,32 @@
 
   <div id="Fade" class="w3-container city w3-animate-opacity" style="display:none">
     <h2>Linear regression</h2>
-    <p><a href="">Click here to train algorithm</a></p>
+    <p><a href="javascript:foo('train')">Click here to train algorithm</a></p>
+    <br>
+    <p><a href="javascript:foo('test')">Click here to test algorithm</a></p>
+   <br>
+  
+    <div class="dis"></div>
     </div>
-    
+  <div id="Fade12" class="w3-container city w3-animate-opacity" style="display:none">
+    <h2>Linear regression using Normal equation algo</h2>
+    <p><a href="javascript:foo1('train')">Click here to train algorithm</a></p>
+    <br>
+    <p><a href="javascript:foo1('test')">Click here to test algorithm</a></p>
+   <br>
+  
+    <div class="dis"></div>
+    </div>
+    <div id="Fade13" class="w3-container city w3-animate-opacity" style="display:none">
+    <h2>Neural network</h2>
+    <p><a href="javascript:foo2('train')">Click here to train algorithm</a></p>
+    <br>
+    <p><a href="javascript:foo2('test')">Click here to test algorithm</a></p>
+   <br>
+  
+    <div class="dis"></div>
+    </div>   
+     
   <div id="Fade1" class="w3-container city w3-animate-opacity" style="display:none">
     <h2>Push Daily notifications</h2>
     <p><a href="admin/push_daily">Click here to Push Daily notifications</a></p>
@@ -35,6 +61,96 @@
     
 </div>
 <script>
+function foo(t)
+{
+	if(t=='train')
+	{
+		$.ajax
+		({
+			type: "POST",
+			url: "admin/train_linear_weka",
+			success: function(response)
+			{
+				$(".dis").empty();
+				$(".dis").append(response);
+			}
+		});
+	}
+	else if(t=='test')
+		{
+			$.ajax
+			({
+				type: "POST",
+				url: "admin/test_linear_weka",
+				success: function(response)
+				{
+					$(".dis").empty();
+					$(".dis").append(response);
+				}
+			});
+		}
+
+}
+function foo1(t)
+{
+	if(t=='train')
+	{
+		$.ajax
+		({
+			type: "POST",
+			url: "admin/train_linear_algo",
+			success: function(response)
+			{
+				$(".dis").empty();
+				$(".dis").append(response);
+			}
+		});
+	}
+	else if(t=='test')
+		{
+			$.ajax
+			({
+				type: "POST",
+				url: "admin/test_linear_algo",
+				success: function(response)
+				{
+					$(".dis").empty();
+					$(".dis").append(response);
+				}
+			});
+		}
+
+}
+function foo2(t)
+{
+	if(t=='train')
+	{
+		$.ajax
+		({
+			type: "POST",
+			url: "admin/train_neural",
+			success: function(response)
+			{
+				$(".dis").empty();
+				$(".dis").append(response);
+			}
+		});
+	}
+	else if(t=='test')
+		{
+			$.ajax
+			({
+				type: "POST",
+				url: "admin/test_neural",
+				success: function(response)
+				{
+					$(".dis").empty();
+					$(".dis").append(response);
+				}
+			});
+		}
+
+}
 function openLink(evt, animName) {
   var i, x, tablinks;
   x = document.getElementsByClassName("city");
@@ -105,6 +221,7 @@ $(document).ready(function(){
 		});
 	});
 });
+
 </script>
 
 </body>
