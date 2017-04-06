@@ -183,69 +183,7 @@ public class friend_controller {
 		ModelAndView model=new ModelAndView();
 		
 		model.addObject("friends",friends);
-		ArrayList<String> run1=new ArrayList<String>();
-		ArrayList<String> walk1=new ArrayList<String>();
-		ArrayList<String> cycle1=new ArrayList<String>();
-		ArrayList<String> work1=new ArrayList<String>();
-		for(Friend f:friends)
-		{
-			List<Daily_data> l1=get_Daily(String.valueOf(f.getId()));
-			String run="";
-			String walk="";
-			String cycle="";
-			String work="";
-			String ss="";
-
-			String calories="";
-			for(int i=0;i<l1.size();i++)
-			{
-				Daily_data d=new Daily_data();
-				d=l1.get(i);
-				if(i==0)
-				{
-					String te=d.getDate();
-					te=te.substring(0,10);
-					Date date=new SimpleDateFormat("yyyy-mm-dd").parse(te);
-					Calendar c = Calendar.getInstance();
-					c.setTime(date);
-					String[] days={"","sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
-					int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-					ss="'"+days[dayOfWeek]+ss+te+"'";
-					run=run+d.getRun();
-					walk=walk+d.getWalk();
-					cycle=cycle+d.getCycle();
-					work=work+d.getWorking();
-					calories=calories+d.getCalories();
-					
-				}
-				else
-				{ 
-					String te=d.getDate();
-					te=te.substring(0, 10);
-					Date date=new SimpleDateFormat("yyyy-mm-dd").parse(te);
-					Calendar c = Calendar.getInstance();
-					c.setTime(date);
-					String[] days={"","sunday","monday","tuesday","wednesday","thursday","friday","saturday"};
-					int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-					ss=ss+","+"'"+days[dayOfWeek]+te+"'";
-					
-					run=run+","+d.getRun();
-					walk=walk+","+d.getWalk();
-					cycle=cycle+","+d.getCycle();
-					work=work+","+d.getWorking();
-					calories=calories+","+d.getCalories();
-				}
-			}
-			System.out.println(work+"ebol");
-			run1.add(run);
-			walk1.add(walk);
-			cycle1.add(cycle);
-			work1.add(work);
-		}
-		model.addObject("run",run1);
-		model.addObject("walk",walk1);
-		model.addObject("cycle",cycle1);
-		model.addObject("work",work1);
+		
 		model.setViewName("get_comparison");
 		return model;
 	}
