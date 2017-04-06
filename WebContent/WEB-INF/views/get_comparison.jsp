@@ -6,7 +6,26 @@
 <link href="resources/css/comparison.css" rel="stylesheet" type="text/css"/>
 <%@ page import = "java.util.Map" %>
 <script type="text/javascript" src="resources/js/chartjs.js"></script>
+<c:set var="ids" value="${ids }"/>
+<%
+	String[] colors = {"#000","#3b8bba","#ba1616","#57ba16"};
+	int lp;
+	String ids = (String) pageContext.getAttribute("ids");
+	int id_len = ids.split(",").length;
+	id_len = (id_len <= 4) ? id_len : 4;
+%>
 <script type="text/javascript">
+	var colors = ["#000","#3b8bba","#ba1616","#57ba16"];
+	function format(dates)
+	{
+		var str;
+		for(var d in dates)
+		{
+			str = new Date(dates[d]);
+			dates[d] = str.toString().substring(4,10);
+		}
+		return dates;
+	}
 	var chartOptions = {
         //Boolean - If we should show the scale at all
         showScale: true,
@@ -35,7 +54,7 @@
         //Boolean - Whether to show a stroke for datasets
         datasetStroke: true,
         //Number - Pixel width of dataset stroke
-        datasetStrokeWidth: 2,
+        datasetStrokeWidth: 5,
         //Boolean - Whether to fill the dataset with a color
         datasetFill: true,
         //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
@@ -155,63 +174,188 @@
 					</c:if>
 				</c:forEach>
 			</div>
-			<div class="comparison_row col-sm-12 lr0pad" id="chart_div">
+			<div class="comparison_row col-sm-12 lr0pad chart_div" id="run_div">
 				<div class="col-sm-2 row_title row_data">
 					Running
 				</div>
-				<div class="col-sm-6 user_data row_data">
-					<canvas id="runChart" style="height: 140px"></canvas>
+				<div class="col-sm-<%= 2+id_len*2%> user_data row_data">
+					<div class="col-sm-3 label_div">
+						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
+						<%
+							for(int k = 1; k <= id_len; k++)
+							{
+								out.println("<p class=\"user_"+k+"\"><span class=\"color\">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class=\"name\"></span></p>");
+							}
+						%>
+					</div>
+					<div class="col-sm-9">
+						<canvas id="runChart" style="height: 140px"></canvas>
+					</div>
 				</div>
+				<% lp=0; %>
 				<script>
+					var dates = [${run[0]}];
+					dates = format(dates);
 					  var runChartData = {
-				        labels: ["January", "February", "March", "April", "May", "June", "July"],
+				        labels: dates,
 				        datasets: [
-				          {
-				            label: "Electronics",
-				            fillColor: "rgba(210, 214, 222, 1)",
-				            strokeColor: "rgba(210, 214, 222, 1)",
-				            pointColor: "rgba(210, 214, 222, 1)",
-				            pointStrokeColor: "#c1c7d1",
-				            pointHighlightFill: "#fff",
-				            pointHighlightStroke: "rgba(220,220,220,1)",
-				            data: [65, 59, 80, 81, 56, 55, 40]
-				          },
-				          {
-				            label: "Digital Goods",
-				            fillColor: "rgba(60,141,188,0.9)",
-				            strokeColor: "rgba(60,141,188,0.8)",
-				            pointColor: "#3b8bba",
-				            pointStrokeColor: "rgba(60,141,188,1)",
-				            pointHighlightFill: "#fff",
-				            pointHighlightStroke: "rgba(60,141,188,1)",
-				            data: [28, 48, 40, 19, 86, 27, 90]
-				          }
+						<c:forEach items="${run}" var="fr" varStatus="loop">
+							<c:if test="${not loop.first}">
+								{
+						            label: "Electronics",
+						            fillColor: "rgba(210, 214, 222, 1)",
+						            strokeColor: "<%= colors[lp%colors.length]%>",
+						            pointColor: "rgba(210, 214, 222, 1)",
+						            pointStrokeColor: "#c1c7d1",
+						            pointHighlightFill: "#fff",
+						            pointHighlightStroke: "rgba(220,220,220,1)",
+						            data: [${fr}]
+								},
+								<% lp++;%>
+							</c:if>
+						</c:forEach>
 				        ]
 				      };
 				</script>
-				<c:forEach items="${friends}" var="fr" varStatus="loop">
-					
-				</c:forEach>
+				
+			</div>
+			<div class="comparison_row col-sm-12 lr0pad chart_div" id="walk_div">
+				<div class="col-sm-2 row_title row_data">
+					Walking
+				</div>
+				<div class="col-sm-<%= 2+id_len*2%> user_data row_data">
+					<div class="col-sm-3 label_div">
+						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
+						<%
+							for(int k = 1; k <= id_len; k++)
+							{
+								out.println("<p class=\"user_"+k+"\"><span class=\"color\">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class=\"name\"></span></p>");
+							}
+						%>
+					</div>
+					<div class="col-sm-9">
+						<canvas id="walkChart" style="height: 140px"></canvas>
+					</div>
+				</div>
+				<% lp=0; %>
+				<script>
+					var dates = [${walk[0]}];
+					dates = format(dates);
+					  var walkChartData = {
+				        labels: dates,
+				        datasets: [
+						<c:forEach items="${walk}" var="fr" varStatus="loop">
+							<c:if test="${not loop.first}">
+								{
+						            label: "Electronics",
+						            fillColor: "rgba(210, 214, 222, 1)",
+						            strokeColor: "<%= colors[lp%colors.length]%>",
+						            pointColor: "rgba(210, 214, 222, 1)",
+						            pointStrokeColor: "#c1c7d1",
+						            pointHighlightFill: "#fff",
+						            pointHighlightStroke: "rgba(220,220,220,1)",
+						            data: [${fr}]
+								},
+								<% lp++;%>
+							</c:if>
+						</c:forEach>
+				        ]
+				      };
+				</script>
+				
+			</div>
+			<div class="comparison_row col-sm-12 lr0pad chart_div" id="cycle_div">
+				<div class="col-sm-2 row_title row_data">
+					Cycling
+				</div>
+				<div class="col-sm-<%= 2+id_len*2%> user_data row_data">
+					<div class="col-sm-3 label_div">
+						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
+						<%
+							for(int k = 1; k <= id_len; k++)
+							{
+								out.println("<p class=\"user_"+k+"\"><span class=\"color\">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class=\"name\"></span></p>");
+							}
+						%>
+					</div>
+					<div class="col-sm-9">
+						<canvas id="cycleChart" style="height: 140px"></canvas>
+					</div>
+				</div>
+				<% lp=0; %>
+				<script>
+					var dates = [${cycle[0]}];
+					dates = format(dates);
+					  var cycleChartData = {
+				        labels: dates,
+				        datasets: [
+						<c:forEach items="${cycle}" var="fr" varStatus="loop">
+							<c:if test="${not loop.first}">
+								{
+						            label: "Electronics",
+						            fillColor: "rgba(210, 214, 222, 1)",
+						            strokeColor: "<%= colors[lp%colors.length]%>",
+						            pointColor: "rgba(210, 214, 222, 1)",
+						            pointStrokeColor: "#c1c7d1",
+						            pointHighlightFill: "#fff",
+						            pointHighlightStroke: "rgba(220,220,220,1)",
+						            data: [${fr}]
+								},
+								<% lp++;%>
+							</c:if>
+						</c:forEach>
+				        ]
+				      };
+				</script>
+				
+			</div>
+			<div class="comparison_row col-sm-12 lr0pad chart_div" id="work_div">
+				<div class="col-sm-2 row_title row_data">
+					Work out
+				</div>
+				<div class="col-sm-<%= 2+id_len*2%> user_data row_data">
+					<div class="col-sm-3 label_div">
+						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
+						<%
+							for(int k = 1; k <= id_len; k++)
+							{
+								out.println("<p class=\"user_"+k+"\"><span class=\"color\">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class=\"name\"></span></p>");
+							}
+						%>
+					</div>
+					<div class="col-sm-9">
+						<canvas id="workChart" style="height: 140px"></canvas>
+					</div>
+				</div>
+				<% lp=0; %>
+				<script>
+					var dates = [${working[0]}];
+					dates = format(dates);
+					  var workChartData = {
+				        labels: dates,
+				        datasets: [
+						<c:forEach items="${run}" var="fr" varStatus="loop">
+							<c:if test="${not loop.first}">
+								{
+						            label: "Electronics",
+						            fillColor: "rgba(210, 214, 222, 1)",
+						            strokeColor: "<%= colors[lp%colors.length]%>",
+						            pointColor: "rgba(210, 214, 222, 1)",
+						            pointStrokeColor: "#c1c7d1",
+						            pointHighlightFill: "#fff",
+						            pointHighlightStroke: "rgba(220,220,220,1)",
+						            data: [${fr}]
+								},
+								<% lp++;%>
+							</c:if>
+						</c:forEach>
+				        ]
+				      };
+				</script>
 			</div>
 		</div>
 	</div>
 </c:if>
-<div class="box-header with-border">
-		<h3 class="box-title">Running</h3>
-	</div>
-	<div class="box-body">
-		<canvas id="lineChart" style="height:250px"></canvas>
-	</div><!-- /.box-body -->
-</div>
-
-<c:forEach items="${run}" var="fr" varStatus="loop">
-${fr }<br/>
-</c:forEach>
-
-<%-- 
-${walk}
-${cycle}
-${work} --%>
 <c:if test="${fn:length(friends) eq 0}">
 	<h2 class="text-center">Invalid Comparison! <a href="friend/compare">Retry?</a></h2>
 </c:if>
@@ -223,6 +367,24 @@ ${work} --%>
       var runChartOptions = chartOptions;
       runChartOptions.datasetFill = false;
       runChart.Line(runChartData, runChartOptions);
+      
+      var walkChartCanvas = $("#walkChart").get(0).getContext("2d");
+      var walkChart = new Chart(walkChartCanvas);
+      var walkChartOptions = chartOptions;
+      walkChartOptions.datasetFill = false;
+      walkChart.Line(walkChartData, walkChartOptions);
+      
+      var cycleChartCanvas = $("#cycleChart").get(0).getContext("2d");
+      var cycleChart = new Chart(cycleChartCanvas);
+      var cycleChartOptions = chartOptions;
+      cycleChartOptions.datasetFill = false;
+      cycleChart.Line(cycleChartData, cycleChartOptions);
+      
+      var workChartCanvas = $("#workChart").get(0).getContext("2d");
+      var workChart = new Chart(workChartCanvas);
+      var workChartOptions = chartOptions;
+      workChartOptions.datasetFill = false;
+      workChart.Line(workChartData, workChartOptions);
 </script>
 
 	

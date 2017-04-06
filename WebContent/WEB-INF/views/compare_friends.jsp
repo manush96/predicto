@@ -47,6 +47,7 @@
 		$("#compare_friends").click(function()
 		{
 			var friends = $("#friends_select").val();
+			
 			friends = friends.join();
 			$.ajax
 			({
@@ -55,6 +56,7 @@
 				data: {ids: friends},
 				success: function(response)
 				{
+					setTimeout(graph_labels,100);
 					$("#compare_data").html(response);
 					$(".progress-bar").each(function()
 					{
@@ -65,5 +67,24 @@
 			});
 		});
 	});
+	function graph_labels()
+	{
+		var lp = 1;
+		$(".user_0").each(function()
+		{
+			$(this).find(".color").css('background',colors[0]);
+			$(this).find(".name").text("You");
+		});
+		$("#friends_select > option:selected").each(function()
+		{
+			var name = this.text;
+			$(".user_"+lp).each(function()
+			{
+				$(this).find(".color").css('background',colors[lp%colors.length]);
+				$(this).find(".name").text(name);
+			});
+			lp++;
+		});
+	}
 </script>
 <%@include file="footer.jsp" %>

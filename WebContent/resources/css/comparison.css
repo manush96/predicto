@@ -90,7 +90,12 @@
 {
 	padding: 10px 2px;
 }
-#chart_div .row_title
+.chart_div .row_title
 {
-	padding: 56px 2px;
+	padding: 58px 2px;
+}
+.label_div
+{
+	font-size: 14px;
+	text-align: left !important;
 }

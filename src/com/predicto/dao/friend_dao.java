@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSessionContext;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import com.predicto.model.Daily_data;
@@ -72,7 +73,7 @@ public class friend_dao {
 	public List<User> get_friends(int id)
 	{
 		setDataSource();
-		String sql = "SELECT * FROM user WHERE id != "+id+" AND id IN (SELECT friend_id FROM friends WHERE user_id = "+id+" AND status=1) OR id IN (SELECT user_id FROM friends WHERE friend_id = "+id+" AND status=1)";
+		String sql = "SELECT * FROM user WHERE id != "+id+" AND id IN (SELECT friend_id FROM friends WHERE user_id = "+id+" AND status=1) OR id IN (SELECT user_id FROM friends WHERE friend_id = "+id+" AND status=1) ORDER BY id";
 		
 		java.util.List<User> listContact = template1.query(sql, new RowMapper<User>() {
 			 
@@ -111,6 +112,71 @@ public class friend_dao {
 	 
 	    });
 		return listContact;
+	}
+	public String[] get_chart_data(String type, int id, String ids)
+	{
+		setDataSource();
+		int i = 0;
+		String[] all_ids = ids.split(",");
+		i = all_ids.length;
+		
+		String sql = "SELECT user_id,date, COALESCE("+type+",0) AS str FROM daily_exercise WHERE (user_id="+id+" OR user_id IN ("+ids+")) AND (date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)) ORDER BY date, CASE WHEN (user_id = "+id+") THEN 0 ELSE 1 END,user_id";
+		SqlRowSet srs =template1.queryForRowSet(sql);
+		String u_string="";
+		String[] others = new String[i];
+		for(int k = 1; k <= i; k++)
+			others[k-1] = "";
+		int count = 0;
+		String dates = "";
+		for(int j = 1; j <= 7; j++)
+		{
+			if(srs.next())
+			{
+				if(srs.getString("user_id").equals(""+id))
+					u_string += (int) Double.parseDouble(srs.getString("str"))+",";
+				else
+				{
+					u_string += "0,";
+					srs.previous();
+				}
+				dates += "'"+srs.getString("date")+"',";
+				for(int k = 1; k <= i; k++)
+				{
+					if(srs.next())
+					{
+						if(srs.getString("user_id").equals(""+all_ids[k-1]))
+							others[k-1] += (int) Double.parseDouble(srs.getString("str"))+",";
+						else
+						{
+							others[k-1] += "0,";
+							srs.previous();
+						}
+					}
+					else
+					{
+						srs.previous();
+						break;
+					}
+				}
+				count++;
+			}
+			else
+				break;
+		}
+		String[] s = new String[i+2];
+		if(count > 0)
+		{
+			dates = dates.substring(0,dates.length()-1);
+			s[0] = dates;
+			u_string = u_string.substring(0,u_string.length()-1);
+			s[1] = u_string;
+			for(int k = 1; k <= i; k++)
+			{
+				others[k-1] = others[k-1].substring(0, others[k-1].length()-1);
+				s[k+1] = others[k-1];
+			}
+		}
+		return s;
 	}
 	private static double round (double value, int precision) {
 	    int scale = (int) Math.pow(10, precision);
