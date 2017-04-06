@@ -21,6 +21,7 @@
 	                    <li><a href="user/dashboard"><i class="fa fa-home"></i> Home </a></li>
 	                    <li><a href="user/daily_food_details"><i class="fa fa-cutlery"></i> Food and water</a></li>
 	                    <li><a href="user/set_goals"><i class="fa fa-bullseye"></i>Set Goals</a>
+	                    <li><a href="user/health_report"><i class="fa fa-heart"></i>Health Report</a>
 	                </ul>
 	            </li>
 	            <li class="treeview">

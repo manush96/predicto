@@ -42,7 +42,11 @@
 				<p>This week's average Low density cholesterol level(Bad cholesterol) was  
 				<input type="number" name="ch_1" value="80" placeholder="80" id="running"/>.	
 				<p>This week's average High density cholesterol level(Good cholesterol) was  
-				<input type="number" name="ch_2" value="80" placeholder="80" id="running"/>.	
+				<input type="number" name="ch_2" value="80" placeholder="80" id="running"/>.
+				<p>This week's total cholesterol level was
+				<input type="number" name="ch_t" value="80" placeholder="80" id="running"/>.
+				<p>This week's average triglyceride level was  
+				<input type="number" name="triglyc" value="80" placeholder="80" id="running"/>.	
 				<p>This week's average blood sugar level was  
 				<input type="number" name="sugar" value="80" placeholder="80" id="running"/>.
 				<p>This week I smoked  

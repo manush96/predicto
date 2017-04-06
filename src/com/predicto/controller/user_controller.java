@@ -98,6 +98,17 @@ public class user_controller {
 		else
 			return new ModelAndView("one_time_form");
 	}
+	
+	@RequestMapping("health_report")
+	public ModelAndView health_report(HttpSession session)
+	{
+		int id = (int) session.getAttribute("user_id");
+		ModelAndView model = new ModelAndView();
+		double health_score = userDao.get_health_score(id);
+		model.addObject("health_score",75.42);
+		model.setViewName("health_report");
+		return model;
+	}
 	@RequestMapping("login")
 	public ModelAndView login()
 	{
@@ -357,13 +368,13 @@ public class user_controller {
 		return model;
 	}
 	@RequestMapping("save_weekly_data")
-	public String save_weekly_data(HttpSession session,@RequestParam("alcohol")String alco,@RequestParam("bp_sys") String bp_1,@RequestParam("bp_2")String bp_2,@RequestParam("ch_1")String ch_1,@RequestParam("ch_2")String ch_2,@RequestParam("cigs")String cigs,@RequestParam("sugar")String sugar,@RequestParam("notif_id")int notif_id)
+	public String save_weekly_data(HttpSession session,@RequestParam("alcohol")String alco,@RequestParam("bp_sys") String bp_1,@RequestParam("bp_2")String bp_2,@RequestParam("ch_1")String ch_1,@RequestParam("ch_2")String ch_2,@RequestParam("cigs")String cigs,@RequestParam("sugar")String sugar,@RequestParam("notif_id")int notif_id,@RequestParam("ch_t")String ch_t,@RequestParam("triglyc")String triglyc)
 	{
 		
 		int i=(Integer)session.getAttribute("user_id");
 		String id=String.valueOf(i);
 		userDao.delete_notif(notif_id);
-		userDao.save_weekly_data(id,alco,bp_1,bp_2,ch_1,ch_2,cigs,sugar);	
+		userDao.save_weekly_data(id,alco,bp_1,bp_2,ch_1,ch_2,cigs,sugar,ch_t,triglyc);	
 		return "redirect:dashboard";
 	
 	}
@@ -384,7 +395,7 @@ public class user_controller {
 			return "redirect:login";
 		
 		int id,cnt;
-		double total_cal = 0;
+		int total_cal = 0, total_fat=0, total_chol=0;
 		String[] items = item_str.split(",");
 		for(String i : items)
 		{
@@ -394,8 +405,10 @@ public class user_controller {
 			//id - of food item, cnt - number of items consumed
 			System.out.println("ID: " + id + ", Count: " + cnt);
 			total_cal += userDao.findCal(id, cnt);
+			total_fat += userDao.findFat(id, cnt);
+			total_chol += userDao.findChol(id, cnt);
 		}
-		userDao.updateCal((Integer)session.getAttribute("user_id"), total_cal, item_str,water);
+		userDao.updateCal((Integer)session.getAttribute("user_id"), total_cal,total_fat,total_chol, item_str);
 		return "redirect:daily_food_details";
 		
 	}

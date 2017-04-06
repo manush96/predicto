@@ -253,13 +253,13 @@ public class user_dao {
 		template1.update(sql);
 		return template1.queryForInt("select MAX(id) from user");
 	}
-	public void save_weekly_data(String id,String alco,String bp_1,String bp_2,String ch_1,String ch_2,String cigs,String sugar)
+	public void save_weekly_data(String id,String alco,String bp_1,String bp_2,String ch_1,String ch_2,String cigs,String sugar,String t_chol,String trigly)
 	{
 		setDataSource();
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		
-		String sql="INSERT INTO `weekly_data`(user_id,alcohol_intake,blood_pressure_sys,blood_pressure_dia,blood_sugar, smokes,cholesterol_ldl, cholesterol_hdl,week) VALUES ('"+id+"','"+alco+"','"+bp_1+"','"+bp_2+"','"+sugar+"','"+cigs+"','"+ch_1+"','"+ch_2+"','"+dateFormat.format(date)+"')";
+		String sql="INSERT INTO `weekly_data`(user_id,alcohol_intake,blood_pressure_sys,blood_pressure_dia,blood_sugar, smokes,cholesterol_ldl, cholesterol_hdl,t_chol,trigly,week) VALUES ('"+id+"','"+alco+"','"+bp_1+"','"+bp_2+"','"+sugar+"','"+cigs+"','"+ch_1+"','"+ch_2+"','"+t_chol+"','"+trigly+"','"+dateFormat.format(date)+"')";
 		template1.update(sql);
 	}
 	public void addInitialData(User user, int id)
@@ -397,7 +397,7 @@ public class user_dao {
 			@Override   
 			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
 				id = rs.getInt("id");
-				sql = "INSERT INTO daily_food_details(user_id,intake_date,calories,food_intake) VALUES('"+id+"','"+dateFormat.format(date)+"','0','')";
+				sql = "INSERT INTO daily_food_details(user_id,intake_date,calories,fat,cholesterol,food_intake,water) VALUES('"+id+"','"+dateFormat.format(date)+"','0','0','0','','0')";
 				template1.update(sql);
 				return id;
 			}
@@ -430,13 +430,46 @@ public class user_dao {
 		return (int)(listContact.get(listContact.size()-1)/7);
 		
 	}
-	public void updateCal(int id, double total_cal, String item_str,String water) {
+	public double findChol(int food_id, int cnt) {
+		// TODO Auto-generated method stub
+		setDataSource();
+		String sql="SELECT cholesterol FROM food_details where id="+food_id+"";
+		SqlRowSet srs= template1.queryForRowSet(sql);
+		srs.next();
+		return srs.getDouble("cholesterol")*cnt;
+	}
+	public double findFat(int food_id, int cnt) {
+		// TODO Auto-generated method stub
+		setDataSource();
+		String sql="SELECT fat FROM food_details where id="+food_id+"";
+		SqlRowSet srs= template1.queryForRowSet(sql);
+		srs.next();
+		return srs.getDouble("fat")*cnt;
+	}
+	
+	public void updateCal(int id, int total_cal,int total_fat, int total_chol, String item_str) {
 		setDataSource();
 
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		
-		String sql="UPDATE daily_food_details SET calories = calories + "+total_cal+", food_intake = CONCAT(food_intake,',"+item_str+"'),water='"+water+"' WHERE user_id = "+id+" AND intake_date ='" + dateFormat.format(date)+"'";
+		String sql="UPDATE daily_food_details SET calories = calories + "+total_cal+",fat = fat + "+total_fat+",cholesterol = cholesterol + "+total_chol+", food_intake = CONCAT(food_intake,',"+item_str+"') WHERE user_id = "+id+" AND intake_date ='" + dateFormat.format(date)+"'";
 		template1.update(sql);
+	}
+	public double get_health_score(int id) {
+		
+		int run_walk_weight = 15;
+		int cycle_weight = 15;
+		int working_weight = 15;
+		double run = 0, walk = 0, cycle = 0, working = 0; 
+		String sql = "SELECT COUNT(id) AS days,SUM(run) AS run, SUM(walk) AS walk, SUM(cycle) AS cycle, SUM(working) AS working FROM daily_exercise WHERE user_id = " + id;
+		SqlRowSet srs = template1.queryForRowSet(sql);
+		if(srs.next())
+		{
+			
+		}
+		sql = "SELECT COUNT(id) AS days,SUM(run) AS run, SUM(walk) AS walk, SUM(cycle) AS cycle, SUM(working) AS working FROM daily_exercise";
+		srs = template1.queryForRowSet(sql);
+		return 0;
 	}
 }
