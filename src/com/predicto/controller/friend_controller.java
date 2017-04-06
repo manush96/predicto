@@ -183,7 +183,16 @@ public class friend_controller {
 		ModelAndView model=new ModelAndView();
 		
 		model.addObject("friends",friends);
+		String[] run = friend_dao.get_chart_data("run",(Integer) session.getAttribute("user_id"),ids);
+		String[] walk = friend_dao.get_chart_data("walk",(Integer) session.getAttribute("user_id"),ids);
+		String[] cycle = friend_dao.get_chart_data("cycle",(Integer) session.getAttribute("user_id"),ids);
+		String[] working = friend_dao.get_chart_data("working",(Integer) session.getAttribute("user_id"),ids);
 		
+		model.addObject("run",run);
+		model.addObject("walk",walk);
+		model.addObject("cycle",cycle);
+		model.addObject("working",working);
+		model.addObject("ids",ids);
 		model.setViewName("get_comparison");
 		return model;
 	}
