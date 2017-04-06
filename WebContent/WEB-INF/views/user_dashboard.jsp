@@ -26,6 +26,8 @@
 	int working = (int) Double.parseDouble((String)pageContext.getAttribute("working"));
 	String work_str = get_time(working);
 	int calories = (int) Double.parseDouble((String)pageContext.getAttribute("calories"));
+	int water= (Integer)pageContext.getAttribute("water_goal");
+
 %>
 <div class="row">
   <div class="col-md-3 col-sm-6 col-xs-12">
@@ -109,29 +111,29 @@
                <strong>Goal Completion</strong>
              </p>
              <div class="progress-group">
-               <span class="progress-text">Add Products to Cart</span>
-               <span class="progress-number"><b>160</b>/200</span>
+               <span class="progress-text">Water Intake</span>
+               <span class="progress-number"><b>${water_goal}</b>/15</span>
                <div class="progress sm">
-                 <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
+                 <div class="progress-bar progress-bar-aqua" style="width: ${water_goal/15 * 100}%"></div>
                </div>
              </div><!-- /.progress-group -->
              <div class="progress-group">
-               <span class="progress-text">Complete Purchase</span>
-               <span class="progress-number"><b>310</b>/400</span>
+               <span class="progress-text">BMI</span>
+               <span class="progress-number"><b>${user_bmi}</b>/24</span>
                <div class="progress sm">
-                 <div class="progress-bar progress-bar-red" style="width: 80%"></div>
+                 <div class="progress-bar progress-bar-red" style="width: ${user_bmi-24/24  * 100 }%"></div>
                </div>
              </div><!-- /.progress-group -->
              <div class="progress-group">
-               <span class="progress-text">Visit Premium Page</span>
-               <span class="progress-number"><b>480</b>/800</span>
+               <span class="progress-text">Calorie burning goal</span>
+               <span class="progress-number"><b>${user_burn}</b>/${burn_goal}</span>
                <div class="progress sm">
                  <div class="progress-bar progress-bar-green" style="width: 80%"></div>
                </div>
              </div><!-- /.progress-group -->
              <div class="progress-group">
-               <span class="progress-text">Send Inquiries</span>
-               <span class="progress-number"><b>250</b>/500</span>
+               <span class="progress-text">Calorie intake goal</span>
+               <span class="progress-number"><b>${user_intake}</b>/${intake_goal}</span>
                <div class="progress sm">
                  <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
                </div>

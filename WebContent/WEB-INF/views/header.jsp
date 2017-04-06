@@ -26,6 +26,7 @@
 	<link rel="stylesheet" type="text/css" href="resources/css/jquery-confirm.css">
 	<link rel="stylesheet" type="text/css" href="resources/css/dropzone.css">
 	<link rel="stylesheet" type="text/css" href="resources/js/square/purple.css">
+	<link rel="stylesheet" type="text/css" href="resources/css/bootstrap-slider.css">
 	
 	<script type="text/javascript" src="resources/others/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="resources/others/bootstrap/js/bootstrap.min.js"></script>
@@ -33,6 +34,8 @@
 	<script type="text/javascript" src="resources/js/icheck.js"></script>
 	<script type="text/javascript" src="resources/js/jquery.validate.js"></script>
 	<script type="text/javascript" src="resources/js/dropzone.js"></script>
+	<script src="resources/js/bootstrap-slider.js" type="text/javascript"></script>
+
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.dropdown-toggle').dropdown();

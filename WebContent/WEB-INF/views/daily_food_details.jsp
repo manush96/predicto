@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/sql" prefix="sql"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <sql:setDataSource var="dataSource" driver="com.mysql.jdbc.Driver"
      url="jdbc:mysql://localhost/predicto"
      user="root"  password=""/>
@@ -209,7 +210,20 @@
 			</div>
 		</div>
 	</c:forEach>
+	<h2>Water Intake(in glasses)</h2>
+	
+	<form action="user/save_daily_food" method="GET">
+<input data-slider-id="blue" data-slider-value="15" name="water" type="text" class="slider form-control" data-slider-min="0" data-slider-max="25" data-slider-step="1" data-slider-handle="round" />
+
 </div>
+<script>
+   $(document).ready(function () {
+ 	    $('.slider').slider();
+   });
+</script>
+</div>
+
+
 <div class="clearfix"></div><br/>
 <div class="col-md-8 col-md-offset-2" id="items_div" style="display: none">
 	<button class="btn btn-danger" onclick="go_back()">
@@ -221,7 +235,7 @@
 	</select>
 	<div class="clearfix"></div><br/><br/>
 	<div class="col-md-12 lr0pad text-center">
-		<button class="btn btn-success" style="float: none; no-repeat;" onclick="add_food_item()">
+		<button type="button" class="btn btn-success" style="float: none; no-repeat;" onclick="add_food_item()">
 			<span class="glyphicon glyphicon-plus"></span>
 			Add
 		</button>
@@ -231,7 +245,6 @@
 <div class="clearfix"></div><br/><hr/>
 <h2 class="text-center"><u>Selected Items</u></h2>
 <div>
-	<form action="user/save_daily_food" method="GET">
 		<input type="hidden" name="items" id="item_vals"/>
 		<div class="col-md-12" id="selected_items">
 			<h4 class="no_items">No items selected!</h4>
