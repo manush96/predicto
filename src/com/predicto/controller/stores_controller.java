@@ -113,10 +113,10 @@ public class stores_controller {
 			
 			String lat = (String)session.getAttribute("latitude");
 			String lng = (String)session.getAttribute("longitude");
-			if(lat == null || lng == null)
+			if(lat == null || lng == null || true)
 			{
-				lat = "17.4650059";
-				lng = "78.45099370000003";
+				lat = "23.0338";
+				lng = "72.5466";
 			}
 			String url = "https://www.medplusmart.com/GetStores.mart?latLong=("+lat+",%20"+lng+")";
 			

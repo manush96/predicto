@@ -38,6 +38,8 @@ import com.predicto.dao.user_dao;
 import com.predicto.model.Daily_data;
 import com.predicto.model.User;
 import com.predicto.services.conversion;
+import com.predicto.services.lin_weka;
+import com.predicto.services.neural_net;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -98,7 +100,64 @@ public class user_controller {
 		else
 			return new ModelAndView("one_time_form");
 	}
-	
+	@RequestMapping("get_final_analysis")
+	public ModelAndView get_prediction_data(HttpSession session) throws Exception
+	{
+		int id=(int)session.getAttribute("user_id");
+		double d[] =userDao.get_analysis_details(id);
+		ModelAndView model = new ModelAndView();
+		model.addObject("analysis",d);
+		
+		Daily_data d1=userDao.get_dashboard_action(id);
+		double cycle=Double.parseDouble(d1.getCycle())/15.5;
+		double run=Double.parseDouble(d1.getRun())/8;
+		double walk=Double.parseDouble(d1.getWalk())/8;
+		double working= Double.parseDouble(d1.getWorking())/60;
+		double total=cycle+run+walk+working;
+		double percentage= (total/10)*100;
+		
+		double pre[]=lin_weka.predict(d);
+		double predict = pre[0];
+		double class1 = pre[1];
+		double split=pre[2];
+		double distance;
+		double health=0;
+		double base=0;
+		if(class1==1)
+		{
+				distance= split-1;
+				health= (split-predict)/distance*100;	
+				base=0;
+		}
+		else
+		{
+				if(split<2 && predict<2)
+				{	
+					distance= 2-split;
+					health= (predict-split)/distance*100;
+					base=50 + (health/2);
+				}
+					else if(split<2 && predict>2)
+					{
+					distance= 2-split;
+					health= (predict-2)/distance*100;
+					health= 100-health;
+					base=50 + (health/2);
+		
+				}
+		}
+		double health1=(percentage*0.5)+(base*0.5);
+		System.out.println("base"+base);
+		System.out.println(percentage);
+
+		health1=Double.parseDouble(String.format("%.3f", health1));
+		int h1 = Integer.parseInt(String.format("%.0f", health1));
+		
+		model.addObject("score",health1);
+		model.addObject("chart",h1);
+		model.setViewName("prediction");
+		return model;
+	}
 	@RequestMapping("health_report")
 	public ModelAndView health_report(HttpSession session)
 	{

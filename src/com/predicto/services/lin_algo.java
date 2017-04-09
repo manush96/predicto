@@ -126,7 +126,7 @@ public static double test() throws Exception
 	double ty=(double)(truth/tr);
 	return ty*100;
 }
-public double predict(double[] d)
+public static double[] predict(double[] d)
 {
 	double sum=0;
 	
@@ -134,7 +134,18 @@ public double predict(double[] d)
 	{
 		sum+=d[i]*result.getEntry(i,0);
 	}
-	return sum;
+	double[] ret = new double[3];
+	ret[0]=sum;
+	if(sum>1.55)
+	{
+		ret[1]=2;
+	}
+	else
+	{
+		ret[1]=1;
+	}
+	ret[2]=1.55;
+	return ret;
 	
 }
 }

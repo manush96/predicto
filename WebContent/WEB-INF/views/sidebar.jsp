@@ -21,7 +21,6 @@
 	                    <li><a href="user/dashboard"><i class="fa fa-home"></i> Home </a></li>
 	                    <li><a href="user/daily_food_details"><i class="fa fa-cutlery"></i> Food and water</a></li>
 	                    <li><a href="user/set_goals"><i class="fa fa-bullseye"></i>Set Goals</a>
-	                    <li><a href="user/health_report"><i class="fa fa-heart"></i>Health Report</a>
 	                </ul>
 	            </li>
 	            <li class="treeview">
@@ -36,6 +35,12 @@
 	                <a ref=""><i class="fa fa-hospital-o"></i><span> Medical Stores</span> <i class="fa fa-angle-left pull-right"></i></a>
 	                <ul class="treeview-menu">
 	                    <li><a href="stores/locate"><i class="fa fa-street-view"></i> Locate Nearby </a></li>
+	                </ul>
+	            </li>
+	            <li class="treeview">
+	                <a ref=""><i class="fa fa-hospital-o"></i><span>Health Analysis</span> <i class="fa fa-angle-left pull-right"></i></a>
+	                <ul class="treeview-menu">
+	                    <li><a href="user/get_final_analysis"><i class="fa fa-street-view"></i> Get report and score</a></li>
 	                </ul>
 	            </li>
 	            <li class="treeview">

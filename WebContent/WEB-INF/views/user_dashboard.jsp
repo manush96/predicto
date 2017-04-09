@@ -119,23 +119,23 @@
              </div><!-- /.progress-group -->
              <div class="progress-group">
                <span class="progress-text">BMI</span>
-               <span class="progress-number"><b>${user_bmi}</b>/24</span>
+               <span class="progress-number"><b> ${user_bmi}</b>/50</span>
                <div class="progress sm">
-                 <div class="progress-bar progress-bar-red" style="width: ${user_bmi-24/24  * 100 }%"></div>
+                 <div class="progress-bar progress-bar-red" style="width: ${user_bmi/50 * 100 }%"></div>
                </div>
              </div><!-- /.progress-group -->
              <div class="progress-group">
                <span class="progress-text">Calorie burning goal</span>
                <span class="progress-number"><b>${user_burn}</b>/${burn_goal}</span>
                <div class="progress sm">
-                 <div class="progress-bar progress-bar-green" style="width: 80%"></div>
+                 <div class="progress-bar progress-bar-green" style="width: ${user_burn*100/burn_goal}%"></div>
                </div>
              </div><!-- /.progress-group -->
              <div class="progress-group">
                <span class="progress-text">Calorie intake goal</span>
                <span class="progress-number"><b>${user_intake}</b>/${intake_goal}</span>
                <div class="progress sm">
-                 <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
+                 <div class="progress-bar progress-bar-yellow" style="width: ${user_intake*100/intake_goal}%"></div>
                </div>
              </div><!-- /.progress-group -->
            </div><!-- /.col -->

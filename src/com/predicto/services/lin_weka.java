@@ -88,17 +88,18 @@ public class lin_weka{
 		    
 		    
 		    
-		    double[] pred=new double[2];
+		    double[] pred=new double[3];
 		if(x>1.6)
 		{
-			pred[0]=2.0;
-			pred[1]=x;
+			pred[1]=2.0;
+			pred[0]=x;
 		}
 		else
 		{
-			pred[0]=1.0;
-			pred[1]=x;
+			pred[1]=1.0;
+			pred[0]=x;
 		}
+		pred[2]=1.6;
 		return pred;
 			
 	}

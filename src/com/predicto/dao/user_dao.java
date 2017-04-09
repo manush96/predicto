@@ -148,7 +148,8 @@ public class user_dao {
 			double height=listContact.get(0).getHeight();
 			height=height/100;
 			double bmi=(weight/(height*height));
-			return bmi;
+			int tmp = (int)bmi;
+			return (double) tmp;
 			
 	}
 	public void pushWeekly()
@@ -171,6 +172,76 @@ public class user_dao {
 				return id;
 			}
 	    });
+	}
+	public double[] get_analysis_details(int id)
+	{
+		double[] fin=new double[14];
+		setDataSource();
+		User u=get_user_details(id);
+		fin[0]=u.getWeight();
+		fin[1]=u.getHeight();
+		if(u.getSmoker()==1)
+		{
+			fin[2]=1;
+		}
+		else
+		{
+			fin[1]=2;
+		}
+		
+		Weekly_data week=get_weekly_data(id);
+		fin[3]=week.getBlood_pressure_sys();
+		fin[4]=week.getBlood_pressure_dia();
+		fin[5]=get_fat(id);
+		fin[6]=50;
+		fin[7]=20;
+		fin[8]=get_food_chol(id);
+		fin[9]=week.getAlcohol_intake();
+		fin[10]=week.getT_chol();
+		fin[11]=week.getCholesterol_hdl();
+		fin[12]=week.getTrigly();
+		fin[13]=week.getCholesterol_ldl();
+		return fin;
+	}
+
+	public int get_food_chol(int id)
+	{
+		setDataSource();
+		String sql="select ROUND(avg(cholesterol)) from daily_food_details where user_id='"+id+"' and intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+		@SuppressWarnings("deprecation")
+		int fat=template1.queryForInt(sql);
+		return fat;
+	}
+	
+	public int get_fat(int id)
+	{
+		setDataSource();
+		String sql="select ROUND(avg(fat)) from daily_food_details where user_id='"+id+"' and intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+		int fat=template1.queryForInt(sql);
+		return fat;
+	}
+	public Weekly_data get_weekly_data(int id)
+	{
+		setDataSource();
+		String sql="Select * from weekly_data where user_id='"+id+"' and id=(select max(id) from weekly_data where user_id='"+id+"')";
+		java.util.List<Weekly_data> daily_Data = template1.query(sql, new RowMapper<Weekly_data>() {
+			 
+		     @Override   
+			 public Weekly_data mapRow(ResultSet rs, int rowNum) throws SQLException {
+		         Weekly_data d=new Weekly_data();
+		         d.setAlcohol_intake(rs.getInt("alcohol_intake"));
+		         d.setBlood_pressure_dia(rs.getInt("blood_pressure_dia"));
+		         d.setBlood_pressure_sys(rs.getInt("blood_pressure_sys"));
+		         d.setCholesterol_hdl(rs.getInt("cholesterol_hdl"));
+		         d.setCholesterol_ldl(rs.getInt("cholesterol_ldl"));
+		         d.setBlood_sugar(rs.getInt("blood_sugar"));
+		         d.setT_chol(rs.getInt("t_chol"));
+		         d.setTrigly(rs.getInt("trigly"));
+		    	 return d;
+		        }
+		 
+		    });
+		return daily_Data.get(0);
 	}
 	public Daily_data get_dashboard_action(int id)
 	{
@@ -195,7 +266,7 @@ public class user_dao {
 	public String[] get_calories_comparison(int id)
 	{
 		setDataSource();
-		String sql = "SELECT daily_exercise.calories AS c_burn, daily_food_details.calories AS c_intake, date FROM `daily_exercise` JOIN daily_food_details ON daily_exercise.date = daily_food_details.intake_date WHERE daily_exercise.user_id = "+id+" AND date >DATE_SUB(CURDATE(), INTERVAL 7 DAY) ORDER BY daily_food_details.intake_date ";
+		String sql = "SELECT daily_exercise.calories AS c_burn, daily_food_details.calories AS c_intake, date FROM `daily_exercise` JOIN daily_food_details ON daily_exercise.date = daily_food_details.intake_date WHERE daily_exercise.user_id = "+id+" AND daily_food_details.user_id = "+id+" AND date >DATE_SUB(CURDATE(), INTERVAL 7 DAY) ORDER BY daily_food_details.intake_date ";
 		SqlRowSet srs =template1.queryForRowSet(sql);
 		String c_burn="",c_intake="",date="";
 		int count = 0;
@@ -415,7 +486,7 @@ public class user_dao {
 	public int weekly_water_average(int id)
 	{
 		setDataSource();
-		String sql="SELECT * FROM daily_food_details where user_id="+id+" AND  intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+		String sql="SELECT COALESCE(water,0) AS water FROM daily_food_details where user_id="+id+" AND  intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
 		
 		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
 			int sum=0;
