@@ -22,7 +22,7 @@
 						<option value="1" selected>Mr.</option>
 						<option value="0">Miss</option>
 					</select>
-					 Vismay and I am  
+					 <%=session.getAttribute("username") %> and I am  
 					<input type="number" name="age" value="30" placeholder="30"/>
 					years old.
 				</p>
@@ -33,8 +33,8 @@
 				</p>
 				<p>I am 
 					<select name="diabetic">
-						<option value="1" selected>a diabetic</option>
-						<option value="0">not a diabetic</option>
+						<option value="1">a diabetic</option>
+						<option value="0" selected>not a diabetic</option>
 					</select>
 				</p>
 				<div class="nl-submit-wrap">

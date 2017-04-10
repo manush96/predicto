@@ -12,20 +12,28 @@
 <script src="resources/js/morris.js"></script>
 <script src="resources/js/raphael.js"></script>
 <div class="col-sm-offset-2 col-sm-7">
-<form action="user/set_goal_save">
-Calories burnt per day
-<input data-slider-id="blue" data-slider-value="${burn_goal}" name="burn" type="text" class="slider form-control" data-slider-min="0" data-slider-max="4000" data-slider-step="20" data-slider-handle="round" />
-Calories intake per day
-<input data-slider-id="blue" data-slider-value="${intake_goal }" name="intake" type="text" class="slider form-control" data-slider-min="0" data-slider-max="2000" data-slider-step="10" data-slider-handle="round" />
-<div class="col-sm-offset-5">
-<br>
-<br>
+	<div class="box box-primary">
+		<div class="box-header with-border">
+			<div class="box-title">
+				Set your goals
+			</div>
+		</div>
+		<div class="box-body">
+			<form action="user/set_goal_save">
+				Calories burnt per day
+				<input data-slider-id="blue" data-slider-value="${burn_goal}" name="burn" type="text" class="slider form-control" data-slider-min="500" data-slider-max="3000" data-slider-step="50" data-slider-handle="round" />
+				Calories intake per day
+				<input data-slider-id="red" data-slider-value="${intake_goal }" name="intake" type="text" class="slider form-control" data-slider-min="500" data-slider-max="3000" data-slider-step="50" data-slider-handle="round" />
+				<div class="clearfix"></div><br/>
+				<div class="col-sm-offset-5">
+					<input type="submit" class="btn btn-success" value="Set Goals">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 <script>
    $(document).ready(function () {
  	    $('.slider').slider();
    });
 </script>
-<input type="submit" class="btn btn-danger" value="Set Goals">
-</div>
-</form>
-</div>

@@ -17,7 +17,11 @@
 
 <h2>Your Cardiovascular health score:</h2>
 <br>
-	<div style="margin-left:100px">	<div class="c100 p${chart}  big green">
+	<c:set var="color" value="green"/>
+	<c:if test="${score lt 50}">
+		<c:set var="color" value="orange"/>
+	</c:if>
+	<div style="margin-left:100px">	<div class="c100 p${chart}  big ${color}">
 		<span>${score}</span>
 		<div class="slice">
 		    <div class="bar"></div>

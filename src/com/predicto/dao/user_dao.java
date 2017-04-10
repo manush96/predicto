@@ -94,35 +94,22 @@ public class user_dao {
 		setDataSource();
 		if(a.equals("a"))
 		{
-		String sql="SELECT calories FROM daily_food_details where user_id="+id+" AND  intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
-		
-		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
-			int sum=0;
-			@Override   
-			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				int i=rs.getInt("calories");
-				sum=sum+i;
-				return sum;
-			}
-	    });	
-		System.out.println(listContact);
-		return listContact.get(listContact.size()-1)/7;
+			String sql="SELECT COALESCE(SUM(calories),0) AS calories FROM daily_food_details where user_id="+id+" AND  intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+			SqlRowSet srs =template1.queryForRowSet(sql);
+			double sum = 0;
+			if(srs.next())
+				sum = srs.getDouble("calories");
+			return (int) sum/7;
 		}
 		else
 		{
-			String sql="SELECT calories FROM daily_exercise where user_id="+id+" AND  date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+			String sql="SELECT COALESCE(SUM(calories),0) AS calories FROM daily_exercise where user_id="+id+" AND  date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
 			
-			java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
-				int sum=0;
-				@Override   
-				public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-					int i=rs.getInt("calories");
-					sum=sum+i;
-					return sum;
-				}
-		    });	
-			System.out.println(listContact);
-			return listContact.get(listContact.size()-1)/7;
+			SqlRowSet srs =template1.queryForRowSet(sql);
+			double sum = 0;
+			if(srs.next())
+				sum = srs.getDouble("calories");
+			return (int) sum/7;
 		}
 	}
 	
@@ -224,24 +211,32 @@ public class user_dao {
 	{
 		setDataSource();
 		String sql="Select * from weekly_data where user_id='"+id+"' and id=(select max(id) from weekly_data where user_id='"+id+"')";
-		java.util.List<Weekly_data> daily_Data = template1.query(sql, new RowMapper<Weekly_data>() {
-			 
-		     @Override   
-			 public Weekly_data mapRow(ResultSet rs, int rowNum) throws SQLException {
-		         Weekly_data d=new Weekly_data();
-		         d.setAlcohol_intake(rs.getInt("alcohol_intake"));
-		         d.setBlood_pressure_dia(rs.getInt("blood_pressure_dia"));
-		         d.setBlood_pressure_sys(rs.getInt("blood_pressure_sys"));
-		         d.setCholesterol_hdl(rs.getInt("cholesterol_hdl"));
-		         d.setCholesterol_ldl(rs.getInt("cholesterol_ldl"));
-		         d.setBlood_sugar(rs.getInt("blood_sugar"));
-		         d.setT_chol(rs.getInt("t_chol"));
-		         d.setTrigly(rs.getInt("trigly"));
-		    	 return d;
-		        }
-		 
-		    });
-		return daily_Data.get(0);
+		SqlRowSet rs =template1.queryForRowSet(sql);
+		Weekly_data d=new Weekly_data();
+		if(rs.next())
+		{
+			d.setAlcohol_intake(rs.getInt("alcohol_intake"));
+	        d.setBlood_pressure_dia(rs.getInt("blood_pressure_dia"));
+	        d.setBlood_pressure_sys(rs.getInt("blood_pressure_sys"));
+	        d.setCholesterol_hdl(rs.getInt("cholesterol_hdl"));
+	        d.setCholesterol_ldl(rs.getInt("cholesterol_ldl"));
+	        d.setBlood_sugar(rs.getInt("blood_sugar"));
+	        d.setT_chol(rs.getInt("t_chol"));
+	        d.setTrigly(rs.getInt("trigly"));
+		}
+		else
+		{
+			d.setAlcohol_intake(0);
+	        d.setBlood_pressure_dia(0);
+	        d.setBlood_pressure_sys(0);
+	        d.setCholesterol_hdl(0);
+	        d.setCholesterol_ldl(0);
+	        d.setBlood_sugar(0);
+	        d.setT_chol(0);
+	        d.setTrigly(0);
+		}
+		
+		return d;
 	}
 	public Daily_data get_dashboard_action(int id)
 	{
@@ -527,20 +522,10 @@ public class user_dao {
 		String sql="UPDATE daily_food_details SET calories = calories + "+total_cal+",fat = fat + "+total_fat+",cholesterol = cholesterol + "+total_chol+", food_intake = CONCAT(food_intake,',"+item_str+"') WHERE user_id = "+id+" AND intake_date ='" + dateFormat.format(date)+"'";
 		template1.update(sql);
 	}
-	public double get_health_score(int id) {
+	public void update_score(int id, double health1) {
+		setDataSource();
 		
-		int run_walk_weight = 15;
-		int cycle_weight = 15;
-		int working_weight = 15;
-		double run = 0, walk = 0, cycle = 0, working = 0; 
-		String sql = "SELECT COUNT(id) AS days,SUM(run) AS run, SUM(walk) AS walk, SUM(cycle) AS cycle, SUM(working) AS working FROM daily_exercise WHERE user_id = " + id;
-		SqlRowSet srs = template1.queryForRowSet(sql);
-		if(srs.next())
-		{
-			
-		}
-		sql = "SELECT COUNT(id) AS days,SUM(run) AS run, SUM(walk) AS walk, SUM(cycle) AS cycle, SUM(working) AS working FROM daily_exercise";
-		srs = template1.queryForRowSet(sql);
-		return 0;
+		String sql="UPDATE user SET score = '"+health1+"' WHERE id = "+id;
+		template1.update(sql);
 	}
 }

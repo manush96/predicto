@@ -201,46 +201,45 @@
 		$("#item_vals").val(tmp);
 	}
 </script>
-<div style="min-height: 300px">
-<div class="col-md-8 col-md-offset-2" id="select_categories">
-	<c:forEach var="row" items="${categories.rows}">
-		<div class="col-md-4">
-			<div class="col-md-12 category_icon"  style="background: url(resources/img/${row.image})" rel="${row.id}">
-				<h1>${row.name}</h1>
+<div style="min-height: 320px">
+	<div class="col-md-8 col-md-offset-2" id="select_categories">
+		<c:forEach var="row" items="${categories.rows}">
+			<div class="col-md-4">
+				<div class="col-md-12 category_icon"  style="background: url(resources/img/${row.image})" rel="${row.id}">
+					<h1>${row.name}</h1>
+				</div>
 			</div>
-		</div>
-	</c:forEach>
-	<h2>Water Intake(in glasses)</h2>
-	
-	<form action="user/save_daily_food" method="GET">
-<input data-slider-id="blue" data-slider-value="15" name="water" type="text" class="slider form-control" data-slider-min="0" data-slider-max="25" data-slider-step="1" data-slider-handle="round" />
-
-</div>
-<script>
-   $(document).ready(function () {
- 	    $('.slider').slider();
-   });
-</script>
-</div>
-
-
-<div class="clearfix"></div><br/>
-<div class="col-md-8 col-md-offset-2" id="items_div" style="display: none">
-	<button class="btn btn-danger" onclick="go_back()">
-		<span class="glyphicon glyphicon-arrow-left"></span> Back
-	</button>
-	<div class="clearfix"></div><br/><br/>
-	<select class="form-control" id="select_items">
+		</c:forEach>
+		<h2>Water Intake(in glasses)</h2>
 		
-	</select>
-	<div class="clearfix"></div><br/><br/>
-	<div class="col-md-12 lr0pad text-center">
-		<button type="button" class="btn btn-success" style="float: none; no-repeat;" onclick="add_food_item()">
-			<span class="glyphicon glyphicon-plus"></span>
-			Add
-		</button>
+		<form action="user/save_daily_food" method="GET">
+			<input data-slider-id="blue" data-slider-value="15" name="water" type="text" class="slider form-control" data-slider-min="0" data-slider-max="25" data-slider-step="1" data-slider-handle="round" />
+	
 	</div>
-</div>
+	<script>
+	   $(document).ready(function () {
+	 	    $('.slider').slider();
+	   });
+	</script>
+
+
+	<div class="clearfix"></div><br/>
+	<div class="col-md-8 col-md-offset-2" id="items_div" style="display: none;">
+		<button class="btn btn-danger" onclick="go_back()" type="button">
+			<span class="glyphicon glyphicon-arrow-left"></span> Back
+		</button>
+		<div class="clearfix"></div><br/><br/>
+		<select class="form-control" id="select_items">
+			
+		</select>
+		<div class="clearfix"></div><br/><br/>
+		<div class="col-md-12 lr0pad text-center">
+			<button type="button" class="btn btn-success" style="float: none; no-repeat;" onclick="add_food_item()">
+				<span class="glyphicon glyphicon-plus"></span>
+				Add
+			</button>
+		</div>
+	</div>
 </div>
 <div class="clearfix"></div><br/><hr/>
 <h2 class="text-center"><u>Selected Items</u></h2>

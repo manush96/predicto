@@ -26,9 +26,8 @@
 	            <li class="treeview">
 	                <a ref=""><i class="fa fa-file-text"></i><span> Reports</span> <i class="fa fa-angle-left pull-right"></i></a>
 	                <ul class="treeview-menu">
-	                    <li><a href="user/report"><i class="fa fa-upload"></i> Upload </a></li>
-	                    <li><a href="user/report_view"><i class="fa fa-eye"></i>  View </a></li>
-	                     <li><a href="user/daily_report_view"><i class="fa fa-eye"></i> Daily analysis View </a></li>
+	                    <li><a href="user/report_view"><i class="fa fa-file-text-o"></i> My Reports </a></li>
+	                     <li><a href="user/daily_report_view"><i class="fa fa-line-chart"></i> Daily analysis View </a></li>
 	                </ul>
 	            </li>
 	            <li class="treeview">
@@ -38,9 +37,9 @@
 	                </ul>
 	            </li>
 	            <li class="treeview">
-	                <a ref=""><i class="fa fa-hospital-o"></i><span>Health Analysis</span> <i class="fa fa-angle-left pull-right"></i></a>
+	                <a ref=""><i class="fa fa-plus"></i><span>Health Analysis</span> <i class="fa fa-angle-left pull-right"></i></a>
 	                <ul class="treeview-menu">
-	                    <li><a href="user/get_final_analysis"><i class="fa fa-street-view"></i> Get report and score</a></li>
+	                    <li><a href="user/get_final_analysis"><i class="fa fa-info-circle"></i> Get report and score</a></li>
 	                </ul>
 	            </li>
 	            <li class="treeview">

@@ -23,11 +23,11 @@
 		<div class="chart" id="run_chart" style="height: 250px;"></div>
 	</div><!-- /.box-body -->
 </div>
-<div class="box box-primary">
+<div class="box box-danger cbox">
 	<div class="box-header with-border">
 		<h3 class="box-title">Walking</h3>
 		<div class="box-tools pull-right">
-			<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 			<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 		</div>
 	</div>
@@ -35,11 +35,11 @@
 		<div class="chart" id="walk_chart" style="height: 250px;"></div>
 	</div><!-- /.box-body -->
 </div>
-<div class="box box-primary">
+<div class="box box-primary cbox">
 	<div class="box-header with-border">
 		<h3 class="box-title">Cycling</h3>
 		<div class="box-tools pull-right">
-			<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 			<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 		</div>
 	</div>
@@ -47,11 +47,11 @@
 		<div class="chart" id="cycle_chart" style="height: 250px;"></div>
 	</div><!-- /.box-body -->
 </div>
-<div class="box box-primary">
+<div class="box box-danger cbox">
 	<div class="box-header with-border">
 		<h3 class="box-title">Working out</h3>
 		<div class="box-tools pull-right">
-			<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 			<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 		</div>
 	</div>
@@ -59,11 +59,11 @@
 		<div class="chart" id="work_out_chart" style="height: 250px;"></div>
 	</div><!-- /.box-body -->
 </div>
-<div class="box box-primary">
+<div class="box box-primary cbox">
 	<div class="box-header with-border">
 		<h3 class="box-title">Calories burnt</h3>
 		<div class="box-tools pull-right">
-			<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+			<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 			<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
 		</div>
 	</div>
@@ -133,6 +133,7 @@
 	    lineColors: ['#3c8dbc'],
 	    hideHover: 'auto'
 	  });
+	$(".cbox").addClass("collapsed-box");
 </script>
 </body>
 </html>

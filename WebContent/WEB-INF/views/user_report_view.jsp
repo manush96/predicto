@@ -7,29 +7,42 @@
 <%@include file="sidebar.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <link href="resources/css/main.css" rel="stylesheet"/>
-
+<div class="col-md-6 col-md-offset-3">
+	<form action="user/upload_data" method="post" enctype="multipart/form-data">
+		<div class="input-group input-group-sm">
+			<input type="file" name="report" class="form-control">
+			<span class="input-group-btn">
+				<button class="btn btn-info btn-flat" type="submit">Upload</button>
+			</span>
+         </div>
+	</form>
+</div>
+<div class="clearfix"></div><hr/>
 <%	
 		int user_id= (Integer)session.getAttribute("user_id");
 		
 		String path= System.getProperty("user.dir");
 		List<String> imageUrlList = new ArrayList();  
-		File imageDir = new File(path+"/img/fulls/"+user_id);  
-		for(File imageFile : imageDir.listFiles()){  
+		File imageDir = new File(path+"/img/fulls/"+user_id);
+		if(imageDir.exists())
+		{
+			for(File imageFile : imageDir.listFiles())
+			{  
 				String imageFileName = imageFile.getName();  
-	  	imageUrlList.add(imageFileName);  
-
-		}  
+		  		imageUrlList.add(imageFileName);  
+			}
+		}
 		request.setAttribute("imageUrlList", imageUrlList);
 	 %>
 	
 <div class="gallery">
 	<div class="content" style="margin-left:50px">
-			<c:forEach var="img" items="${imageUrlList}">  
-				<div class="media all people" style="margin-right:50px;margin-bottom:30x">
-					<a href="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}"><img src="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}" alt="" title="This right here is a caption." /> </a>
-				</div> 
-			</c:forEach>
-		</div>
+		<c:forEach var="img" items="${imageUrlList}">  
+			<div class="media all people" style="margin-right:50px;margin-bottom:30x">
+				<a href="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}"><img src="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}" alt="" title="Image" /></a>
+			</div> 
+		</c:forEach>
+	</div>
 </div>
 		
 <script src="resources/js/jquery.poptrox.min.js"></script>

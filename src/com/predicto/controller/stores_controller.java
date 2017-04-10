@@ -133,7 +133,7 @@ public class stores_controller {
             {
             	store = (JSONObject) iterator.next();
             	store_id = store.getString("storeId_s");
-            	name = store.getString("name_s");
+            	name = store.getString("name_s").toLowerCase().replace("medplus","Predicto");
             	location = store.getString("locationLatLong");
             	locality = store.getString("locality_s");
             	contact = store.getString("phoneNumber_s");

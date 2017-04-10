@@ -125,26 +125,25 @@ public class user_controller {
 		double base=0;
 		if(class1==1)
 		{
-				distance= split-1;
-				health= (split-predict)/distance*100;	
-				base=0;
+			distance= split-1;
+			health= (predict-1)/distance*50;	
+			base = health;
 		}
 		else
 		{
-				if(split<2 && predict<2)
-				{	
-					distance= 2-split;
-					health= (predict-split)/distance*100;
-					base=50 + (health/2);
-				}
-					else if(split<2 && predict>2)
-					{
-					distance= 2-split;
-					health= (predict-2)/distance*100;
-					health= 100-health;
-					base=50 + (health/2);
-		
-				}
+			if(split<2 && predict<2)
+			{	
+				distance= 2-split;
+				health= (2-predict)/distance*50;
+				base = 50 + health;
+			}
+			else if(split<2 && predict>2)
+			{
+				distance= 2-split;
+				health = (predict-2)/distance*50;
+				health = 100-health;
+				base = 50 + health;
+			}
 		}
 		double health1=(percentage*0.5)+(base*0.5);
 		System.out.println("base"+base);
@@ -152,6 +151,8 @@ public class user_controller {
 
 		health1=Double.parseDouble(String.format("%.3f", health1));
 		int h1 = Integer.parseInt(String.format("%.0f", health1));
+		
+		userDao.update_score(id,health1);
 		
 		model.addObject("score",health1);
 		model.addObject("chart",h1);
@@ -163,7 +164,6 @@ public class user_controller {
 	{
 		int id = (int) session.getAttribute("user_id");
 		ModelAndView model = new ModelAndView();
-		double health_score = userDao.get_health_score(id);
 		model.addObject("health_score",75.42);
 		model.setViewName("health_report");
 		return model;
@@ -243,6 +243,8 @@ public class user_controller {
 	@RequestMapping("set_goals")
 	public ModelAndView set_goals(HttpSession session)
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
 		int id=(int) session.getAttribute("user_id");
 		ModelAndView model=new ModelAndView();
 		model.addObject("burn_goal",userDao.get_goals(id)[0]);
@@ -279,19 +281,15 @@ public class user_controller {
         	byte[] bytes = file.getBytes();
         	DateFormat dateFormat = new java.text.SimpleDateFormat("dd_MM_ss");
         	Date date = new Date();
-        	System.out.println(System.getProperty("user.dir"));
         	String user_id=session.getAttribute("user_id").toString();
-        	System.out.println(dateFormat.format(date)+"budh-");
         	String name=dateFormat.format(date)+".jpg";
             Path path = Paths.get(System.getProperty("user.dir")+"\\img\\fulls\\"+user_id+"\\" +name);
-            System.out.println(System.getProperty("user.dir")+"\\img\\fulls\\"+user_id+"\\" +name);
-            System.out.println(path);
             Files.write(path, bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        return "upload";
+        return "redirect:report_view";
     }
 	@RequestMapping("logout")
 	public String logout(HttpSession session)
@@ -400,7 +398,8 @@ public class user_controller {
 			work += "{ year: '"+ date +"', value: "+d.getWorking()+" },";
 			calories += "{ year: '"+ date +"', value: "+d.getCalories()+" },";
 		}
-		run = run.substring(0,run.length()-1);
+		if(run.length() > 0)
+			run = run.substring(0,run.length()-1);
 		walk = walk.substring(0,walk.length()-1);
 		cycle = cycle.substring(0,cycle.length()-1);
 		work = work.substring(0,work.length()-1);
