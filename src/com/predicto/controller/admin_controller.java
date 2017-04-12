@@ -22,10 +22,10 @@ public class admin_controller {
 		return new ModelAndView("admin_dashboard");
 	}
 	@RequestMapping("push_daily")
-	public ModelAndView push_daily(HttpSession session)
+	public String push_daily(HttpSession session)
 	{
 		userDao.pushDaily();
-		return new ModelAndView("opt_view");
+		return "redirect:dashboard";
 	}
 	@RequestMapping("train_linear_weka")
 	public ModelAndView train_linear_weka() throws Exception
@@ -74,15 +74,15 @@ public class admin_controller {
 	}
 	
 	@RequestMapping("push_weekly")
-	public ModelAndView push_weekly(HttpSession session)
+	public String push_weekly(HttpSession session)
 	{
 		userDao.pushWeekly();
-		return new ModelAndView("opt_view");
+		return "redirect:dashboard";
 	}
 	@RequestMapping("push_food")
-	public ModelAndView push_food(HttpSession session)
+	public String push_food(HttpSession session)
 	{
 		userDao.pushFood();
-		return new ModelAndView("opt_view");
+		return "redirect:dashboard";
 	}
 }

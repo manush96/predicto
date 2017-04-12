@@ -15,31 +15,53 @@
 </div>
 
 <div style="margin-left:330px">
-  <div class="w3-padding">Hello Admin!</div>
-
   <div id="Fade" class="w3-container city w3-animate-opacity" style="display:none">
     <h2>Linear regression</h2>
-    <p><a href="javascript:foo('train')">Click here to train algorithm</a></p>
+    <p><a href="javascript:foo('train',this)">
+		<button type="button" class="btn btn-primary">
+	    	<span class="glyphicon glyphicon-wrench"></span> Train Algorithm
+	    </button>
+	</a></p>
     <br>
-    <p><a href="javascript:foo('test')">Click here to test algorithm</a></p>
+    <p><a href="javascript:foo('test',this)">
+    	<button type="button" class="btn btn-success">
+			<span class="glyphicon glyphicon-check"></span> Test Algorithm
+		</button>
+    </a></p>
    <br>
   
     <div class="dis"></div>
     </div>
   <div id="Fade12" class="w3-container city w3-animate-opacity" style="display:none">
-    <h2>Linear regression using Normal equation algo</h2>
-    <p><a href="javascript:foo1('train')">Click here to train algorithm</a></p>
+    <h2>Linear regression using Normal equation algorithm</h2><br/>
+    <p><a href="javascript:foo1('train',this)">
+	    <button type="button" class="btn btn-primary">
+	    	<span class="glyphicon glyphicon-wrench"></span> Train Algorithm
+	    </button>
+    </a></p>
     <br>
-    <p><a href="javascript:foo1('test')">Click here to test algorithm</a></p>
+    <p><a href="javascript:foo1('test',this)">
+		<button type="button" class="btn btn-success">
+			<span class="glyphicon glyphicon-check"></span> Test Algorithm
+		</button>
+	</a></p>
    <br>
   
     <div class="dis"></div>
     </div>
     <div id="Fade13" class="w3-container city w3-animate-opacity" style="display:none">
     <h2>Neural network</h2>
-    <p><a href="javascript:foo2('train')">Click here to train algorithm</a></p>
+    <p><a href="javascript:foo2('train',this)">
+		<button type="button" class="btn btn-primary">
+	    	<span class="glyphicon glyphicon-wrench"></span> Train Algorithm
+	    </button>
+	</a></p>
     <br>
-    <p><a href="javascript:foo2('test')">Click here to test algorithm</a></p>
+    <p><a href="javascript:foo2('test',this)">
+    	<button type="button" class="btn btn-success">
+			<span class="glyphicon glyphicon-check"></span> Test Algorithm
+		</button>
+    </a></p>
    <br>
   
     <div class="dis"></div>
@@ -61,7 +83,7 @@
     
 </div>
 <script>
-function foo(t)
+function foo(t,e)
 {
 	if(t=='train')
 	{
@@ -77,21 +99,21 @@ function foo(t)
 		});
 	}
 	else if(t=='test')
-		{
-			$.ajax
-			({
-				type: "POST",
-				url: "admin/test_linear_weka",
-				success: function(response)
-				{
-					$(".dis").empty();
-					$(".dis").append(response);
-				}
-			});
-		}
-
+	{
+		$.ajax
+		({
+			type: "POST",
+			url: "admin/test_linear_weka",
+			success: function(response)
+			{
+				$(".dis").empty();
+				$(".dis").append(response);
+			}
+		});
+	}
+	$("#"+e.id).find(".btn").addClass("disabled");
 }
-function foo1(t)
+function foo1(t,e)
 {
 	if(t=='train')
 	{
@@ -107,21 +129,21 @@ function foo1(t)
 		});
 	}
 	else if(t=='test')
-		{
-			$.ajax
-			({
-				type: "POST",
-				url: "admin/test_linear_algo",
-				success: function(response)
-				{
-					$(".dis").empty();
-					$(".dis").append(response);
-				}
-			});
-		}
-
+	{
+		$.ajax
+		({
+			type: "POST",
+			url: "admin/test_linear_algo",
+			success: function(response)
+			{
+				$(".dis").empty();
+				$(".dis").append(response);
+			}
+		});
+	}
+	$("#"+e.id).find(".btn").addClass("disabled");
 }
-function foo2(t)
+function foo2(t,e)
 {
 	if(t=='train')
 	{
@@ -137,19 +159,19 @@ function foo2(t)
 		});
 	}
 	else if(t=='test')
-		{
-			$.ajax
-			({
-				type: "POST",
-				url: "admin/test_neural",
-				success: function(response)
-				{
-					$(".dis").empty();
-					$(".dis").append(response);
-				}
-			});
-		}
-
+	{
+		$.ajax
+		({
+			type: "POST",
+			url: "admin/test_neural",
+			success: function(response)
+			{
+				$(".dis").empty();
+				$(".dis").append(response);
+			}
+		});
+	}
+	$("#"+e.id).find(".btn").addClass("disabled");
 }
 function openLink(evt, animName) {
   var i, x, tablinks;
@@ -163,6 +185,7 @@ function openLink(evt, animName) {
   }
   document.getElementById(animName).style.display = "block";
   evt.currentTarget.className += " w3-red";
+  $(".dis").empty();
 }
 $(document).ready(function(){
 	$("#button1").on('click',function(){

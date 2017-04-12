@@ -96,7 +96,7 @@ div.mydiv :hover
       <script type="text/javascript" src="resources/js/modernizr.js"></script>
       <script type="text/javascript" src="resources/js/responsee.js"></script>     
 </head>
-<body class="size-1140" style="background-color:#0B192F;">
+<body class="size-1140" style="background-color:#ccc; color: black">
       <!-- TOP NAV WITH LOGO -->          
         <header class="margin-bottom">
          <div class="line">

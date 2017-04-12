@@ -15,22 +15,29 @@
 
 <div class="col-sm-offset-3 col-sm-5">
 
-<h2>Your Cardiovascular health score:</h2>
-<br>
-	<c:set var="color" value="green"/>
+	<h2>Your Cardiovascular health score:</h2>
+	<br>
+		<c:set var="color" value="green"/>
 	<c:if test="${score lt 50}">
 		<c:set var="color" value="orange"/>
 	</c:if>
 	<div style="margin-left:100px">	<div class="c100 p${chart}  big ${color}">
 		<span>${score}</span>
-		<div class="slice">
-		    <div class="bar"></div>
-		    <div class="fill"></div>
+			<div class="slice">
+			    <div class="bar"></div>
+			    <div class="fill"></div>
+			</div>
 		</div>
 	</div>
 </div>
-</div>
 <div class="clearfix"></div>
+<div class="col-sm-offset-1 col-sm-10">
+	<div class="box box-primary">
+		<div class="box-body">
+			
+		</div>
+	</div>
+</div>
 <div class="col-sm-12">
 	<div class="box box-primary">
 		<div class="box-header with-border">
