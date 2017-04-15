@@ -15,6 +15,36 @@
 		else
 			return mins + "m";
 	}
+	public String get_class(String score, String total)
+	{
+		double s = Double.parseDouble(score);
+		double t = Double.parseDouble(total);
+		double p = s*100/t;
+		if(p > 90)
+			return "green";
+		else if(p > 70)
+			return "blue";
+		else if(p > 50)
+			return "aqua";
+		else if(p > 35)
+			return "yellow";
+		else 
+			return "red";
+	}
+	public String get_bmi_class(String bmi)
+	{
+		double s = Double.parseDouble(bmi);
+		if(s > 30)
+			return "red";
+		else if(s > 25)
+			return "yellow";
+		else if(s > 20)
+			return "green";
+		else if(s > 18)
+			return "aqua";
+		else 
+			return "red";
+	}
 %>
 <%
 	String tm;
@@ -31,7 +61,7 @@
 %>
 <div class="row">
   <div class="col-md-3 col-sm-6 col-xs-12">
-    <div class="info-box">
+    <div class="info-box" data-toggle="tooltip" data-placement="bottom" title="Total kms you covered on FOOT since start.">
       <span class="info-box-icon bg-yellow"><i class="ion ion-android-walk"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">On Foot</span>
@@ -40,7 +70,7 @@
     </div><!-- /.info-box -->
   </div><!-- /.col -->
   <div class="col-md-3 col-sm-6 col-xs-12">
-    <div class="info-box">
+    <div class="info-box" data-toggle="tooltip" data-placement="bottom" title="Total kms you CYCLED since start.">
       <span class="info-box-icon bg-red"><i class="ion ion-android-bicycle"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">Cycling</span>
@@ -53,7 +83,7 @@
   <div class="clearfix visible-sm-block"></div>
 
   <div class="col-md-3 col-sm-6 col-xs-12">
-    <div class="info-box">
+    <div class="info-box" data-toggle="tooltip" data-placement="bottom" title="Your total work out time.">
       <span class="info-box-icon bg-green"><i class="ion ion-ios-timer-outline"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">Work out</span>
@@ -62,7 +92,7 @@
     </div><!-- /.info-box -->
   </div><!-- /.col -->
   <div class="col-md-3 col-sm-6 col-xs-12">
-    <div class="info-box">
+    <div class="info-box" data-toggle="tooltip" data-placement="bottom" title="You lost total <%=calories %> calories.">
       <span class="info-box-icon bg-teal"><i class="ion ion-arrow-graph-down-right"></i></span>
       <div class="info-box-content">
         <span class="info-box-text">Calories Lost</span>
@@ -76,20 +106,6 @@
      <div class="box">
        <div class="box-header with-border">
          <h3 class="box-title">Weekly calorie chart</h3>
-         <div class="box-tools pull-right">
-           <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-           <div class="btn-group">
-             <button class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"><i class="fa fa-wrench"></i></button>
-             <ul class="dropdown-menu" role="menu">
-               <li><a href="#">Action</a></li>
-               <li><a href="#">Another action</a></li>
-               <li><a href="#">Something else here</a></li>
-               <li class="divider"></li>
-               <li><a href="#">Separated link</a></li>
-             </ul>
-           </div>
-           <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-         </div>
        </div><!-- /.box-header -->
        <div class="box-body">
          <div class="row">
@@ -110,32 +126,46 @@
              <p class="text-center">
                <strong>Goal Completion</strong>
              </p>
+             <c:set var="water_goal" value="${water_goal}"/>
+             <c:set var="user_bmi" value="${user_bmi}"/>
+             <c:set var="user_burn" value="${user_burn}"/>
+             <c:set var="burn_goal" value="${burn_goal}"/>
+             <c:set var="user_intake" value="${user_intake}"/>
+             <c:set var="intake_goal" value="${intake_goal}"/>
+             <%
+             	String water_goal = pageContext.getAttribute("water_goal") + "";
+             	String user_bmi = pageContext.getAttribute("user_bmi") + "";
+             	String user_burn = pageContext.getAttribute("user_burn") + "";
+             	String burn_goal = pageContext.getAttribute("burn_goal") + "";
+             	String user_intake = pageContext.getAttribute("user_intake") + "";
+             	String intake_goal = pageContext.getAttribute("intake_goal") + "";
+             %>
              <div class="progress-group">
                <span class="progress-text">Water Intake</span>
                <span class="progress-number"><b>${water_goal}</b>/15</span>
                <div class="progress sm">
-                 <div class="progress-bar progress-bar-aqua" style="width: ${water_goal/15 * 100}%"></div>
+                 <div class="progress-bar progress-bar-<%= get_class(water_goal,"15") %>" style="width: ${water_goal/15 * 100}%"></div>
                </div>
              </div><!-- /.progress-group -->
              <div class="progress-group">
                <span class="progress-text">BMI</span>
-               <span class="progress-number"><b> ${user_bmi}</b>/50</span>
+               <span class="progress-number"><b> ${user_bmi}</b></span>
                <div class="progress sm">
-                 <div class="progress-bar progress-bar-red" style="width: ${user_bmi/50 * 100 }%"></div>
+                 <div class="progress-bar progress-bar-<%= get_bmi_class(user_bmi) %>" style="width: ${user_bmi/50 * 100 }%"></div>
                </div>
              </div><!-- /.progress-group -->
              <div class="progress-group">
                <span class="progress-text">Calorie burning goal</span>
                <span class="progress-number"><b>${user_burn}</b>/${burn_goal}</span>
                <div class="progress sm">
-                 <div class="progress-bar progress-bar-green" style="width: ${user_burn*100/burn_goal}%"></div>
+                 <div class="progress-bar progress-bar-<%= get_class(user_burn,burn_goal) %>" style="width: ${user_burn*100/burn_goal}%"></div>
                </div>
              </div><!-- /.progress-group -->
              <div class="progress-group">
                <span class="progress-text">Calorie intake goal</span>
                <span class="progress-number"><b>${user_intake}</b>/${intake_goal}</span>
                <div class="progress sm">
-                 <div class="progress-bar progress-bar-yellow" style="width: ${user_intake*100/intake_goal}%"></div>
+                 <div class="progress-bar progress-bar-<%= get_class(user_intake,intake_goal) %>" style="width: ${user_intake*100/intake_goal}%"></div>
                </div>
              </div><!-- /.progress-group -->
            </div><!-- /.col -->
@@ -144,7 +174,7 @@
        <div class="box-footer">
          <div class="row">
            <div class="col-sm-3 col-xs-6">
-             <div class="description-block border-right">
+             <div class="description-block border-right" data-toggle="tooltip" data-placement="bottom" title="Increase in RUNNNING over previous week.">
              <c:set var="cls" value="green"/>
              <c:set var="arrow" value="up"/>
              <c:if test="${growth[1] eq 0}">
@@ -161,7 +191,7 @@
              </div><!-- /.description-block -->
            </div><!-- /.col -->
            <div class="col-sm-3 col-xs-6">
-             <div class="description-block border-right">
+             <div class="description-block border-right" data-toggle="tooltip" data-placement="bottom" title="Increase in WALKING over previous week.">
              <c:set var="cls" value="green"/>
              <c:set var="arrow" value="up"/>
              <c:if test="${growth[3] eq 0}">
@@ -178,7 +208,7 @@
              </div><!-- /.description-block -->
            </div><!-- /.col -->
            <div class="col-sm-3 col-xs-6">
-             <div class="description-block border-right">
+             <div class="description-block border-right" data-toggle="tooltip" data-placement="bottom" title="Increase in CYCLING over previous week.">
              <c:set var="cls" value="green"/>
              <c:set var="arrow" value="up"/>
              <c:if test="${growth[5] eq 0}">
@@ -195,7 +225,7 @@
              </div><!-- /.description-block -->
            </div><!-- /.col -->
            <div class="col-sm-3 col-xs-6">
-             <div class="description-block">
+             <div class="description-block" data-toggle="tooltip" data-placement="bottom" title="Increase in WORK OUT over previous week.">
              <c:set var="val" value="${growth[6]}"/>
              <%tm = get_time((int) pageContext.getAttribute("val")); %>
              <c:set var="cls" value="green"/>

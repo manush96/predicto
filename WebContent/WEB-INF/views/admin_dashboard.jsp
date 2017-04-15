@@ -69,16 +69,28 @@
      
   <div id="Fade1" class="w3-container city w3-animate-opacity" style="display:none">
     <h2>Push Daily notifications</h2>
-    <p><a href="admin/push_daily">Click here to Push Daily notifications</a></p>
+    <p><a href="admin/push_daily">
+    	<button type="button" class="btn btn-primary">
+			<span class="glyphicon glyphicon-check"></span> Push Daily notifications
+		</button>
+    </a></p>
     </div>
     
   <div id="Fade2" class="w3-container city w3-animate-opacity" style="display:none">
     <h2>Push Weekly notifications</h2>
-    <p><a href="admin/push_weekly">Click here to Push Weekly notifications</a></p>
+    <p><a href="admin/push_weekly">
+		<button type="button" class="btn btn-primary">
+			<span class="glyphicon glyphicon-check"></span> Push Weekly notifications
+		</button>
+	</a></p>
     </div>
   <div id="Fade3" class="w3-container city w3-animate-opacity" style="display:none">
     <h2>Push food notifications</h2>
-    <p><a href="admin/push_food">Click here to Push food notifications</a></p>
+    <p><a href="admin/push_food">
+    	<button type="button" class="btn btn-primary">
+			<span class="glyphicon glyphicon-check"></span> Push Food notifications
+		</button>
+    </a></p>
     </div>
     
 </div>

@@ -12,17 +12,17 @@ var long_avg = long_sum/long_len;
 function initialize()
 {
 	var mapProp = {
-		center:new google.maps.LatLng(lat_avg, long_avg),
-		zoom:13,
+		center:new google.maps.LatLng(user[0], user[1]),
+		zoom:14,
 		mapTypeId:google.maps.MapTypeId.ROADMAP
 	};
 	var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 	
 	var image = new google.maps.MarkerImage(
-		'http://i.imgur.com/3YJ8z.png',
-		new google.maps.Size(19,25),    // size of the image
+		'http://maps.google.com/mapfiles/ms/icons/hospitals.png',
+		new google.maps.Size(32,32),    // size of the image
 		new google.maps.Point(0,0), // origin, in this case top-left corner
-		new google.maps.Point(9, 25)    // anchor, i.e. the point half-way along the bottom of the image
+		new google.maps.Point(16, 32)    // anchor, i.e. the point half-way along the bottom of the image
 	);
 	var infowindow = new google.maps.InfoWindow();
 	for(var i=0; i<lat_len; i++)
@@ -37,12 +37,33 @@ function initialize()
     	google.maps.event.addListener(marker, 'click', (function (marker, i) {
             return function () {
                 infowindow.setContent('<h4 class="text-center underline">' + names[i] + '</h4><p><b>Address</b>: '
-                	+ addresses[i] + '</p><p><b>Contact</b>:  '+contacts[i]+'</p>');
+                	+ addresses[i] + '</p><p><b>Contact</b>:  <a href="tel:'+contacts[i]+'">'+contacts[i]+'</a></p>');
                 infowindow.open(map, marker);                	
             }
         })(marker, i));
 		marker.setMap(map);
 	}
+	var image = new google.maps.MarkerImage(
+		'http://i.imgur.com/3YJ8z.png',
+		new google.maps.Size(19,25),    // size of the image
+		new google.maps.Point(0,0), // origin, in this case top-left corner
+		new google.maps.Point(9, 25)    // anchor, i.e. the point half-way along the bottom of the image
+	);
+	var infowindow = new google.maps.InfoWindow();
+	var mylocation=new google.maps.LatLng(user[0], user[1]);
+	  
+	var marker=new google.maps.Marker({
+		position:mylocation,
+		icon: image,	 
+	});
+	
+	google.maps.event.addListener(marker, 'click', (function (marker, i) {
+        return function () {
+            infowindow.setContent('<h4>You are here</h4>');
+            infowindow.open(map, marker);                	
+        }
+    })(marker, i));
+	marker.setMap(map);
 	function attachSecretMessage(marker, secretMessage)
 	{
 		

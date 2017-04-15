@@ -2,6 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
 	
 	#friends_div_head
@@ -56,6 +57,9 @@
 					</div>
 				</div>
 			</c:forEach>
+			<c:if test="${fn:length(friends) eq 0}">
+				<h2 class="text-center">No user found!</h2>
+			</c:if>
 		</div>
 	</div>
 </div>

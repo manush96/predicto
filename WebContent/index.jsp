@@ -53,7 +53,7 @@
     <!-- Header -->
     <header id="top" class="header">
         <div class="text-vertical-center">
-            <h1>Welcome To El' Predicto</h1>
+            <h1 >Welcome To El' Predicto</h1>
             <h3>Honest Details, Accurate Suggestions.</h3>
             <br>
             <a href="user/login" class="btn btn-dark btn-lg">Get Started</a>
@@ -78,8 +78,8 @@
                                 <h4>
                                     <strong>Diet Suggestions</strong>
                                 </h4>
-                                <p>We are Working on Descriptipon.</p>
-                                <a href="#" class="btn btn-light">Learn More</a>
+                                <p>Accurate diet suggestions depending upon your lifestyle.</p>
+                                <a href="user/get_final_analysis" target="_blank" class="btn btn-light">Learn More</a>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
@@ -91,8 +91,8 @@
                                 <h4>
                                     <strong>Disease Precautions</strong>
                                 </h4>
-                                <p>We are Working on Descriptipon.</p>
-                                <a href="#" class="btn btn-light">Learn More</a>
+                                <p>To warn you of possible health problems that you might suffer.</p>
+                                <a href="user/dashboard" target="_blank" class="btn btn-light">Learn More</a>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
@@ -102,10 +102,10 @@
                                 <i class="fa fa-street-view fa-stack-1x text-primary"></i>
                             </span>
                                 <h4>
-                                    <strong>Near By Store Suggestor</strong>
+                                    <strong>Near By Store Locator</strong>
                                 </h4>
-                                <p>We are Working on Descriptipon.</p>
-                                <a href="#" class="btn btn-light">Learn More</a>
+                                <p>To help you find nearby medical stores.</p>
+                                <a href="stores/locate" target="_blank" class="btn btn-light">Learn More</a>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6">
@@ -117,8 +117,8 @@
                                 <h4>
                                     <strong>Analyzer Engine</strong>
                                 </h4>
-                                <p>We are Working on Descriptipon.</p>
-                                <a href="#" class="btn btn-light">Learn More</a>
+                                <p>Health evaluator engine that improvises over time.</p>
+                                <a href="admin/dashboard" target="_blank" class="btn btn-light">Learn More</a>
                             </div>
                         </div>
                     </div>
@@ -132,11 +132,7 @@
     </section>
 
     <!-- Callout -->
-    <aside class="callout">
-        <div class="text-vertical-center">
-            <h1>Text....text...text....</h1>
-        </div>
-    </aside>
+   
     <!-- Portfolio -->
     <section id="portfolio" class="portfolio">
         <div class="container">
@@ -159,6 +155,7 @@
                                 </a>
                             </div>
                         </div>
+                        <div class="clearfix"></div>
                         <div class="col-md-6">
                             <div class="portfolio-item">
                                 <a href="#">
@@ -211,7 +208,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-lg-offset-1 text-center">
-                    <h4><strong>E-Preggestions Technologies</strong>
+                    <h4><strong>El' Predicto</strong>
                     </h4>
                     <p>Ahmedabad City,
                         <br>Gujarat, India 380007</p>
@@ -233,7 +230,7 @@
                         </li>
                     </ul>
                     <hr class="small">
-                    <p class="text-muted">Copyright &copy; Fantastic-4 2017</p>
+                    <p class="text-muted">Copyright &copy; El' Predicto 2017</p>
                 </div>
             </div>
         </div>

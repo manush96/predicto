@@ -44,8 +44,6 @@
 	}
 	#selected_items
 	{
-		margin-top: 20px;
-		margin-bottom: 20px;
 		background: #fff;
 		padding-top: 15px;
 		padding-bottom: 15px;
@@ -53,6 +51,7 @@
 	#selected_items .selected_item
 	{
 		padding: 6px 4px;
+		border-radius: 5px;
 	}
 	#selected_items .selected_item h4
 	{
@@ -242,21 +241,25 @@
 	</div>
 </div>
 <div class="clearfix"></div><br/><hr/>
-<h2 class="text-center"><u>Selected Items</u></h2>
-<div>
-		<input type="hidden" name="items" id="item_vals"/>
-		<div class="col-md-12" id="selected_items">
-			<h4 class="no_items">No items selected!</h4>
-		</div>
-		<div class="col-md-offset-1 col-md-2">
-			<button id="save_inserted" class="btn btn-info" style="display: none">
-				<h4>
-					<span class="glyphicon glyphicon-floppy-saved"></span>
-					Save items
-				</h4>
-			</button>
-		</div>
-	</form>
+<div class="box box-primary">
+	<div class="box-header with-border text-center">
+		<span style="font-size: 24px"><u>Selected Items</u></span>	
+	</div>
+	<div class="box-body">
+			<input type="hidden" name="items" id="item_vals"/>
+			<div class="col-md-12" id="selected_items">
+				<h4 class="no_items">No items selected!</h4>
+			</div>
+			<div class="col-md-offset-10 col-md-2">
+				<button id="save_inserted" class="btn btn-success" style="display: none">
+					<span style="font-size: 20px">
+						<span class="glyphicon glyphicon-floppy-saved"></span>
+						Save items
+					</span>
+				</button>
+			</div>
+		</form>
+	</div>
 </div>
 <div id="get_html_div" style="display: none">
 	<div class="selected_item col-md-12">

@@ -103,15 +103,86 @@ public class friend_dao {
 				f.setUsername(rs.getString("username"));
 				int w = rs.getInt("weight");
 				int h = rs.getInt("height");
+				double sc = rs.getInt("score");
 				f.setBmi(round(w*10000/(h*h),1));
 				f.setAge(rs.getInt("age"));
 				f.setHeight(rs.getInt("height"));
 				f.setWeight(rs.getInt("weight"));
+				f.setScore(round(sc,1));
 				return f;
 			}
 	 
 	    });
 		return listContact;
+	}
+	public String[] get_calorie_data(String type,int id, String ids)
+	{
+		setDataSource();
+		int i = 0;
+		String[] all_ids = ids.split(",");
+		i = all_ids.length;
+		String sql;
+		if(type == "burn")
+			sql = "SELECT user_id,date, COALESCE(calories,0) AS str FROM daily_exercise WHERE (user_id="+id+" OR user_id IN ("+ids+")) AND (date > DATE_SUB(CURDATE(), INTERVAL 7 DAY)) ORDER BY date, CASE WHEN (user_id = "+id+") THEN 0 ELSE 1 END,user_id";
+		else
+			sql = "SELECT user_id,intake_date AS date, COALESCE(calories,0) AS str FROM daily_food_details WHERE (user_id="+id+" OR user_id IN ("+ids+")) AND (intake_date > DATE_SUB(CURDATE(), INTERVAL 7 DAY)) ORDER BY intake_date, CASE WHEN (user_id = "+id+") THEN 0 ELSE 1 END,user_id";
+		SqlRowSet srs =template1.queryForRowSet(sql);
+		String u_string="";
+		String[] others = new String[i];
+		for(int k = 1; k <= i; k++)
+			others[k-1] = "";
+		int count = 0;
+		String dates = "";
+		for(int j = 1; j <= 7; j++)
+		{
+			if(srs.next())
+			{
+				if(srs.getString("user_id").equals(""+id))
+					u_string += (int) Double.parseDouble(srs.getString("str"))+",";
+				else
+				{
+					u_string += "0,";
+					srs.previous();
+					break;
+				}
+				dates += "'"+srs.getString("date")+"',";
+				for(int k = 1; k <= i; k++)
+				{
+					if(srs.next())
+					{
+						if(srs.getString("user_id").equals(""+all_ids[k-1]))
+							others[k-1] += (int) Double.parseDouble(srs.getString("str"))+",";
+						else
+						{
+							others[k-1] += "0,";
+							srs.previous();
+						}
+					}
+					else
+					{
+						srs.previous();
+						break;
+					}
+				}
+				count++;
+			}
+			else
+				break;
+		}
+		String[] s = new String[i+2];
+		if(count > 0)
+		{
+			dates = dates.substring(0,dates.length()-1);
+			s[0] = dates;
+			u_string = u_string.substring(0,u_string.length()-1);
+			s[1] = u_string;
+			for(int k = 1; k <= i; k++)
+			{
+				others[k-1] = others[k-1].substring(0, others[k-1].length()-1);
+				s[k+1] = others[k-1];
+			}
+		}
+		return s;
 	}
 	public String[] get_chart_data(String type, int id, String ids)
 	{
@@ -138,6 +209,7 @@ public class friend_dao {
 				{
 					u_string += "0,";
 					srs.previous();
+					break;
 				}
 				dates += "'"+srs.getString("date")+"',";
 				for(int k = 1; k <= i; k++)

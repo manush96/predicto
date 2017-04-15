@@ -10,7 +10,8 @@ public class Friend {
 	private int height;
 	private int weight;
 	private double bmi;
-
+	private double score;
+	
 	public int getId() {
 		return id;
 	}
@@ -46,5 +47,11 @@ public class Friend {
 	}
 	public void setBmi(double bmi) {
 		this.bmi = bmi;
+	}
+	public double getScore() {
+		return score;
+	}
+	public void setScore(double score) {
+		this.score = score;
 	}
 }

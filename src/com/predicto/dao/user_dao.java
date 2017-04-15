@@ -94,7 +94,7 @@ public class user_dao {
 		setDataSource();
 		if(a.equals("a"))
 		{
-			String sql="SELECT COALESCE(SUM(calories),0) AS calories FROM daily_food_details where user_id="+id+" AND  intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+			String sql="SELECT COALESCE(SUM(calories),0) AS calories FROM daily_food_details where user_id="+id+" AND  intake_date >DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
 			SqlRowSet srs =template1.queryForRowSet(sql);
 			double sum = 0;
 			if(srs.next())
@@ -103,7 +103,7 @@ public class user_dao {
 		}
 		else
 		{
-			String sql="SELECT COALESCE(SUM(calories),0) AS calories FROM daily_exercise where user_id="+id+" AND  date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
+			String sql="SELECT COALESCE(SUM(calories),0) AS calories FROM daily_exercise where user_id="+id+" AND  date >DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
 			
 			SqlRowSet srs =template1.queryForRowSet(sql);
 			double sum = 0;
@@ -278,7 +278,8 @@ public class user_dao {
 			c_intake = c_intake.substring(0,c_intake.length()-1);
 			date = date.substring(0,date.length()-1);
 		}
-		
+		System.out.println(date);
+		System.out.println(c_burn + " || " + c_intake);
 		String a[] = {date,c_burn,c_intake};
 		return a;
 	}	
@@ -483,17 +484,11 @@ public class user_dao {
 		setDataSource();
 		String sql="SELECT COALESCE(water,0) AS water FROM daily_food_details where user_id="+id+" AND  intake_date >DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
 		
-		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
-			int sum=0;
-			@Override   
-			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
-				int i=rs.getInt("water");
-				sum=sum+i;
-				return sum;
-			}
-	    });	
-		System.out.println(listContact);
-		return (int)(listContact.get(listContact.size()-1)/7);
+		SqlRowSet srs= template1.queryForRowSet(sql);
+		if(srs.next())
+			return srs.getInt("water")/7;
+		else
+			return 0;
 		
 	}
 	public double findChol(int food_id, int cnt) {
@@ -527,5 +522,56 @@ public class user_dao {
 		
 		String sql="UPDATE user SET score = '"+health1+"' WHERE id = "+id;
 		template1.update(sql);
+	}
+	public void change_password(int id, String cur_p, String new_p_1) {
+		// TODO Auto-generated method stub
+		setDataSource();
+		
+		String sql="SELECT password FROM user WHERE id = "+id;
+		SqlRowSet srs= template1.queryForRowSet(sql);
+		if(srs.next())
+		{
+			if(srs.getString("password").equals(cur_p))
+			{
+				sql = "UPDATE user SET password = '"+new_p_1+"' WHERE id = "+id;
+				template1.update(sql);
+			}
+			else
+				return;
+		}
+		else
+			return;
+	}
+	public void update_profile(int id, String age, String height, String weight) {
+		setDataSource();
+		String sql="UPDATE user SET age = '"+age+"', height = '"+height+"', weight = '"+weight+"' WHERE id = "+id;
+		template1.update(sql);
+	}
+	public int[] get_blood_pressure(int id) {
+		setDataSource();
+		int[] bp_arr = {80,120};
+		String sql="SELECT blood_pressure_dia AS bp_low, blood_pressure_sys AS bp_high FROM weekly_data WHERE id="+id+" ORDER BY week DESC";
+		SqlRowSet srs= template1.queryForRowSet(sql);
+		if(srs.next())
+		{
+			bp_arr[0] = srs.getInt("bp_low");
+			bp_arr[1] = srs.getInt("bp_high");
+		}
+		return bp_arr;
+		
+	}
+	public boolean check_user(String username) {
+		setDataSource();
+		String sql="SELECT id FROM user WHERE username='"+username+"'";
+		SqlRowSet srs= template1.queryForRowSet(sql);
+		if(srs.next())
+		{
+			if(srs.getInt("id") > 0)
+				return false;
+			else
+				return true;		
+		}
+		else
+			return true;
 	}
 }

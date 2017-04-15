@@ -108,16 +108,18 @@ public class stores_controller {
 			hm.put(s.getStore_id(), s);
 		}
 		ArrayList<String> lats = new ArrayList<String>(), lngs = new ArrayList<String>(), names = new ArrayList<String>(), contacts = new ArrayList<String>(), addresses = new ArrayList<String>();
-
+		String lat = "23.0338";
+		String lng = "72.5466";
 		try {
-			
-			String lat = (String)session.getAttribute("latitude");
-			String lng = (String)session.getAttribute("longitude");
+			lat = (String)session.getAttribute("latitude");
+			lng = (String)session.getAttribute("longitude");
 			if(lat == null || lng == null || true)
 			{
 				lat = "23.0338";
 				lng = "72.5466";
 			}
+			model.addObject("user_location",lat+","+lng);
+			
 			String url = "https://www.medplusmart.com/GetStores.mart?latLong=("+lat+",%20"+lng+")";
 			
 			JSONObject json = readJsonFromUrl(url);
@@ -133,7 +135,8 @@ public class stores_controller {
             {
             	store = (JSONObject) iterator.next();
             	store_id = store.getString("storeId_s");
-            	name = store.getString("name_s").toLowerCase().replace("medplus","Predicto");
+            	name = store.getString("name_s").toLowerCase().replace("medplus","");
+            	name = "Predicto " + name;
             	location = store.getString("locationLatLong");
             	locality = store.getString("locality_s");
             	contact = store.getString("phoneNumber_s");
@@ -170,7 +173,6 @@ public class stores_controller {
             	contacts.add(contact);
             	addresses.add(address);
             }
-			
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

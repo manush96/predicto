@@ -43,10 +43,10 @@
 			$("#notif_btn").click(function(){ set_notif_read();$(this).find(".label").fadeOut("slow");	});
 			$("#friend_req_btn").click(function(){ $(this).find(".label").fadeOut("slow");	});
 			setTimeout(function()
-				{
-					$(".menu").css("height","auto");
-					$(".menu").parent().css("height","auto");
-				},100);
+			{
+				$(".menu").css({"height":"auto","maxHeight":"170px"});
+				$(".menu").parent().css({"height":"auto","maxHeight":"200px"});
+			},100);
 			
 		});
 		function set_notif_read()
@@ -73,6 +73,14 @@
 <sql:setDataSource var="dataSource" driver="com.mysql.jdbc.Driver"
      url="jdbc:mysql://localhost/predicto"
      user="root"  password=""/>
+<sql:query dataSource="${dataSource}" var="user">
+	SELECT * FROM user WHERE id = ${sessionScope.user_id};
+</sql:query>
+<script type="text/javascript">
+	var weight = ${user.rows[0].weight};
+	var height = ${user.rows[0].height};
+	var age = ${user.rows[0].age};
+</script>
 <sql:query dataSource="${dataSource}" var="tips">
 	SELECT * FROM tips WHERE id IN (${tips_s});
 </sql:query>
@@ -256,7 +264,11 @@
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a href="#" class="btn btn-default btn-flat">Profile</a>
+										<a href="javascript:edit_profile()" class="btn btn-default btn-flat">Profile</a>
+									</div>
+									<div class="pull-left">
+										&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+										<a href="javascript:change_password()" class="btn btn-default btn-flat">Password</a>
 									</div>
 									<div class="pull-right">
 										<a href="user/logout" class="btn btn-default btn-flat">Sign out</a>

@@ -7,6 +7,7 @@
 <%@include file="sidebar.jsp" %>
 	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBBRNM1pWrb94tlegwrj9LbZQcGGmotNl4"></script>
 	<script type="text/javascript">
+		var user = [${user_location}];
 		var lat = [${ lats}];
 		var long = [${ lngs}];
 		var names = [${ names}];

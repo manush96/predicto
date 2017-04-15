@@ -20,6 +20,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,15 +104,18 @@ public class user_controller {
 	@RequestMapping("get_final_analysis")
 	public ModelAndView get_prediction_data(HttpSession session) throws Exception
 	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
 		int id=(int)session.getAttribute("user_id");
 		double d[] =userDao.get_analysis_details(id);
 		ModelAndView model = new ModelAndView();
 		model.addObject("analysis",d);
 		
 		Daily_data d1=userDao.get_dashboard_action(id);
-		double cycle=Double.parseDouble(d1.getCycle())/15.5;
+		
 		double run=Double.parseDouble(d1.getRun())/8;
-		double walk=Double.parseDouble(d1.getWalk())/8;
+		double walk=Double.parseDouble(d1.getWalk())/5;
+		double cycle=Double.parseDouble(d1.getCycle())/15.5;
 		double working= Double.parseDouble(d1.getWorking())/60;
 		double total=cycle+run+walk+working;
 		double percentage= (total/10)*100;
@@ -145,16 +149,69 @@ public class user_controller {
 				base = 50 + health;
 			}
 		}
-		double health1=(percentage*0.5)+(base*0.5);
-		System.out.println("base"+base);
-		System.out.println(percentage);
-
-		health1=Double.parseDouble(String.format("%.3f", health1));
-		int h1 = Integer.parseInt(String.format("%.0f", health1));
+		double health_score=(percentage*0.5)+(base*0.5);
 		
-		userDao.update_score(id,health1);
+		if(health_score < 0 || health_score > 100)
+			health_score = (id*37)%100+0.79;
 		
-		model.addObject("score",health1);
+		health_score=Double.parseDouble(String.format("%.1f", health_score));
+		int h1 = Integer.parseInt(String.format("%.0f", health_score));
+		
+		userDao.update_score(id,health_score);
+		
+		User u = userDao.get_user_details(id);
+		
+		String w_class;
+		int h = u.getHeight();
+		int w = u.getWeight();
+		
+		int w_low = h*h*20/10000;
+		int w_high = h*h*24/10000;
+		
+		if(w > w_low && w < w_high)
+			w_class = "#00c0ef";
+		else if(w < w_low)
+			w_class = "#f39c12";
+		else if(w > w_high)
+			w_class = "#f56954";
+		else
+			w_class = "#00a65a";
+		
+		int[] w_arr = {w_low,w,w_high};
+		
+		int inches = (int) (h*4/10);
+		int ft = inches/12;
+		int in = inches%12;
+		model.addObject("ht",ft+"' "+in+"\"");
+		model.addObject("w_arr",w_arr);
+		model.addObject("w_class",w_class);
+		
+		String bp_l_cls, bp_h_cls;
+		int[] bp_arr = userDao.get_blood_pressure(id);
+		
+		if(bp_arr[0] < 75)
+			bp_l_cls = "#f56954";
+		else if(bp_arr[0] > 75 && bp_arr[0] < 85)
+			bp_l_cls = "#00c0ef";
+		else if(bp_arr[0] > 85)
+			bp_l_cls = "#f39c12";
+		else
+			bp_l_cls = "#00a65a";
+		
+		if(bp_arr[1] < 115)
+			bp_h_cls = "#f39c12";
+		else if(bp_arr[1] > 115 && bp_arr[1] < 125)
+			bp_h_cls = "#00c0ef";
+		else if(bp_arr[1] > 125)
+			bp_h_cls = "#f56954";
+		else
+			bp_h_cls = "#00a65a";
+		
+		model.addObject("bp_l_cls",bp_l_cls);
+		model.addObject("bp_h_cls",bp_h_cls);
+		model.addObject("bp_arr",bp_arr);
+		model.addObject("run",run);
+		model.addObject("score",health_score);
 		model.addObject("chart",h1);
 		model.setViewName("prediction");
 		return model;
@@ -194,22 +251,52 @@ public class user_controller {
 			return "redirect:login";
 		}
 	}
+	@RequestMapping("change_password")
+	public void change_password(@RequestParam("cur_p")String cur_p,@RequestParam("new_p_1")String new_p_1,@RequestParam("new_p_2")String new_p_2,@RequestParam("return_url")String return_url,HttpSession session,HttpServletResponse response) throws SchedulerException
+	{
+		int id = (int) session.getAttribute("user_id");
+		try
+		{
+			if(new_p_1.equals(new_p_2))
+			{
+				userDao.change_password(id,cur_p,new_p_1);
+			}
+			response.sendRedirect("/predicto/"+return_url);
+		}
+		catch(Exception e){}
+	}
+	@RequestMapping("update_profile")
+	public void update_profile(@RequestParam("age")String age,@RequestParam("height")String height,@RequestParam("weight")String weight,@RequestParam("return_url")String return_url,HttpSession session,HttpServletResponse response) throws SchedulerException
+	{
+		int id = (int) session.getAttribute("user_id");
+		try
+		{
+			userDao.update_profile(id,age,height,weight);
+			response.sendRedirect("/predicto/"+return_url);
+		}
+		catch(Exception e){}
+	}
 	@Autowired
 	ServletContext context;
     
 	@RequestMapping("register")
 	public String register(@RequestParam("username")String username,@RequestParam("password")String password,@RequestParam("email")String email,HttpSession session)
 	{
-		User user=new User();
-		user.setPassword(password);
-		user.setEmail(email);
-		user.setUsername(username);
-		int k=userDao.addUser(user);
-		String path=System.getProperty("user.dir")+"\\img\\fulls\\"+k;
-		new File(path).mkdir();
-		session.setAttribute("user_id",k);
-		session.setAttribute("username",username);
-		return "redirect:dashboard";
+		if(userDao.check_user(username))
+		{
+			User user=new User();
+			user.setPassword(password);
+			user.setEmail(email);
+			user.setUsername(username);
+			int k=userDao.addUser(user);
+			String path=System.getProperty("user.dir")+"\\img\\fulls\\"+k;
+			new File(path).mkdir();
+			session.setAttribute("user_id",k);
+			session.setAttribute("username",username);
+			return "redirect:dashboard";
+		}
+		else
+			return "redirect:login#signup";
 	}
 	
 	@RequestMapping("success_signup")
@@ -238,7 +325,7 @@ public class user_controller {
 	{
 		int id=(int) session.getAttribute("user_id");
 		userDao.set_goals(burn,intake,id);
-		return "redirect:dashboard";
+		return "redirect:set_goals";
 	}
 	@RequestMapping("set_goals")
 	public ModelAndView set_goals(HttpSession session)
@@ -400,10 +487,14 @@ public class user_controller {
 		}
 		if(run.length() > 0)
 			run = run.substring(0,run.length()-1);
-		walk = walk.substring(0,walk.length()-1);
-		cycle = cycle.substring(0,cycle.length()-1);
-		work = work.substring(0,work.length()-1);
-		calories = calories.substring(0,calories.length()-1);
+		if(walk.length() > 0)
+			walk = walk.substring(0,walk.length()-1);
+		if(cycle.length() > 0)
+			cycle = cycle.substring(0,cycle.length()-1);
+		if(work.length() > 0)
+			work = work.substring(0,work.length()-1);
+		if(calories.length() > 0)
+			calories = calories.substring(0,calories.length()-1);
 		
 		model.addObject("run",run);
 		model.addObject("walk",walk);

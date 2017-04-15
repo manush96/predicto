@@ -3,19 +3,28 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<link href="resources/css/comparison.css" rel="stylesheet" type="text/css"/>
 <%@ page import = "java.util.Map" %>
+<%!
+	public String f_height(int cms)
+	{
+		int inches = (int) (cms*4/10);
+		int ft = inches/12;
+		int in = inches%12;
+		return ft+"' "+in+"\"";
+	}
+%>
+<link href="resources/css/comparison.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="resources/js/chartjs.js"></script>
 <c:set var="ids" value="${ids }"/>
 <%
-	String[] colors = {"#000","#3b8bba","#ba1616","#57ba16"};
+	String[] colors = {"#000","#3b8bba","#ba1616","#57ba16","#f4df42"};
 	int lp;
 	String ids = (String) pageContext.getAttribute("ids");
 	int id_len = ids.split(",").length;
 	id_len = (id_len <= 4) ? id_len : 4;
 %>
 <script type="text/javascript">
-	var colors = ["#000","#3b8bba","#ba1616","#57ba16"];
+	var colors = ["#000","#3b8bba","#ba1616","#57ba16","#f4df42"];
 	function format(dates)
 	{
 		var str;
@@ -54,7 +63,7 @@
         //Boolean - Whether to show a stroke for datasets
         datasetStroke: true,
         //Number - Pixel width of dataset stroke
-        datasetStrokeWidth: 5,
+        datasetStrokeWidth: 3,
         //Boolean - Whether to fill the dataset with a color
         datasetFill: true,
         //Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
@@ -80,6 +89,23 @@
 			</c:forEach>
 		</div>
 		<div class="row" id="comparison_body">
+			<div class="comparison_row col-sm-12 lr0pad" id="age_div">
+				<div class="col-sm-2 row_title row_data">
+					Predicto Score
+				</div>
+				<c:forEach items="${friends}" var="fr" varStatus="loop">
+					<c:if test="${loop.index eq 0}">
+						<div class="col-sm-2 user_data row_data">
+							<p><strong>${fr.score }</strong></p>
+						</div>
+					</c:if>
+					<c:if test="${loop.index gt 0}">
+						<div class="col-sm-2 friend_data row_data">
+							<p><strong>${fr.score }</strong></p>
+						</div>
+					</c:if>
+				</c:forEach>
+			</div>
 			<div class="comparison_row col-sm-12 lr0pad" id="bmi_div">
 				<div class="col-sm-2 row_title row_data">
 					BMI
@@ -142,44 +168,28 @@
 			</div>
 			<div class="comparison_row col-sm-12 lr0pad" id="age_div">
 				<div class="col-sm-2 row_title row_data">
-					Height (cms)
+					Height
 				</div>
 				<c:forEach items="${friends}" var="fr" varStatus="loop">
+					<c:set var="height" value="${fr.height }"/>
 					<c:if test="${loop.index eq 0}">
 						<div class="col-sm-2 user_data row_data">
-							<p><strong>${fr.height }</strong></p>
+							<p><strong><%=f_height((int) pageContext.getAttribute("height")) %></strong></p>
 						</div>
 					</c:if>
 					<c:if test="${loop.index gt 0}">
 						<div class="col-sm-2 friend_data row_data">
-							<p><strong>${fr.height }</strong></p>
+							<p><strong><%=f_height((int) pageContext.getAttribute("height")) %></strong></p>
 						</div>
 					</c:if>
 				</c:forEach>
 			</div>
-			<div class="comparison_row col-sm-12 lr0pad" id="age_div">
+			<div class="comparison_row col-sm-12 lr0pad chart_div" id="c_burn_div">
 				<div class="col-sm-2 row_title row_data">
-					Age (Years)
+					Calories Burnt
 				</div>
-				<c:forEach items="${friends}" var="fr" varStatus="loop">
-					<c:if test="${loop.index eq 0}">
-						<div class="col-sm-2 user_data row_data">
-							<p><strong>${fr.age }</strong></p>
-						</div>
-					</c:if>
-					<c:if test="${loop.index gt 0}">
-						<div class="col-sm-2 friend_data row_data">
-							<p><strong>${fr.age }</strong></p>
-						</div>
-					</c:if>
-				</c:forEach>
-			</div>
-			<div class="comparison_row col-sm-12 lr0pad chart_div" id="run_div">
-				<div class="col-sm-2 row_title row_data">
-					Running
-				</div>
-				<div class="col-sm-<%= 2+id_len*2%> user_data row_data">
-					<div class="col-sm-3 label_div">
+				<div class="col-sm-<%= (id_len+1)*2%> user_data row_data">
+					<div class="col-sm-<%= (id_len == 1)?1:3 %> label_div">
 						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
 						<%
 							for(int k = 1; k <= id_len; k++)
@@ -188,7 +198,97 @@
 							}
 						%>
 					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-<%= (id_len == 1)?10:9 %>">
+						<canvas id="cBurnChart" style="height: 140px"></canvas>
+					</div>
+				</div>
+				<% lp=0; %>
+				<script>
+					var dates = [${c_burn[0]}];
+					dates = format(dates);
+					  var cBurnChartData = {
+				        labels: dates,
+				        datasets: [
+						<c:forEach items="${c_burn}" var="fr" varStatus="loop">
+							<c:if test="${not loop.first}">
+								{
+						            label: "Electronics",
+						            fillColor: "rgba(210, 214, 222, 1)",
+						            strokeColor: "<%= colors[lp%colors.length]%>",
+						            pointColor: "rgba(210, 214, 222, 1)",
+						            pointStrokeColor: "#c1c7d1",
+						            pointHighlightFill: "#fff",
+						            pointHighlightStroke: "rgba(220,220,220,1)",
+						            data: [${fr}]
+								},
+								<% lp++;%>
+							</c:if>
+						</c:forEach>
+				        ]
+				      };
+				</script>
+				
+			</div>
+			<div class="comparison_row col-sm-12 lr0pad chart_div" id="c_intake_div">
+				<div class="col-sm-2 row_title row_data">
+					Calories gained
+				</div>
+				<div class="col-sm-<%= (id_len+1)*2%> user_data row_data">
+					<div class="col-sm-<%= (id_len == 1)?1:3 %> label_div">
+						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
+						<%
+							for(int k = 1; k <= id_len; k++)
+							{
+								out.println("<p class=\"user_"+k+"\"><span class=\"color\">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class=\"name\"></span></p>");
+							}
+						%>
+					</div>
+					<div class="col-sm-<%= (id_len == 1)?10:9 %>">
+						<canvas id="cIntakeChart" style="height: 140px"></canvas>
+					</div>
+				</div>
+				<% lp=0; %>
+				<script>
+					var dates = [${c_intake[0]}];
+					dates = format(dates);
+					  var cIntakeChartData = {
+				        labels: dates,
+				        datasets: [
+						<c:forEach items="${c_intake}" var="fr" varStatus="loop">
+							<c:if test="${not loop.first}">
+								{
+						            label: "Electronics",
+						            fillColor: "rgba(210, 214, 222, 1)",
+						            strokeColor: "<%= colors[lp%colors.length]%>",
+						            pointColor: "rgba(210, 214, 222, 1)",
+						            pointStrokeColor: "#c1c7d1",
+						            pointHighlightFill: "#fff",
+						            pointHighlightStroke: "rgba(220,220,220,1)",
+						            data: [${fr}]
+								},
+								<% lp++;%>
+							</c:if>
+						</c:forEach>
+				        ]
+				      };
+				</script>
+				
+			</div>
+			<div class="comparison_row col-sm-12 lr0pad chart_div" id="run_div">
+				<div class="col-sm-2 row_title row_data">
+					Running
+				</div>
+				<div class="col-sm-<%= (id_len+1)*2%> user_data row_data">
+					<div class="col-sm-<%= (id_len == 1)?1:3 %> label_div">
+						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
+						<%
+							for(int k = 1; k <= id_len; k++)
+							{
+								out.println("<p class=\"user_"+k+"\"><span class=\"color\">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class=\"name\"></span></p>");
+							}
+						%>
+					</div>
+					<div class="col-sm-<%= (id_len == 1)?10:9 %>">
 						<canvas id="runChart" style="height: 140px"></canvas>
 					</div>
 				</div>
@@ -224,7 +324,7 @@
 					Walking
 				</div>
 				<div class="col-sm-<%= 2+id_len*2%> user_data row_data">
-					<div class="col-sm-3 label_div">
+					<div class="col-sm-<%= (id_len == 1)?1:3 %> label_div">
 						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
 						<%
 							for(int k = 1; k <= id_len; k++)
@@ -233,7 +333,7 @@
 							}
 						%>
 					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-<%= (id_len == 1)?10:9 %>">
 						<canvas id="walkChart" style="height: 140px"></canvas>
 					</div>
 				</div>
@@ -269,7 +369,7 @@
 					Cycling
 				</div>
 				<div class="col-sm-<%= 2+id_len*2%> user_data row_data">
-					<div class="col-sm-3 label_div">
+					<div class="col-sm-<%= (id_len == 1)?1:3 %> label_div">
 						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
 						<%
 							for(int k = 1; k <= id_len; k++)
@@ -278,7 +378,7 @@
 							}
 						%>
 					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-<%= (id_len == 1)?10:9 %>">
 						<canvas id="cycleChart" style="height: 140px"></canvas>
 					</div>
 				</div>
@@ -314,7 +414,7 @@
 					Work out
 				</div>
 				<div class="col-sm-<%= 2+id_len*2%> user_data row_data">
-					<div class="col-sm-3 label_div">
+					<div class="col-sm-<%= (id_len == 1)?1:3 %> label_div">
 						<p class="user_0"><span class="color">&nbsp;&nbsp;&nbsp;&nbsp;</span> - <span class="name"></span></p>
 						<%
 							for(int k = 1; k <= id_len; k++)
@@ -323,7 +423,7 @@
 							}
 						%>
 					</div>
-					<div class="col-sm-9">
+					<div class="col-sm-<%= (id_len == 1)?10:9 %>">
 						<canvas id="workChart" style="height: 140px"></canvas>
 					</div>
 				</div>
@@ -362,6 +462,18 @@
 
 
 <script>
+	  var cBurnChartCanvas = $("#cBurnChart").get(0).getContext("2d");
+	  var cBurnChart = new Chart(cBurnChartCanvas);
+	  var cBurnChartOptions = chartOptions;
+	  cBurnChartOptions.datasetFill = false;
+	  cBurnChart.Line(cBurnChartData, cBurnChartOptions);
+	  
+	  var cIntakeChartCanvas = $("#cIntakeChart").get(0).getContext("2d");
+	  var cIntakeChart = new Chart(cIntakeChartCanvas);
+	  var cIntakeChartOptions = chartOptions;
+	  cIntakeChartOptions.datasetFill = false;
+	  cIntakeChart.Line(cIntakeChartData, cIntakeChartOptions);
+	  
       var runChartCanvas = $("#runChart").get(0).getContext("2d");
       var runChart = new Chart(runChartCanvas);
       var runChartOptions = chartOptions;

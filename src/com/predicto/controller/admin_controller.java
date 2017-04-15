@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.predicto.dao.user_dao;
@@ -16,10 +17,35 @@ import com.predicto.services.neural_net;
 public class admin_controller {
 
 	user_dao userDao=new user_dao();
-	@RequestMapping("dashboard")
-	public ModelAndView admin_panel()
+	@RequestMapping("login")
+	public ModelAndView login()
 	{
-		return new ModelAndView("admin_dashboard");
+		return new ModelAndView("admin_login");
+	}
+	@RequestMapping("signin")
+	public String signin(@RequestParam("username")String username,@RequestParam("password")String password,HttpSession session)
+	{
+		if(username.equals("admin") && password.equals("admin"))
+		{
+			session.setAttribute("admin_id", 1);
+			return "redirect:dashboard";
+		}
+		else
+			return "redirect:login";
+	}
+	@RequestMapping("dashboard")
+	public ModelAndView admin_panel(HttpSession session)
+	{
+		if(session.getAttribute("admin_id") != null)
+		{
+			int id = (int) session.getAttribute("admin_id");
+			if(id != 1)
+				return new ModelAndView("goto_admin");
+			else
+				return new ModelAndView("admin_dashboard");
+		}
+		else
+			return new ModelAndView("goto_admin");
 	}
 	@RequestMapping("push_daily")
 	public String push_daily(HttpSession session)
@@ -84,5 +110,11 @@ public class admin_controller {
 	{
 		userDao.pushFood();
 		return "redirect:dashboard";
+	}
+	@RequestMapping("logout")
+	public String logout(HttpSession session)
+	{
+		session.removeAttribute("admin_id");
+		return "redirect:login";
 	}
 }

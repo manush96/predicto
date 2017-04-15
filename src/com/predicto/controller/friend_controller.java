@@ -183,11 +183,16 @@ public class friend_controller {
 		ModelAndView model=new ModelAndView();
 		
 		model.addObject("friends",friends);
+		String[] c_burn = friend_dao.get_calorie_data("burn",(Integer) session.getAttribute("user_id"),ids);
+		String[] c_intake = friend_dao.get_calorie_data("intake",(Integer) session.getAttribute("user_id"),ids);
+		
 		String[] run = friend_dao.get_chart_data("run",(Integer) session.getAttribute("user_id"),ids);
 		String[] walk = friend_dao.get_chart_data("walk",(Integer) session.getAttribute("user_id"),ids);
 		String[] cycle = friend_dao.get_chart_data("cycle",(Integer) session.getAttribute("user_id"),ids);
 		String[] working = friend_dao.get_chart_data("working",(Integer) session.getAttribute("user_id"),ids);
 		
+		model.addObject("c_burn",c_burn);
+		model.addObject("c_intake",c_intake);
 		model.addObject("run",run);
 		model.addObject("walk",walk);
 		model.addObject("cycle",cycle);

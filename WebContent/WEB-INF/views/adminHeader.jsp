@@ -108,29 +108,12 @@ div.mydiv :hover
                   </a>            
                   <ul class="top-ul right">
                      <li>            
-                        <a href="">Home</a>            
+                        <a href="admin/dashboard">Home</a>            
                      </li>
                   	<li>
-                     <a href="">Sign out</a>
+                     <a href="admin/logout">Sign out</a>
                      </li>
                      
-                     <div class="social right">	           
-                        <a target="_blank" href="https://www.facebook.com/">
-                        <i class="icon-facebook_circle icon2x"></i>
-                        </a>          
-                        <a target="_blank" href="https://twitter.com/">
-                        <i class="icon-twitter_circle icon2x"></i>
-                        </a>  
-                        <a target="_blank" href="https://www.linkedin.com/">
-                        <i class="icon-linked_in_circle icon2x"></i>
-                        </a> 
-                        <a target="_blank" href="https://www.instagram.com/">
-                        <i class="icon-instagram_circle icon2x"></i>
-                        </a> 
-						<a target="_blank" href="https://plus.google.com/">
-                        <i class="icon-google_plus_circle icon2x"></i>
-                        </a> 
-                     </div>
                   </ul>
                </div>
             </nav>

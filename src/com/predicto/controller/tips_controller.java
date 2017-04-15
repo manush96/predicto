@@ -101,16 +101,16 @@ public class tips_controller {
 		{
 			s=s+",6";
 		}
-		   String[] arr = s.split(",");
-		   String s2="";
-		   int max= arr.length;
-		   for(int i=1;i<4;i++)
-		   {
-			   Random rand = new Random();
-			   int  n = rand.nextInt(max) + 1;
-			   s2+=arr[n-1]+",";
-		    }
-		    s2=s2.substring(0, s2.length()-1);
-		    return s2;
+		String[] arr = s.split(",");
+		String s2="";
+		int max= arr.length;
+		for(int i=1;i<4;i++)
+		{
+		   Random rand = new Random();
+		   int  n = rand.nextInt(max) + 1;
+		   s2+=arr[n-1]+",";
+		}
+		s2=s2.substring(0, s2.length()-1);
+		return s2;
 	}
 }
