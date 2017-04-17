@@ -39,7 +39,7 @@
 	<div class="content" style="margin-left:50px">
 		<c:forEach var="img" items="${imageUrlList}">  
 			<div class="media all people" style="margin-right:50px;margin-bottom:30x;height: 250px;">
-				<a href="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}"><img src="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}" alt="" title="Image" style="height:250px; width: 100%; border: 2px solid #333"/></a>
+				<a href="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}"><img src="resources/img/fulls/<%=session.getAttribute("user_id") %>/${img}"  alt="" title="Image" style="height:250px; width: 100%; border: 2px solid #333"/></a>
 			</div> 
 		</c:forEach>
 	</div>

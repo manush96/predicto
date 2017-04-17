@@ -150,10 +150,10 @@ public class user_controller {
 			}
 		}
 		double health_score=(percentage*0.5)+(base*0.5);
-		
-		if(health_score < 0 || health_score > 100)
+		System.out.println("--> "+base+", " + percentage + ", " + split);
+		/*if(health_score < 0 || health_score > 100)
 			health_score = (id*37)%100+0.79;
-		
+		*/
 		health_score=Double.parseDouble(String.format("%.1f", health_score));
 		int h1 = Integer.parseInt(String.format("%.0f", health_score));
 		
@@ -451,7 +451,9 @@ public class user_controller {
 		float a=Float.parseFloat(ans1)+Float.parseFloat(ans2)+Float.parseFloat(ans3)+Float.parseFloat(ans4);
 		String cal=String.valueOf(a);
 		userDao.delete_notif(notif_id);
-		userDao.save_daily_exercise(run,walk,cycle,working,session.getAttribute("user_id").toString(),cal);
+		double work = Double.parseDouble(working)/60;
+		String w = String.format("%.1f", work+"");
+		userDao.save_daily_exercise(run,walk,cycle,w,session.getAttribute("user_id").toString(),cal);
 		return "redirect:dashboard";
 	}
 	@RequestMapping("daily_report_view")
@@ -557,7 +559,7 @@ public class user_controller {
 			total_fat += userDao.findFat(id, cnt);
 			total_chol += userDao.findChol(id, cnt);
 		}
-		userDao.updateCal((Integer)session.getAttribute("user_id"), total_cal,total_fat,total_chol, item_str);
+		userDao.updateCal((Integer)session.getAttribute("user_id"), total_cal,total_fat,total_chol, item_str,water);
 		return "redirect:daily_food_details";
 		
 	}

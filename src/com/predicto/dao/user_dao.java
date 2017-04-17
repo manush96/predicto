@@ -240,17 +240,17 @@ public class user_dao {
 	}
 	public Daily_data get_dashboard_action(int id)
 	{
-		String sql="SELECT COALESCE(SUM(run),0) AS run, COALESCE(SUM(walk),0) AS walk, COALESCE(SUM(cycle),0) AS cycle, COALESCE(SUM(working),0) AS working, COALESCE(SUM(calories),0) AS calories from daily_exercise where user_id='"+id+"'";
+		String sql="SELECT COALESCE(AVG(run),0) AS run, COALESCE(AVG(walk),0) AS walk, COALESCE(AVG(cycle),0) AS cycle, COALESCE(AVG(working),0) AS working, COALESCE(AVG(calories),0) AS calories from daily_exercise where user_id='"+id+"'";
 		setDataSource();
 		java.util.List<Daily_data> daily_Data = template1.query(sql, new RowMapper<Daily_data>() {
 			 
 		     @Override   
 			 public Daily_data mapRow(ResultSet rs, int rowNum) throws SQLException {
 		         Daily_data daily=new Daily_data();
-		         daily.setRun(rs.getString("run"));
-		         daily.setCycle(rs.getString("cycle"));
-		         daily.setWalk(rs.getString("walk"));
-		         daily.setWorking(rs.getString("working"));
+		         daily.setRun(rs.getDouble("run")*7+"");
+		         daily.setCycle(rs.getDouble("cycle")*7+"");
+		         daily.setWalk(rs.getDouble("walk")*7+"");
+		         daily.setWorking(rs.getDouble("working")*7+"");
 		         daily.setCalories(rs.getString("calories"));
 		    	 return daily;
 		        }
@@ -430,7 +430,7 @@ public class user_dao {
 	{
 		setDataSource();
 		System.out.println("user_Dao ma");
-		String sql="SELECT * FROM daily_exercise where user_id="+s+" AND  DATE_ADD(date,INTERVAL 7 DAY)";
+		String sql="SELECT * FROM daily_exercise where user_id="+s+" AND date >DATE_SUB(CURDATE(), INTERVAL 15 DAY)";
 		java.util.List<Daily_data> daily_Data = template1.query(sql, new RowMapper<Daily_data>() {
 			 
 		     @Override   
@@ -508,15 +508,26 @@ public class user_dao {
 		return srs.getDouble("fat")*cnt;
 	}
 	
-	public void updateCal(int id, int total_cal,int total_fat, int total_chol, String item_str) {
+	public void updateCal(int id, int total_cal,int total_fat, int total_chol, String item_str,String water) {
 		setDataSource();
-
+		int wat=Integer.parseInt(water);
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
-		
-		String sql="UPDATE daily_food_details SET calories = calories + "+total_cal+",fat = fat + "+total_fat+",cholesterol = cholesterol + "+total_chol+", food_intake = CONCAT(food_intake,',"+item_str+"') WHERE user_id = "+id+" AND intake_date ='" + dateFormat.format(date)+"'";
-		template1.update(sql);
-	}
+		System.out.println("jhere");
+		String sq="select * from daily_food_details where user_id='"+id+"' and intake_date ='" + dateFormat.format(date)+"'";
+		if(template1.queryForList(sq).size()==0)
+		{
+			System.out.println("inside if");
+			String sql="INSERT INTO daily_food_details( `user_id`, `intake_date`, `calories`, `fat`, `cholesterol`, `food_intake`, `water`) values ('"+id+"','"+dateFormat.format(date)+"','"+total_cal+"','"+total_fat+"','"+total_chol+"','"+item_str+"','"+water+"')";
+			template1.update(sql);
+		}
+		else
+		{
+			System.out.println("inside else");
+			String sql="UPDATE daily_food_details SET calories = calories + "+total_cal+",fat = fat + "+total_fat+",cholesterol = cholesterol + "+total_chol+", food_intake = CONCAT(food_intake,',"+item_str+"'),water=water+"+wat+" WHERE user_id = "+id+" AND intake_date ='" + dateFormat.format(date)+"'";
+			template1.update(sql);
+		}
+		}
 	public void update_score(int id, double health1) {
 		setDataSource();
 		

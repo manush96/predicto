@@ -32,6 +32,74 @@
 </div>
 <div class="clearfix"></div>
 <div class="col-md-12">
+	<h3 class="text-center">Which parameters affects this score?</h3>
+	<div class="row">
+		<div class="col-md-3">
+			<div class="box box-primary collapsed-box box-solid">
+				<div class="box-header with-border text-center">
+					<h3 class="box-title">Body Profile</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+					</div>
+				</div>
+				<div class="box-body">
+					<ul>
+						<li>Weight: <b></b> kgs</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="box box-danger collapsed-box box-solid">
+				<div class="box-header with-border text-center">
+					<h3 class="box-title">Body Profile</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+					</div>
+				</div>
+				<div class="box-body">
+					<ul>
+						<li>Weight: <b></b> kgs</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="box box-success collapsed-box box-solid">
+				<div class="box-header with-border text-center">
+					<h3 class="box-title">Body Profile</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+					</div>
+				</div>
+				<div class="box-body">
+					<ul>
+						<li>Weight: <b></b> kgs</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="box box-warning collapsed-box box-solid">
+				<div class="box-header with-border text-center">
+					<h3 class="box-title">Body Profile</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+					</div>
+				</div>
+				<div class="box-body">
+					<ul>
+						<li>Weight: <b></b> kgs</li>
+						<li>Weight: <b></b> kgs</li>
+						<li>Weight: <b></b> kgs</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="clearfix"></div>
+<div class="col-md-12">
 <ul class="timeline">
 	<li>
 	  <i class="fa fa-tachometer bg-blue"></i>
