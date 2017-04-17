@@ -37,6 +37,24 @@
 						<option value="0" selected>not a diabetic</option>
 					</select>
 				</p>
+				<p>My blood group is
+					<select name="blood_gruop">
+						<option value="A +VE">A +ve</option>
+						<option value="A -VE">A -ve</option>
+						<option value="B +VE">B +ve</option>
+						<option value="B -VE">B -ve</option>
+						<option value="O +VE">0 +ve</option>
+						<option value="O -VE">O -ve</option>
+						<option value="AB +VE">AB +ve</option>
+						<option value="AB -VE">AB -ve</option>
+					</select>
+					And I am
+					<select name="blood_donate">
+						<option value="1">Willing</option>
+						<option value="0">Not willing</option>
+					</select>
+					to donate** blood in future to the society.
+				</p>
 				<div class="nl-submit-wrap">
 					<button class="nl-submit" type="submit">Continue to Predicto</button>
 				</div>

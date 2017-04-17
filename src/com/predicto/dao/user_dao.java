@@ -60,6 +60,47 @@ public class user_dao {
 			}
 	    });
 	}
+	public void push_blood(String type,int id)
+	{
+		String t = "";
+		if(type.equals("AP"))
+			t = "('AP','AM','OP','OM')";
+		else if(type.equals("AM"))
+			t = "('AM','OM')";
+		else if(type.equals("BP"))
+			t = "('BP','BM','OP','OM')";
+		else if(type.equals("BM"))
+			t = "('BM','OM')";
+		else if(type.equals("ABP"))
+			t = "('AP','AM','BP','BM','ABP','ABM','OP','OM')";
+		else if(type.equals("ABM"))
+			t = "('AM','BM','ABM','OM')";
+		else if(type.equals("OP"))
+			t = "('OP','OM')";
+		else if(type.equals("OM"))
+			t = "('OM')";
+		
+		setDataSource();
+		
+		String sql="SELECT * FROM user where blood_group IN "+t+" AND id != "+id;
+		
+		java.util.List<Integer> listContact = template1.query(sql, new RowMapper<Integer>() {
+			int id;
+			String sql1;
+			@Override   
+			public Integer mapRow(ResultSet rs, int rowNum) throws SQLException {
+				int b_id = 1;
+				SqlRowSet srs =template1.queryForRowSet("SELECT COALESCE(MAX(id),1) AS id FROM blood_donate");
+				if(srs.next())
+					b_id = srs.getInt("id");
+				
+				id = rs.getInt("id");
+				sql1= "INSERT INTO notifications(user_id,type,status,b_id) VALUES('"+id+"','2','0','"+b_id+"')";
+				template1.update(sql1);
+				return id;
+			}
+	    });
+	}
 	public void set_goals(String burn,String intake,int id)
 	{
 		setDataSource();
@@ -283,6 +324,12 @@ public class user_dao {
 		String a[] = {date,c_burn,c_intake};
 		return a;
 	}	
+	public void addBloodreq(String typ,String cont)
+	{
+		String sql="insert into blood_donate (type,contact) values ('"+typ+"','"+cont+"')";
+		setDataSource();
+		template1.update(sql);
+	}
 	public int[] get_growth(int id)
 	{
 		setDataSource();
@@ -584,5 +631,20 @@ public class user_dao {
 		}
 		else
 			return true;
+	}
+	
+	public Blood_donate fetch_blood(String n_id, int id)
+	{
+		setDataSource();
+		String sql="SELECT * FROM blood_donate WHERE id = (SELECT b_id FROM notifications WHERE id = '"+n_id+"')";
+		SqlRowSet srs =template1.queryForRowSet(sql);
+		Blood_donate b=new Blood_donate();
+		if(srs.next())
+		{
+			b.setContact(srs.getString("contact"));
+			b.setType(srs.getString("type"));
+		}
+
+		return b;
 	}
 }

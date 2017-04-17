@@ -91,6 +91,9 @@
 <sql:query dataSource="${dataSource}" var="weekly">
 	SELECT * FROM notifications WHERE user_id = ${sessionScope.user_id} AND type = 1 AND DATE(pushed_when) = CURDATE() ORDER BY status;
 </sql:query>
+<sql:query dataSource="${dataSource}" var="blood">
+	SELECT * FROM notifications WHERE user_id = ${sessionScope.user_id} AND type = 2 AND DATE(pushed_when) = CURDATE() ORDER BY status;
+</sql:query>
 <sql:query dataSource="${dataSource}" var="notifs">
 	SELECT COUNT(*) AS cnt FROM notifications WHERE user_id = ${sessionScope.user_id} AND status = 0;
 </sql:query>
@@ -201,6 +204,13 @@
 											<li>
 												<a href="user/weekly_data?id=${row.id}"> <i class="fa fa-users text-aqua"></i>
 													Update your <b>weekly</b> progress!
+												</a>
+											</li>
+										</c:forEach>
+											<c:forEach var="row" items="${blood.rows}">
+											<li>
+												<a href="user/blood_request?id=${row.id}"> <i class="fa fa-users text-aqua"></i>
+													Click here to check for blood donation request that you have received.
 												</a>
 											</li>
 										</c:forEach>

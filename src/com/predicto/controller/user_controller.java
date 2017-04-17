@@ -36,6 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ibm.icu.text.SimpleDateFormat;
 import com.predicto.dao.scheduler_dao;
 import com.predicto.dao.user_dao;
+import com.predicto.model.Blood_donate;
 import com.predicto.model.Daily_data;
 import com.predicto.model.User;
 import com.predicto.services.conversion;
@@ -305,7 +306,7 @@ public class user_controller {
 		return new ModelAndView("success_signup");
 	}
 	@RequestMapping("save_one_time_data")
-	public String save_one_time_data(@RequestParam("gender")int gender,@RequestParam("age")int age,@RequestParam("height")int height,@RequestParam("weight")int weight,@RequestParam("diabetic")int diabetic,HttpSession session)
+	public String save_one_time_data(@RequestParam("gender")int gender,@RequestParam("age")int age,@RequestParam("height")int height,@RequestParam("weight")int weight,@RequestParam("diabetic")int diabetic,@RequestParam("blood_group")String bloodgroup,@RequestParam("blood_donate")int donate,HttpSession session)
 	{
 		if(invalid(session))
 			return "redirect: login";
@@ -316,9 +317,40 @@ public class user_controller {
 		user.setGender(gender);
 		user.setDiabetic(diabetic);
 		user.setStatus(1);
+		user.setBlood_group(bloodgroup);
+		user.setDonate(donate);
 		int id = (Integer)session.getAttribute("user_id");
 		userDao.addInitialData(user,id);
 		return "redirect:dashboard";
+	}
+	@RequestMapping("request_blood")
+	public ModelAndView req_blood()
+	{
+		return new ModelAndView("request_blood");
+	}
+	@RequestMapping("send_blood_req")
+	public ModelAndView send_blood(@RequestParam("typer")String typ,@RequestParam("cont")String cont,HttpSession session)
+	{
+		if(invalid(session))
+			return new ModelAndView("goto_login");
+		int id=(Integer)session.getAttribute("user_id");
+		userDao.addBloodreq(typ,cont);
+		userDao.push_blood(typ,id);
+		return new ModelAndView("admin_response_1");
+	}
+	@RequestMapping("blood_request")
+	public ModelAndView bloo_req(@RequestParam("id")String n_id,HttpSession session)
+	{
+		int id=(Integer)session.getAttribute("user_id");
+		
+		Blood_donate n=userDao.fetch_blood(n_id,id);
+		n.setType(n.getType().replaceAll("P","+").replaceAll("M","-"));
+		System.out.println(n.contact+ ", " + n.type);
+		ModelAndView model=new ModelAndView();
+		
+		model.addObject("blood1",n);
+		model.setViewName("blood_request");
+		return model;
 	}
 	@RequestMapping("set_goal_save")
 	public String goal_save(@RequestParam("burn")String burn,@RequestParam("intake")String intake,HttpSession session)
@@ -332,6 +364,7 @@ public class user_controller {
 	{
 		if(invalid(session))
 			return new ModelAndView("goto_login");
+		
 		int id=(int) session.getAttribute("user_id");
 		ModelAndView model=new ModelAndView();
 		model.addObject("burn_goal",userDao.get_goals(id)[0]);

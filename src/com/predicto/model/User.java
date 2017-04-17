@@ -17,6 +17,8 @@ public class User {
 	private int status;
 	private int burn_goal;
 	private int intake_goal;
+	private String blood_group;
+	private int donate;
 	
 	public int getBurn_goal() {
 		return burn_goal;
@@ -108,4 +110,17 @@ public class User {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	public String getBlood_group() {
+		return blood_group;
+	}
+	public void setBlood_group(String blood_group) {
+		this.blood_group = blood_group;
+	}
+	public int getDonate() {
+		return donate;
+	}
+	public void setDonate(int donate) {
+		this.donate = donate;
+	}
+	
 }

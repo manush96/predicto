@@ -45,6 +45,13 @@
 	                    
 	                </ul>
 	            </li>
+	             <li class="treeview">
+	                <a ref=""><i class="fa fa-tint"></i><span>Blood donation</span> <i class="fa fa-angle-left pull-right"></i></a>
+	                <ul class="treeview-menu">
+	                    <li><a href="user/request_blood"><i class="fa fa-plus"></i> Request for blood donation </a></li>
+	                    
+	                </ul>
+	            </li>
 	        </ul>
 	    </section>
 	</aside>
