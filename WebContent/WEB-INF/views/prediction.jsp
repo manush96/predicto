@@ -44,7 +44,12 @@
 				</div>
 				<div class="box-body">
 					<ul>
-						<li>Weight: <b></b> kgs</li>
+						<li>Weight: <b>${us_data[0]}</b> kg</li>
+						<li>Height: <b>${us_data[1]}</b> cm</li>
+						<li>Running(Avg): <b>${run}</b> hours</li>
+						<li>Walking(Avg): <b>${walk}</b>hours</li>
+						<li>Cycling(Avg): <b>${cycle}</b> hours</li>
+						<li>Workout(Avg): <b>${work}</b> hours</li>
 					</ul>
 				</div>
 			</div>
@@ -52,14 +57,16 @@
 		<div class="col-md-3">
 			<div class="box box-danger collapsed-box box-solid">
 				<div class="box-header with-border text-center">
-					<h3 class="box-title">Body Profile</h3>
+					<h3 class="box-title">Blood pressure</h3>
 					<div class="box-tools pull-right">
 						<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 					</div>
 				</div>
 				<div class="box-body">
 					<ul>
-						<li>Weight: <b></b> kgs</li>
+						<li>Blood Pressure(Sys): <b>${us_data[3]}</b> mm/Hg</li>
+						<li>Blood Pressure(Dia): <b>${us_data[4]}</b> mm/Hg</li>
+						
 					</ul>
 				</div>
 			</div>
@@ -67,14 +74,19 @@
 		<div class="col-md-3">
 			<div class="box box-success collapsed-box box-solid">
 				<div class="box-header with-border text-center">
-					<h3 class="box-title">Body Profile</h3>
+					<h3 class="box-title">Lipid Profile</h3>
 					<div class="box-tools pull-right">
 						<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 					</div>
 				</div>
 				<div class="box-body">
 					<ul>
-						<li>Weight: <b></b> kgs</li>
+						<li>Cholesterol (Total):<b>${us_data[10]} </b>mg/dL </li>
+						<li>Cholesterol (HDL):<b>${us_data[11]} </b>mg/dL </li>
+						<li>Cholesterol (LDL):<b>${us_data[13]} </b> mg/dL</li>
+						<li>Triglycerides	 : <b>${us_data[12]} </b> mg/dL</li>
+						
+											
 					</ul>
 				</div>
 			</div>
@@ -82,16 +94,18 @@
 		<div class="col-md-3">
 			<div class="box box-warning collapsed-box box-solid">
 				<div class="box-header with-border text-center">
-					<h3 class="box-title">Body Profile</h3>
+					<h3 class="box-title">Diet Profile</h3>
 					<div class="box-tools pull-right">
 						<button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
 					</div>
 				</div>
 				<div class="box-body">
 					<ul>
-						<li>Weight: <b></b> kgs</li>
-						<li>Weight: <b></b> kgs</li>
-						<li>Weight: <b></b> kgs</li>
+						<li>Fat: <b>${us_data[5]}</b> gm</li>
+						<li>Unsat. Fatty acid: <b>${us_data[6]}</b> gm</li>
+						<li>Alcohol Intake: <b>${us_data[9]}</b> gm</li>
+						<li>Dietery Fiber:<b>${us_data[7] }</b> gm</li>
+						<li>Food Cholesterol:<b>${us_data[8]}</b> gm</li>
 					</ul>
 				</div>
 			</div>

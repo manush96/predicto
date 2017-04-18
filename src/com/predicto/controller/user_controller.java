@@ -207,11 +207,14 @@ public class user_controller {
 			bp_h_cls = "#f56954";
 		else
 			bp_h_cls = "#00a65a";
-		
+		model.addObject("us_data", d);
 		model.addObject("bp_l_cls",bp_l_cls);
 		model.addObject("bp_h_cls",bp_h_cls);
 		model.addObject("bp_arr",bp_arr);
-		model.addObject("run",run);
+		model.addObject("run",String.format("%.2f",run));
+		model.addObject("walk",String.format("%.2f",walk));
+		model.addObject("cycle",String.format("%.2f",cycle));
+		model.addObject("work",String.format("%.2f",working));
 		model.addObject("score",health_score);
 		model.addObject("chart",h1);
 		model.setViewName("prediction");
